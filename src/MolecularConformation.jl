@@ -9,6 +9,7 @@ module MolecularConformation
 	conformation_logger = ConsoleLogger(stdout, Logging.Error)
 	classical_bp_logger = ConsoleLogger(stdout, Logging.Error)
 	quaternion_bp_logger = ConsoleLogger(stdout,Logging.Error)
+
 	# loading basic packages
 	using LinearAlgebra
 	using Quaternions
