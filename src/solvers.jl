@@ -55,9 +55,9 @@ function quaternion_bp(n :: Int,
 
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
-#				with_logger(quaternion_bp_logger) do
+				with_logger(quaternion_bp_logger) do
 					@info "Rank n was reached, a solution was found " mol LDE(mol,D,n,nad)
-#				end
+				end
 				return 0
 			end
 		end
@@ -83,9 +83,9 @@ function quaternion_bp(n :: Int,
 				#vsol[k]=sol
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
-#				with_logger(quaternion_bp_logger) do
+				with_logger(quaternion_bp_logger) do
 					@info "Rank n was reached, a solution was found " mol LDE(mol,D,n,nad)
-#				end
+				end
 				return 0
 			end
 		end
@@ -107,9 +107,9 @@ function quaternion_bp(n :: Int,
 
 	qbp(1,n,mol,Q,D,ε,allmol)
 
-#	with_logger(quaternion_bp_logger) do
+	with_logger(quaternion_bp_logger) do
 		@info "number of solutions " nsol
-#	end
+	end
 #	for i=1:nsol
 #		println(LDE(storage_mol[i],D,n,nad))
 		#storage_mol[i].lde = LDE(storage_mol[i],D,n,nad)
