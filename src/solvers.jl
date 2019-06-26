@@ -26,10 +26,10 @@ function quaternion_bp(n :: Int,
 			θ = qbondangle(3,D)
 			Q[3] = Quaternion(sin(θ/2.0),0.0,0.0,cos(θ/2.0))
 			Q[3] = Q[2]*Q[3]
-			qmol = Q[3]*D[3,2]*conj(Q[3])
-			mol.atoms[3].x = qmol.s + mol.atoms[2].x
-			mol.atoms[3].y = qmol.v1 + mol.atoms[2].y
-			mol.atoms[3].z = qmol.v2 + mol.atoms[2].z
+			qmol = Q[3]*Quaternion(0.0,D[3,2],0.0,0.0)*conj(Q[3])
+			mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
+			mol.atoms[3].y = qmol.v2 + mol.atoms[2].y
+			mol.atoms[3].z = qmol.v3 + mol.atoms[2].z
 			i = 4 # branching starts at atom 4
 		end
 		λ = 1
@@ -42,10 +42,10 @@ function quaternion_bp(n :: Int,
 		cω = cos(ω)
 		Q[i] = Quaternion(sθ*cω,sθ*sω,-cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
-		qmol = Q[i]*D[i,i-1]*conj(Q[i])
-		mol.atoms[i].x = qmol.s + mol.atoms[i-1].x
-		mol.atoms[i].y = qmol.v1 + mol.atoms[i-1].y
-		mol.atoms[i].z = qmol.v2 + mol.atoms[i-1].z
+		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
+		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
+		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
+		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
 		λ  = pruningtest(mol,i,D,ε)
 		if λ == 1 
 			if i<n
@@ -70,10 +70,10 @@ function quaternion_bp(n :: Int,
 #		@info "partial solution in λ =$(λ) " sol
 		Q[i] = Quaternion(sθ*cω,-sθ*sω,cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
-		qmol = Q[i]*D[i,i-1]*conj(Q[i])
-		mol.atoms[i].x = qmol.s + mol.atoms[i-1].x
-		mol.atoms[i].y = qmol.v1 + mol.atoms[i-1].y
-		mol.atoms[i].z = qmol.v2 + mol.atoms[i-1].z
+		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
+		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
+		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
+		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
 		ρ  = pruningtest(mol,i,D,ε)
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
