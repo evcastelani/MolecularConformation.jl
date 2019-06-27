@@ -19,8 +19,10 @@ for name in problems
     (m,n) = size(D)
 
     s_classic = conformation(D,opt);
+    s_classic = conformation(D,opt);
     println(f,"Classical_bp & $(name) & $(n) &$(opt.cutoff) & $(s_classic.molecules[1].lde) & $(s_classic.elapsedtime) & $(s_classic.number)\\\\")
 
+    s_quaternion = conformation(D,qopt);
     s_quaternion = conformation(D,qopt);
     println(f,"Quaternion_bp& $(name) & $(n) &$(qopt.cutoff) & $(s_quaternion.molecules[1].lde) & $(s_quaternion.elapsedtime) & $(s_quaternion.number)\\\\")
 end
@@ -42,8 +44,10 @@ for name in problems
     (m,n) = size(D)
 
     s_classic = conformation(D,opt);
+    s_classic = conformation(D,opt);
     println(f,"Classical_bp & $(name) & $(n) &$(opt.cutoff) & $(s_classic.molecules[1].lde) & $(s_classic.elapsedtime) & $(s_classic.number)\\\\")
 
+    s_quaternion = conformation(D,qopt);
     s_quaternion = conformation(D,qopt);
     println(f,"Quaternion_bp& $(name) & $(n) &$(qopt.cutoff) & $(s_quaternion.molecules[1].lde) & $(s_quaternion.elapsedtime) & $(s_quaternion.number)\\\\")
 end

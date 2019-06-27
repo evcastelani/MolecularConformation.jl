@@ -243,7 +243,8 @@ function qbondangle(i,D)#i=3,...,n
 	if c>1.0
 		c=1.0
 	end
-	return sqrt((1.0 + c)/2.0),sqrt((1.0 - c)/2.0)
+	cm = c/2.0 
+	return sqrt(0.5 + cm),sqrt(0.5 - cm)
 end
 
 function qtorsionangle(i,D)#i=4,...,n
@@ -273,7 +274,8 @@ function qtorsionangle(i,D)#i=4,...,n
 	if (valc >  1.0)  
 		valc =  1.0
 	end
-	return sqrt((1.0+valc)/2.0),sqrt((1.0-valc)/2.0)
+	cm = valc/2.0
+	return sqrt(0.5+cm),sqrt(0.5-cm)
 end
 
 
