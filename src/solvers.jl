@@ -36,11 +36,7 @@ function quaternion_bp(n :: Int,
 		ρ = 1
 		cθ,sθ = qbondangle(i,D)
 		cω,sω = qtorsionangle(i,D)
-		a = sθ*cω
-		b = sθ*sω
-		c = -cθ*sω
-		d = cθ*cω
-		Q[i] = Quaternion(a,b,c,d)
+		Q[i] = Quaternion(sθ*cω,sθ*sω,-cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
 		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
@@ -69,7 +65,7 @@ function quaternion_bp(n :: Int,
 		end
 #		@info "partial solution in λ =$(λ) " sol
 		
-		Q[i] = Quaternion(a,-b,-c,d)
+		Q[i] = Quaternion(sθ*cω,-sθ*sω,cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
 		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
