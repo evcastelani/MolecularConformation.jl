@@ -38,7 +38,7 @@ function quaternion_bp(n :: Int,
 		cω,sω = qtorsionangle(i,D)
 		Q[i] = Quaternion(sθ*cω,sθ*sω,-cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
-		qmol = Q[i]*Complex(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
+		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
@@ -67,7 +67,7 @@ function quaternion_bp(n :: Int,
 		
 		Q[i] = Quaternion(sθ*cω,-sθ*sω,cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
-		qmol = Q[i]*Complex(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
+		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
