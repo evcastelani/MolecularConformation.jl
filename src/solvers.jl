@@ -23,8 +23,8 @@ function quaternion_bp(n :: Int,
 			mol.atoms[2].z = 0.0
 			Q[2] = Quaternion(0.0,0.0,-1.0,0.0)
 			# tird atom
-			θ = qbondangle(3,D)
-			Q[3] = Quaternion(sin(θ/2.0),0.0,0.0,cos(θ/2.0))
+			cθ,sθ = qbondangle(3,D)
+			Q[3] = Quaternion(sθ,0.0,0.0,cθ)
 			Q[3] = Q[2]*Q[3]
 			qmol = Q[3]*Quaternion(0.0,D[3,2],0.0,0.0)*conj(Q[3])
 			mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
@@ -34,12 +34,8 @@ function quaternion_bp(n :: Int,
 		end
 		λ = 1
 		ρ = 1
-		θ = qbondangle(i,D)/2.0
-		ω = qtorsionangle(i,D)/2.0
-		sθ = sin(θ)
-		cθ = cos(θ)
-		sω = sin(ω)
-		cω = cos(ω)
+		cθ,sθ = qbondangle(i,D)
+		cω,sω = qtorsionangle(i,D)
 		Q[i] = Quaternion(sθ*cω,sθ*sω,-cθ*sω,cθ*cω)
 		Q[i] = Q[i-1]*Q[i]
 		qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])

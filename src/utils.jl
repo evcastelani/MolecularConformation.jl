@@ -243,7 +243,8 @@ function qbondangle(i,D)#i=3,...,n
 	if c>1.0
 		c=1.0
 	end
-	return acos(c)
+	cm = c/2.0 
+	return sqrt(0.5 - cm),sqrt(0.5 + cm)#cos(θ/2),sin(θ/2)
 end
 
 function qtorsionangle(i,D)#i=4,...,n
@@ -273,7 +274,8 @@ function qtorsionangle(i,D)#i=4,...,n
 	if (valc >  1.0)  
 		valc =  1.0
 	end
-	return acos(valc)
+	cm = valc/2.0
+	return sqrt(0.5-cm),sqrt(0.5+cm)
 end
 
 
