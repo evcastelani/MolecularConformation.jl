@@ -244,7 +244,7 @@ function qbondangle(i,D)#i=3,...,n
 		c=1.0
 	end
 	cm = c/2.0 
-	return sqrt(0.5 - cm),sqrt(0.5 + cm)#cos(θ/2),sin(θ/2)
+	return sqrt(0.5 + cm),sqrt(0.5 - cm)
 end
 
 function qtorsionangle(i,D)#i=4,...,n
@@ -275,7 +275,7 @@ function qtorsionangle(i,D)#i=4,...,n
 		valc =  1.0
 	end
 	cm = valc/2.0
-	return sqrt(0.5-cm),sqrt(0.5+cm)
+	return sqrt(0.5+cm),sqrt(0.5-cm)
 end
 
 
