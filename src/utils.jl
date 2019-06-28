@@ -279,7 +279,7 @@ function qtorsionangle(i,D)#i=4,...,n
 end
 
 function rot(Q::Quaternion,t::Float64)
-	return Quaternion(-Q.v1*t,Q.s*t,Q.v3,-Q.v2*t)*conj(Q)
+	return Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t)*conj(Q)
 end
 
 
