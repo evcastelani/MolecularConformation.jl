@@ -1,7 +1,7 @@
 using DelimitedFiles,MolecularConformation
 
-opt = ConformationSetup(0.001,4.5,classical_bp,false)
-qopt = ConformationSetup(0.001,4.5,quaternion_bp,false)
+opt = ConformationSetup(0.001,4.5,classical_bp,true)
+qopt = ConformationSetup(0.001,4.5,quaternion_bp,true)
 
 
 problems = ["inst_10.txt","inst_15.txt","inst_20.txt", "inst_30.txt","inst_40.txt","inst_50.txt","inst_60.txt","inst_70.txt","inst_80.txt",
@@ -27,8 +27,8 @@ for name in problems
     println(f,"Quaternion_bp& $(name) & $(n) &$(qopt.cutoff) & $(s_quaternion.molecules[1].lde) & $(s_quaternion.elapsedtime) & $(s_quaternion.number)\\\\")
 end
 
-opt = ConformationSetup(0.001,5.5,classical_bp,false)
-qopt = ConformationSetup(0.001,5.5,quaternion_bp,false)
+opt = ConformationSetup(0.001,5.5,classical_bp,true)
+qopt = ConformationSetup(0.001,5.5,quaternion_bp,true)
 
 
 problems = ["inst_400.txt","inst_500.txt","inst_600.txt", "inst_700.txt","inst_800.txt","inst_900.txt","inst_1000.txt"]

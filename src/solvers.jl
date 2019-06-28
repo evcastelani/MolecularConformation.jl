@@ -38,8 +38,8 @@ function quaternion_bp(n :: Int,
 		cθ,sθ = qbondangle(i,D)
 		cω,sω = qtorsionangle(i,D)
 		a = sθ*cω
-		b = sθ*sω
-		c = -cθ*sω
+		b = -sθ*sω
+		c = cθ*sω
 		d = cθ*cω
 	#	Q[i] = Quaternion(a,b,c,d)
 		Q[i] = Q[i-1]*Quaternion(a,b,c,d)
