@@ -103,7 +103,7 @@ function quaternion_bp(n :: Int,
 	end
 	Q = Vector{Quaternion}(undef,n)
 	for i=1:n
-			Q[i] = Quaternion(0.0)
+			Q[i] = Quaternion(0.0,0.0,0.0,0.0)
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
