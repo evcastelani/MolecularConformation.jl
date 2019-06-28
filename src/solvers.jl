@@ -37,7 +37,11 @@ function quaternion_bp(n :: Int,
 		ρ = 1
 		cθ,sθ = qbondangle(i,D)
 		cω,sω = qtorsionangle(i,D)
-		Q[i] = Quaternion(sθ*cω,sθ*sω,-cθ*sω,cθ*cω)
+		a = sθ*cω
+		b = sθ*sω
+		c = -cθ*sω
+		d = cθ*cω
+		Q[i] = Quaternion(a,b,c,d)
 		Q[i] = Q[i-1]*Q[i]
 		qmol = rot(Q[i],D[i,i-1])
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
@@ -66,7 +70,7 @@ function quaternion_bp(n :: Int,
 		end
 #		@info "partial solution in λ =$(λ) " sol
 		
-		Q[i] = Quaternion(sθ*cω,-sθ*sω,cθ*sω,cθ*cω)
+		Q[i] = Quaternion(a,-b,-c,d)
 		Q[i] = Q[i-1]*Q[i]
 		qmol = rot(Q[i],D[i,i-1])
 		#qmol = Q[i]*Quaternion(0.0,D[i,i-1],0.0,0.0)*conj(Q[i])
@@ -166,7 +170,7 @@ function classical_bp(n :: Int,
 		end
 		λ = 1
 		ρ = 1
-		C[i] = C[i-1]*torsionmatrix(i,D,'+')
+		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
 		mol.atoms[i].x = C[i][1,4]
 		mol.atoms[i].y = C[i][2,4]
 		mol.atoms[i].z = C[i][3,4]
@@ -192,7 +196,7 @@ function classical_bp(n :: Int,
 			@goto exit
 		end
 #		@info "partial solution in λ =$(λ) " sol
-		C[i] = C[i-1]*torsionmatrix(i,D,'-')
+		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
 		mol.atoms[i].x = C[i][1,4]
 		mol.atoms[i].y = C[i][2,4]
 		mol.atoms[i].z = C[i][3,4]
