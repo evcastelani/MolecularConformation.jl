@@ -112,7 +112,7 @@ function quaternion_bp(n :: Int,
 	storage_mol = Dict{Int64,MoleculeType}()
 	count_steps = 1
 	qbp(1,n,mol,Q,D,ε,allmol)
-
+	println("count_steps = $(count_steps)")
 	with_logger(quaternion_bp_logger) do
 		@info "number of solutions " nsol
 	end
