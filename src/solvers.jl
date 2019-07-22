@@ -237,7 +237,7 @@ function classical_bp(n :: Int,
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	
+	count_steps = 1	
 	bp(1,n,mol,C,D,ε,allmol)
 	println("count_steps = $(count_steps)")
 	with_logger(classical_bp_logger) do
