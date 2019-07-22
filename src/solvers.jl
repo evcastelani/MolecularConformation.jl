@@ -16,7 +16,7 @@ function quaternion_bp(n :: Int,
 			mol.atoms[1].x = 0.0
 			mol.atoms[1].y = 0.0
 			mol.atoms[1].z = 0.0
-			Q[1] = Quaternion(1.0)
+			#Q[1] = Quaternion(1.0,0.0,0.0,0.0)
 			#second atom
 			mol.atoms[2].x = -D[1,2]
 			mol.atoms[2].y = 0.0
