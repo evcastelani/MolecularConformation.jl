@@ -50,6 +50,7 @@ function quaternion_bp(n :: Int,
 		λ  = pruningtest(mol,i,D,ε)
 		if λ == 1 
 			if i<n
+				count_steps = count_steps+1
 				qbp(i+1,n,mol,Q,D,ε,allmol)
 			else
 				#vsol[k]=sol
@@ -81,6 +82,8 @@ function quaternion_bp(n :: Int,
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
+
+				count_steps = count_steps+1
 				qbp(i+1,n,mol,Q,D,ε,allmol)
 			else
 				#vsol[k]=sol
@@ -107,7 +110,7 @@ function quaternion_bp(n :: Int,
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-
+	count_steps = 1
 	qbp(1,n,mol,Q,D,ε,allmol)
 
 	with_logger(quaternion_bp_logger) do
