@@ -237,12 +237,12 @@ end
 # these functions are used by quaternion_bp#########################################
 function qbondangle(i,D)#i=3,...,n
 	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
-	if c<-1.0
-		c=-1.0
-	end
-	if c>1.0
-		c=1.0
-	end
+#	if c<-1.0
+#		c=-1.0
+#	end
+#	if c>1.0
+#		c=1.0
+#	end
 	cm = c/2.0 
 	return sqrt(0.5 + cm),sqrt(0.5 - cm)
 end
@@ -268,12 +268,12 @@ function qtorsionangle(i,D)#i=4,...,n
 	e = sqrt(e)
 	f = sqrt(f)
 	valc = (a - b*c)/(e*f)
-	if (valc < -1.0)  
-		valc = -1.0
-	end
-	if (valc >  1.0)  
-		valc =  1.0
-	end
+#	if (valc < -1.0)  
+#		valc = -1.0
+#	end
+#	if (valc >  1.0)  
+#		valc =  1.0
+#	end
 	cm = valc/2.0
 	return sqrt(0.5+cm),sqrt(0.5-cm)
 end
