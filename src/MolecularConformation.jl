@@ -12,7 +12,7 @@ module MolecularConformation
 
 	# loading basic packages
 	using LinearAlgebra
-	using Quaternions
+	#using Quaternions
 	import Base.show
 	
 	include("utils.jl")
