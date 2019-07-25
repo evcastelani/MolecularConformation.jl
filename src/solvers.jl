@@ -25,7 +25,7 @@ function quaternion_bp(n :: Int,
 			# tird atom
 			cθ,sθ = qbondangle(3,D)
 			Q[3] = Quaternion(sθ,0.0,0.0,cθ)
-			Q[3] = Q[2]*Q[3]
+			Q[3] = qprod(Q[2],Q[3])
 			#qmol = Q[3]*Quaternion(0.0,D[3,2],0.0,0.0)*conj(Q[3])
 			qmol = rot(Q[3],D[3,2])
 			mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
