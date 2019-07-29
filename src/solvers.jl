@@ -50,7 +50,6 @@ function quaternion_bp(n :: Int,
 		λ  = pruningtest(mol,i,D,ε)
 		if λ == 1 
 			if i<n
-				count_steps = count_steps+1
 				qbp(i+1,n,mol,Q,D,ε,allmol)
 			else
 				#vsol[k]=sol
@@ -83,7 +82,6 @@ function quaternion_bp(n :: Int,
 		if ρ == 1 
 			if i<n
 
-				count_steps = count_steps+1
 				qbp(i+1,n,mol,Q,D,ε,allmol)
 			else
 				#vsol[k]=sol
@@ -106,13 +104,11 @@ function quaternion_bp(n :: Int,
 	end
 	Q = Vector{Quaternion}(undef,n)
 	for i=1:n
-			Q[i] = Quaternion(0.0,0.0,0.0,0.0)
+		Q[i] = Quaternion(0.0,0.0,0.0,0.0)
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	count_steps = 1
 	qbp(1,n,mol,Q,D,ε,allmol)
-	println("count_steps = $(count_steps)")
 	with_logger(quaternion_bp_logger) do
 		@info "number of solutions " nsol
 	end
@@ -181,7 +177,6 @@ function classical_bp(n :: Int,
 		if λ == 1 
 			if i<n
 
-				count_steps = count_steps+1
 				bp(i+1,n,mol,C,D,ε,allmol)
 			else
 				#vsol[k]=sol
@@ -210,7 +205,6 @@ function classical_bp(n :: Int,
 		if ρ == 1 
 			if i<n
 				
-				count_steps = count_steps+1
 				bp(i+1,n,mol,C,D,ε,allmol)
 			else
 				#vsol[k]=sol
@@ -237,9 +231,7 @@ function classical_bp(n :: Int,
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	count_steps = 1	
 	bp(1,n,mol,C,D,ε,allmol)
-	println("count_steps = $(count_steps)")
 	with_logger(classical_bp_logger) do
 		@info "number of solutions " nsol
 	end
