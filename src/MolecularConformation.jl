@@ -49,7 +49,8 @@ module MolecularConformation
 	```
 	as return a ConformationOutput type is provided.
 	"""
-	function conformation(D::Array{Float64,2},cs::ConformationSetup)
+	function conformation(A::Array{Float64,2},cs::ConformationSetup)
+		D=copy(A)
 		print("\n Checking symmetry...")
 		if D!=D'
 			error("Distance matrix is not symmetric")
