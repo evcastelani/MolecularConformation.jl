@@ -1,7 +1,7 @@
 using DelimitedFiles,MolecularConformation, PyPlot
 function tests()
-opt = ConformationSetup(0.001,4.5,classical_bp,true)
-qopt = ConformationSetup(0.001,4.5,quaternion_bp,true)
+opt = ConformationSetup(0.001,4.5,classical_bp,false)
+qopt = ConformationSetup(0.001,4.5,quaternion_bp,false)
 
 
 problems = ["inst_10.txt","inst_15.txt","inst_20.txt", "inst_30.txt","inst_40.txt","inst_50.txt","inst_60.txt","inst_70.txt","inst_80.txt",
@@ -32,14 +32,22 @@ for name in problems
     println(f,"Classical_bp & $(name) & $(n) &$(opt.cutoff) & $(s_classic.molecules[1].lde) & $(s_classic.elapsedtime) & $(s_classic.number)\\\\")
     tclass[k] = s_classic.elapsedtime
 
+    if tquat[k]<tclass[k]
+	    println(f,"Quaternion_bp was $(100*(1-tquat[k]/tclass[k])) percent faster than Classical_bp")
+    else
+	    println(f,"Classical_bp was $(100*(1-tclass[k]/tquat[k])) percent faster than Quaternion_bp")
+    end
+
     k = k+1
 end
 
-opt = ConformationSetup(0.001,5.5,classical_bp,true)
-qopt = ConformationSetup(0.001,5.5,quaternion_bp,true)
+opt = ConformationSetup(0.001,5.5,classical_bp,false)
+qopt = ConformationSetup(0.001,5.5,quaternion_bp,false)
 
 
-problems = ["inst_400.txt","inst_500.txt","inst_600.txt", "inst_700.txt","inst_800.txt","inst_900.txt","inst_1000.txt"]
+problems = ["inst_400.txt","inst_500.txt","inst_600.txt", "inst_700.txt","inst_800.txt","inst_900.txt","inst_1000.txt","inst_1100.txt","inst_1200.txt","inst_1300.txt","inst_1400.txt","inst_1500.txt","inst_2000.txt","inst_3000.txt","inst_4000.txt","inst_5000.txt","inst_6000.txt"]
+
+
 
 prob = append!(prob,zeros(length(problems)))
 tquat = append!(tquat,zeros(length(problems)))
@@ -62,16 +70,30 @@ for name in problems
     s_classic = conformation(D,opt);
     println(f,"Classical_bp & $(name) & $(n) &$(opt.cutoff) & $(s_classic.molecules[1].lde) & $(s_classic.elapsedtime) & $(s_classic.number)\\\\")
     tclass[k] = s_classic.elapsedtime
+
+    if tquat[k]<tclass[k]
+	    println(f,"Quaternion_bp was $(100*(1-tquat[k]/tclass[k])) percent faster than Classical_bp")
+    else
+	    println(f,"Classical_bp was $(100*(1-tclass[k]/tquat[k])) percent faster than Quaternion_bp")
+    end
     k = k+1
 end
-
+println(f,"sum of elapsed time for all problems in Classical_bp = $(sum(tclass))")
+println(f,"sum of elapsed time for all problems in Quaternion_bp = $(sum(tquat))")
 close(f)
+
+#opt = ConformationSetup(0.001,5.5,classical_bp,false)
+#qopt = ConformationSetup(0.001,5.5,quaternion_bp,false)
+
+#s_quaternion = conformation(D,qopt);
+#s_classic = conformation(D,opt);
+
 xlabel("Size of problems ")
 ylabel("Average processing time (s)")
 #grid("on")
 #title("")
 plot(prob,tquat,"--k",label="QuaternionBP")
 plot(prob,tclass,"-k",label="ClassicBP")
-legend(loc="upper right",fancybox="true")
+legend(loc="upper right",fancybox="false")
 
 end
