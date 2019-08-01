@@ -239,7 +239,11 @@ function LDE(v::MoleculeType,D::Array{Float64,2},n::Int,nad::Int)
 			end
 		end
 	end
-	return dij/nad
+	if nad>0.0
+		return dij/nad
+	else
+		return dij
+	end
 end
 
 function Base.copy(A::AtomType)

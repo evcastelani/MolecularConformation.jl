@@ -61,13 +61,55 @@ module MolecularConformation
 		(m,n) = size(D)
 		nad = 0 #number of additional distances
 		for i=1:n
-			for j=i+1:n
+			for j=i+4:n
 				if D[i,j]>cs.cutoff
 					D[i,j] = 0.0
 					D[j,i] = 0.0
 				else
 					nad = nad + 1
 				end
+			end
+		end
+		print(" Done!\n")
+		with_logger(conformation_logger) do
+			@info "Distance Matrix" D
+		end
+		print(" Solving the problem with $(cs.solver) ...")
+		
+		solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,cs.precision,cs.allsolutions)
+		print(" Done! \n")
+		print(" Computing LDE for all solutions ...")
+		worstlde = 0.0
+		for i=1:solutions[1]
+			
+			solutions[2][i].lde = LDE(solutions[2][i],D,n,nad)
+			if worstlde < solutions[2][i].lde
+				worstlde = solutions[2][i].lde
+			end
+	#		println(storage_mol[i].atoms[n])
+		end
+		print("Done! \n")
+		print(" Info: $(solutions[1]) solutions found with worst LDE given by $(worstlde) \n")
+		return ConformationOutput(solutions[1],solutions[2],t,bytes,gctime)
+		
+	end
+
+	function perfomance_conformation(A::Array{Float64,2},cs::ConformationSetup,ndiag::Int)
+		D=copy(A)
+		print("\n Checking symmetry...")
+		if D!=D'
+			error("Distance matrix is not symmetric")
+		else
+			print(" Done!\n")
+		end
+		print(" No cut off distances ...")	
+		(m,n) = size(D)
+		nad = 0 #number of additional distances
+		for i=1:n
+			for j=i+ndiag:n
+					D[i,j] = 0.0
+					D[j,i] = 0.0
+		#			nad = nad + 1
 			end
 		end
 		print(" Done!\n")
