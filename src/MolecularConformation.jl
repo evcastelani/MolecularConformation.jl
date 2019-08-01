@@ -94,7 +94,7 @@ module MolecularConformation
 		
 	end
 
-	function perfomance_conformation(A::Array{Float64,2},cs::ConformationSetup,ndiag::Int)
+	function performance_conformation(A::Array{Float64,2},cs::ConformationSetup,ndiag::Int)
 		D=copy(A)
 		print("\n Checking symmetry...")
 		if D!=D'
