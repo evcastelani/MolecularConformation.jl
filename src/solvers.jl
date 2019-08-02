@@ -3,14 +3,15 @@ function quaternion_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
 			ε :: Float64,
-			allmol :: Bool)
+			allmol :: Bool,
+			ndiag::Int)
 	#defining bp using closure in order to count
 	function qbp(i::Int,n::Int,
 		mol::MoleculeType,
 		Q::Vector{Quaternion},
 		D::Array{Float64,2},
 		ε::Float64,
-		allmol::Bool)
+		allmol::Bool,ndiag)
 		if i == 1
 			#first atom		
 			mol.atoms[1].x = 0.0
@@ -47,10 +48,10 @@ function quaternion_bp(n :: Int,
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
-		λ  = pruningtest(mol,i,D,ε)
+		λ  = pruningtest(mol,i,D,ε,ndiag)
 		if λ == 1 
 			if i<n
-				qbp(i+1,n,mol,Q,D,ε,allmol)
+				qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 
@@ -77,12 +78,12 @@ function quaternion_bp(n :: Int,
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
-		ρ  = pruningtest(mol,i,D,ε)
+		ρ  = pruningtest(mol,i,D,ε,ndiag)
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
 
-				qbp(i+1,n,mol,Q,D,ε,allmol)
+				qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 				nsol = nsol+1
@@ -108,7 +109,7 @@ function quaternion_bp(n :: Int,
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	qbp(1,n,mol,Q,D,ε,allmol)
+	qbp(1,n,mol,Q,D,ε,allmol,ndiag)
 	with_logger(quaternion_bp_logger) do
 		@info "number of solutions " nsol
 	end
@@ -126,14 +127,14 @@ function classical_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
 			ε :: Float64,
-			allmol :: Bool)
+			allmol :: Bool,ndiag::Int)
 	#defining bp using closure in order to count
 	function bp(i::Int,n::Int,
 		mol::MoleculeType,
 		C::Vector{Array{Float64,2}},
 		D::Array{Float64,2},
 		ε::Float64,
-		allmol::Bool)
+		allmol::Bool,ndiag::Int)
 		if i == 1
 			#first atom
 			mol.atoms[1].x = 0.0
@@ -173,11 +174,11 @@ function classical_bp(n :: Int,
 		mol.atoms[i].x = C[i][1,4]
 		mol.atoms[i].y = C[i][2,4]
 		mol.atoms[i].z = C[i][3,4]
-		λ  = pruningtest(mol,i,D,ε)
+		λ  = pruningtest(mol,i,D,ε,ndiag)
 		if λ == 1 
 			if i<n
 
-				bp(i+1,n,mol,C,D,ε,allmol)
+				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 
@@ -205,7 +206,7 @@ function classical_bp(n :: Int,
 		if ρ == 1 
 			if i<n
 				
-				bp(i+1,n,mol,C,D,ε,allmol)
+				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 				nsol = nsol+1
@@ -231,7 +232,7 @@ function classical_bp(n :: Int,
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	bp(1,n,mol,C,D,ε,allmol)
+	bp(1,n,mol,C,D,ε,allmol,ndiag)
 	with_logger(classical_bp_logger) do
 		@info "number of solutions " nsol
 	end
