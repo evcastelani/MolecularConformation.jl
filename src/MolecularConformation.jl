@@ -1,6 +1,6 @@
 module MolecularConformation
 		
-	export conformation,ConformationSetup,ConformationOutput,performance_conformation,
+	export conformation,ConformationSetup,ConformationOutput,
 			AtomType,MoleculeType,classical_bp, quaternion_bp,≈
 	
 	

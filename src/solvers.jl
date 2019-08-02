@@ -11,7 +11,7 @@ function quaternion_bp(n :: Int,
 		Q::Vector{Quaternion},
 		D::Array{Float64,2},
 		ε::Float64,
-		allmol::Bool,ndiag)
+		allmol::Bool,ndiag::Int)
 		if i == 1
 			#first atom		
 			mol.atoms[1].x = 0.0
@@ -201,7 +201,7 @@ function classical_bp(n :: Int,
 		mol.atoms[i].x = C[i][1,4]
 		mol.atoms[i].y = C[i][2,4]
 		mol.atoms[i].z = C[i][3,4]
-		ρ  = pruningtest(mol,i,D,ε)
+		ρ  = pruningtest(mol,i,D,ε,ndiag)
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
