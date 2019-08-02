@@ -248,16 +248,16 @@ function LDE(v::MoleculeType,D::Array{Float64,2},n::Int,nad::Int)
 	dij=0.0
 	for i=1:n
 		for j=i+1:n
-			if 0.0<D[i,j]
+#			if 0.0<D[i,j]
 				dij = dij+(D[i,j]^2-((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2))^2/D[i,j]
-			end
+#			end
 		end
 	end
-	if nad>0.0
+#	if nad>0.0
 		return dij/nad
-	else
-		return dij
-	end
+#	else
+#		return dij
+#	end
 end
 
 function Base.copy(A::AtomType)

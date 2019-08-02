@@ -81,7 +81,7 @@ module MolecularConformation
 		else
 			print(" No cut off distances ...")	
 			(m,n) = size(D)
-			nad = 0 #number of additional distances
+			nad = max(1,n*(ndiag-3)) #number of additional distances
 			for i=1:n
 				for j=i+ndiag:n
 					D[i,j] = 0.0
