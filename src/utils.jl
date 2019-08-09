@@ -210,7 +210,12 @@ This functions is an auxiliary function used to test if some molecule is
 feasible or not.
 """
 function pruningtest(v::MoleculeType,i::Int,D::Array{Float64,2},ε::Float64,ndiag::Int)
-	for j=max(1,i-ndiag):i-1
+	if ndiag == 0
+		initj = 1
+	else
+		initj = max(1,i-ndiag)
+	end
+	for j=initj:i-1
 		if D[i,j]>0.0
 			dij = (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
 			if (D[i,j]^2-dij)^2 > ε
