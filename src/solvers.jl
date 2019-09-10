@@ -4,8 +4,7 @@ function quaternion_bp(n :: Int,
 			nad :: Int,
 			ε :: Float64,
 			allmol :: Bool,
-			ndiag::Int,
-			timer=Timer(60.0))
+			ndiag::Int)
 	#defining bp using closure in order to count
 	function qbp(i::Int,n::Int,
 		mol::MoleculeType,
@@ -52,10 +51,7 @@ function quaternion_bp(n :: Int,
 		λ  = pruningtest(mol,i,D,ε,ndiag)
 		if λ == 1 
 			if i<n
-				while isopen(timer)
-					qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
-					yield()
-				end
+				qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 
@@ -86,10 +82,7 @@ function quaternion_bp(n :: Int,
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
-				while isopen(timer)
-					qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
-					yield()
-				end
+				qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 				nsol = nsol+1
@@ -134,8 +127,7 @@ function classical_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
 			ε :: Float64,
-			allmol :: Bool,ndiag::Int,
-			timer = Timer(60.0))
+			allmol :: Bool,ndiag::Int)
 	#defining bp using closure in order to count
 	function bp(i::Int,n::Int,
 		mol::MoleculeType,
@@ -185,10 +177,7 @@ function classical_bp(n :: Int,
 		λ  = pruningtest(mol,i,D,ε,ndiag)
 		if λ == 1 
 			if i<n
-				while isopen(timer)
-					bp(i+1,n,mol,C,D,ε,allmol,ndiag)
-					yield()
-				end
+				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 
@@ -215,10 +204,7 @@ function classical_bp(n :: Int,
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
-				while isopen(timer)
-					bp(i+1,n,mol,C,D,ε,allmol,ndiag)
-					yield()
-				end
+				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
 				nsol = nsol+1

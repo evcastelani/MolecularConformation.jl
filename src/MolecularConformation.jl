@@ -49,7 +49,7 @@ module MolecularConformation
 	```
 	as return a ConformationOutput type is provided.
 	"""
-	function conformation(A::Array{Float64,2},cs::ConformationSetup;ndiag=0,timer=Timer(120.0))
+	function conformation(A::Array{Float64,2},cs::ConformationSetup;ndiag=0)
 		D=copy(A)
 		print("\n Checking symmetry...")
 		if D!=D'
@@ -77,7 +77,7 @@ module MolecularConformation
 			end
 			print(" Solving the problem with $(cs.solver) ...")
 		
-			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,cs.precision,cs.allsolutions,ndiag,timer)
+			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,cs.precision,cs.allsolutions,ndiag)
 		else
 			print(" No cut off distances ...")	
 			(m,n) = size(D)
@@ -95,7 +95,7 @@ module MolecularConformation
 			end
 			print(" Solving the problem with $(cs.solver) ...")
 		
-			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,cs.precision,cs.allsolutions,ndiag,timer)
+			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,cs.precision,cs.allsolutions,ndiag)
 
 		end
 		print(" Done! \n")
