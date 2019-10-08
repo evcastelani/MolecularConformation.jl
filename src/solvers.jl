@@ -2,6 +2,7 @@
 function quaternion_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
+			v :: Vector{Int64},
 			ε :: Float64,
 			allmol :: Bool,
 			ndiag::Int)
@@ -48,7 +49,11 @@ function quaternion_bp(n :: Int,
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
-		λ  = pruningtest(mol,i,D,ε,ndiag)
+		if i>v[i]
+			λ = 1
+		else
+			λ  = pruningtest(mol,i,D,ε,ndiag)
+		end
 		if λ == 1 
 			if i<n
 				qbp(i+1,n,mol,Q,D,ε,allmol,ndiag)
@@ -78,7 +83,11 @@ function quaternion_bp(n :: Int,
 		mol.atoms[i].x = qmol.v1 + mol.atoms[i-1].x
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
-		ρ  = pruningtest(mol,i,D,ε,ndiag)
+		if i>v[i]
+			ρ=1
+		else
+			ρ  = pruningtest(mol,i,D,ε,ndiag)
+		end
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
@@ -93,7 +102,7 @@ function quaternion_bp(n :: Int,
 				return 0
 			end
 		end
-
+#	end
 	@label exit
 	return 0
 	end
@@ -126,6 +135,7 @@ end
 function classical_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
+			v:: Vector{Int64}
 			ε :: Float64,
 			allmol :: Bool,ndiag::Int)
 	#defining bp using closure in order to count
@@ -174,7 +184,11 @@ function classical_bp(n :: Int,
 		mol.atoms[i].x = C[i][1,4]
 		mol.atoms[i].y = C[i][2,4]
 		mol.atoms[i].z = C[i][3,4]
-		λ  = pruningtest(mol,i,D,ε,ndiag)
+		if v[i]<i
+			λ = 1
+		else
+			λ  = pruningtest(mol,i,D,ε,ndiag)
+		end
 		if λ == 1 
 			if i<n
 				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
@@ -200,7 +214,11 @@ function classical_bp(n :: Int,
 		mol.atoms[i].x = C[i][1,4]
 		mol.atoms[i].y = C[i][2,4]
 		mol.atoms[i].z = C[i][3,4]
-		ρ  = pruningtest(mol,i,D,ε,ndiag)
+		if v[i]<i 
+			ρ = 1
+		else
+			ρ  = pruningtest(mol,i,D,ε,ndiag)
+		end
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n

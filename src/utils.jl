@@ -57,6 +57,7 @@ mutable struct ConformationSetup
 	cutoff :: Float64
 	solver :: Function 
 	allsolutions :: Bool
+	reorder :: Bool
 end
 
 """
