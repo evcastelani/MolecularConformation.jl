@@ -180,7 +180,7 @@ function classical_bp(n :: Int,
 		end
 		λ = 1
 		ρ = 1
-		if v[i]<i
+		if 1<v[i]<i
 			
 			C[i] = prodmatrix(C[i-1],torsionmatrix(v[i],D,'+'))
 			mol.atoms[i].x = mol.atoms[v[i]].x
@@ -216,7 +216,7 @@ function classical_bp(n :: Int,
 			@goto exit
 		end
 #		@info "partial solution in λ =$(λ) " sol
-		if v[i]<i 
+		if 1<v[i]<i 
 		
 			C[i] = prodmatrix(C[i-1],torsionmatrix(v[i],D,'-'))
 			ρ = 1
