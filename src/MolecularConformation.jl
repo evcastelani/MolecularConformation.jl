@@ -49,7 +49,7 @@ module MolecularConformation
 	```
 	as return a ConformationOutput type is provided.
 	"""
-	function conformation(A::Array{Float64,2},vorder::Vector{Int64}=[1],cs::ConformationSetup;ndiag=0)
+	function conformation(A::Array{Float64,2},cs::ConformationSetup,vorder::Vector{Int64}=[1];ndiag=0)
 		D=copy(A)
 		print("\n Checking symmetry...")
 		if D!=D'
