@@ -181,12 +181,17 @@ function classical_bp(n :: Int,
 		λ = 1
 		ρ = 1
 		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
-		mol.atoms[i].x = C[i][1,4]
-		mol.atoms[i].y = C[i][2,4]
-		mol.atoms[i].z = C[i][3,4]
 		if v[i]<i
+			
+			mol.atoms[i].x = mol.atoms[v[i]].x
+			mol.atoms[i].y = mol.atoms[v[i]].y
+			mol.atoms[i].z = mol.atoms[v[i]].z
 			λ = 1
 		else
+
+			mol.atoms[i].x = C[i][1,4]
+			mol.atoms[i].y = C[i][2,4]
+			mol.atoms[i].z = C[i][3,4]
 			λ  = pruningtest(mol,i,D,ε,ndiag)
 		end
 		if λ == 1 
@@ -211,12 +216,17 @@ function classical_bp(n :: Int,
 		end
 #		@info "partial solution in λ =$(λ) " sol
 		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
-		mol.atoms[i].x = C[i][1,4]
-		mol.atoms[i].y = C[i][2,4]
-		mol.atoms[i].z = C[i][3,4]
 		if v[i]<i 
 			ρ = 1
+
+			mol.atoms[i].x = mol.atoms[v[i]].x
+			mol.atoms[i].y = mol.atoms[v[i]].y
+			mol.atoms[i].z = mol.atoms[v[i]].z
 		else
+
+			mol.atoms[i].x = C[i][1,4]
+			mol.atoms[i].y = C[i][2,4]
+			mol.atoms[i].z = C[i][3,4]
 			ρ  = pruningtest(mol,i,D,ε,ndiag)
 		end
 #		@info "partial solution in ρ =$(ρ) " sol
