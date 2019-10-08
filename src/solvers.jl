@@ -135,7 +135,7 @@ end
 function classical_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
-			v:: Vector{Int64}
+			v:: Vector{Int64},
 			ε :: Float64,
 			allmol :: Bool,ndiag::Int)
 	#defining bp using closure in order to count
