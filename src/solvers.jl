@@ -180,15 +180,16 @@ function classical_bp(n :: Int,
 		end
 		λ = 1
 		ρ = 1
-		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
 		if v[i]<i
 			
+		C[i] = prodmatrix(C[v[i]-1],torsionmatrix(i,D,'+'))
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
 			λ = 1
 		else
 
+		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
 			mol.atoms[i].x = C[i][1,4]
 			mol.atoms[i].y = C[i][2,4]
 			mol.atoms[i].z = C[i][3,4]
@@ -215,8 +216,9 @@ function classical_bp(n :: Int,
 			@goto exit
 		end
 #		@info "partial solution in λ =$(λ) " sol
-		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
 		if v[i]<i 
+		
+			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(i,D,'-'))
 			ρ = 1
 
 			mol.atoms[i].x = mol.atoms[v[i]].x
@@ -224,6 +226,7 @@ function classical_bp(n :: Int,
 			mol.atoms[i].z = mol.atoms[v[i]].z
 		else
 
+		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
 			mol.atoms[i].x = C[i][1,4]
 			mol.atoms[i].y = C[i][2,4]
 			mol.atoms[i].z = C[i][3,4]
