@@ -223,7 +223,7 @@ function classical_bp(n :: Int,
 		if 1<v[i]<i-repsol 
 		
 			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(i,D,'-'))
-			repsol = respsol+1
+			repsol = repsol+1
 			ρ = 1
 
 			mol.atoms[i].x = mol.atoms[v[i]].x
