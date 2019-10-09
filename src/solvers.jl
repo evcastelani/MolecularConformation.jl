@@ -182,7 +182,7 @@ function classical_bp(n :: Int,
 		λ = 1
 		ρ = 1
 		if 1<v[i]<i-repsol
-			println("repeat solution in $(v[i])")
+			println("repeat solution in $(v[i]), level $i " )
 			C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
@@ -225,7 +225,7 @@ function classical_bp(n :: Int,
 			C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
 			repsol = repsol+1
 			ρ = 1
-			println("repeat solution in $(v[i])")
+			println("repeat solution in $(v[i]), level $i " )
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
