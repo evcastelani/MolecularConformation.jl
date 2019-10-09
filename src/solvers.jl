@@ -177,20 +177,23 @@ function classical_bp(n :: Int,
 			B[4,4] = 1.0
 			C[3] = C[2]*B
 			i = 4 # branching starts at atom 4
+			repsol = 0
 		end
 		λ = 1
 		ρ = 1
-		if 1<v[i]<i
+		if 1<v[i]<i-repsol
 			
 			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(i,D,'+'))
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
-
+			repsol = repsol +1
 			λ = 1
 		else
-
-		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
+			if v[i] == 1
+				repsol = 1
+			end
+			C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
 			mol.atoms[i].x = C[i][1,4]
 			mol.atoms[i].y = C[i][2,4]
 			mol.atoms[i].z = C[i][3,4]
@@ -217,18 +220,20 @@ function classical_bp(n :: Int,
 			@goto exit
 		end
 #		@info "partial solution in λ =$(λ) " sol
-		if 1<v[i]<i 
+		if 1<v[i]<i-repsol 
 		
 			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(i,D,'-'))
-
+			repsol = respsol+1
 			ρ = 1
 
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
 		else
-
-		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
+			if v[i]==1
+				repsol = repsol+1
+			end
+			C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
 			mol.atoms[i].x = C[i][1,4]
 			mol.atoms[i].y = C[i][2,4]
 			mol.atoms[i].z = C[i][3,4]
@@ -262,6 +267,7 @@ function classical_bp(n :: Int,
 		C[i] = zeros(4,4)
 	end
 	nsol = 0
+	repsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 	bp(1,n,mol,C,D,ε,allmol,ndiag)
 	with_logger(classical_bp_logger) do
