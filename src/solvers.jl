@@ -222,7 +222,7 @@ function classical_bp(n :: Int,
 		
 			repsol = repsol+1
 			ρ = 1
-			println("repeat solution  $(v[i]), level $i " )
+			println("repeated solution  $(v[i]), level $i " )
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
