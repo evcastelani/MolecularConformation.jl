@@ -183,7 +183,7 @@ function classical_bp(n :: Int,
 		ρ = 1
 		if 1<v[i]<i-repsol
 			
-			C[i] = prodmatrix(C[i-1],torsionmatrix(v[i],D,'+'))
+			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(v[i],D,'+'))
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
@@ -222,7 +222,7 @@ function classical_bp(n :: Int,
 #		@info "partial solution in λ =$(λ) " sol
 		if 1<v[i]<i-repsol 
 		
-			C[i] = prodmatrix(C[i-1],torsionmatrix(v[i],D,'-'))
+			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(v[i],D,'-'))
 			repsol = repsol+1
 			ρ = 1
 
