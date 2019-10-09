@@ -198,6 +198,7 @@ function classical_bp(n :: Int,
 			mol.atoms[i].y = C[i][2,4]
 			mol.atoms[i].z = C[i][3,4]
 			λ  = pruningtest(mol,i,D,ε,ndiag)
+			println("repeat solution in $(v[i]), level $i " )
 		end
 		if λ == 1 
 			if i<n
@@ -238,6 +239,7 @@ function classical_bp(n :: Int,
 			mol.atoms[i].y = C[i][2,4]
 			mol.atoms[i].z = C[i][3,4]
 			ρ  = pruningtest(mol,i,D,ε,ndiag)
+			println("repeat solution in $(v[i]), level $i " )
 		end
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
