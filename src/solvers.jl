@@ -50,9 +50,6 @@ function quaternion_bp(n :: Int,
 		mol.atoms[i].y = qmol.v2 + mol.atoms[i-1].y
 		mol.atoms[i].z = qmol.v3 + mol.atoms[i-1].z
 		if i>v[i]
-			λ  = pruningtest(mol,i,D,ε,ndiag)
-			println(i,v[i],λ)
-			sleep(1)
 			λ = 1
 		else
 			λ  = pruningtest(mol,i,D,ε,ndiag)
@@ -190,9 +187,6 @@ function classical_bp(n :: Int,
 			mol.atoms[i].y = mol.atoms[v[i]].y
 			mol.atoms[i].z = mol.atoms[v[i]].z
 
-			λ  = pruningtest(mol,i,D,ε,ndiag)
-			println(i,v[i],λ)
-			sleep(1)
 			λ = 1
 		else
 
@@ -227,9 +221,6 @@ function classical_bp(n :: Int,
 		
 			C[i] = prodmatrix(C[v[i]-1],torsionmatrix(i,D,'-'))
 
-			ρ  = pruningtest(mol,i,D,ε,ndiag)
-			println(i,v[i],ρ)
-			sleep(1)
 			ρ = 1
 
 			mol.atoms[i].x = mol.atoms[v[i]].x
