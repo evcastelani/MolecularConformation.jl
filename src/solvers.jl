@@ -198,6 +198,7 @@ function classical_bp(n :: Int,
 		end
 		if λ == 1 
 			if i<n
+				println("level $i, sol = [$(mol.atoms[i].x),$(mol.atoms[i].y),$(mol.atoms[i].z)]")
 				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
@@ -235,6 +236,7 @@ function classical_bp(n :: Int,
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
+				println("level $i, sol = [$(mol.atoms[i].x),$(mol.atoms[i].y),$(mol.atoms[i].z)]")
 				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
