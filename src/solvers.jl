@@ -144,6 +144,7 @@ function classical_bp(n :: Int,
 		C::Vector{Array{Float64,2}},
 		D::Array{Float64,2},
 		ε::Float64,
+		optimize::Bool,
 		allmol::Bool,ndiag::Int)
 		if i == 1
 			#first atom
@@ -183,7 +184,7 @@ function classical_bp(n :: Int,
 		ρ = 1
 
 		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'+'))
-		if v[i]<i-repsol
+		if optimize==true && v[i]<i-repsol
 			println("repeated solution in $(v[i]), level $i " )
 			mol.atoms[i].x = mol.atoms[v[i]].x
 			mol.atoms[i].y = mol.atoms[v[i]].y
@@ -227,7 +228,7 @@ function classical_bp(n :: Int,
 		end
 #		@info "partial solution in λ =$(λ) " sol
 		C[i] = prodmatrix(C[i-1],torsionmatrix(i,D,'-'))
-		if v[i]<i-repsol 
+		if optimize==true && v[i]<i-repsol 
 		
 			repsol = repsol+1
 			ρ = 1
