@@ -198,7 +198,7 @@ function classical_bp(n :: Int,
 		end
 		if λ == 1 
 			if i<n
-				if last_level <= i
+				if last_level < i
 					last_level = i
 					last_level_count = 1
 				end
@@ -244,7 +244,7 @@ function classical_bp(n :: Int,
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
-				if last_level <= i
+				if last_level < i
 					last_level = i
 					last_level_count = 1
 				end
