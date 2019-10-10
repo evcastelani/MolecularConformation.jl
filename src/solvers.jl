@@ -198,7 +198,15 @@ function classical_bp(n :: Int,
 		end
 		if λ == 1 
 			if i<n
-				println("level $i, sol = [$(mol.atoms[i].x),$(mol.atoms[i].y),$(mol.atoms[i].z)]")
+				if last_level <= i
+					last_level = i
+					last_level_count = 1
+				end
+				if last_level == i
+					last_level_count = last_level_count +1
+					println("level $(last_level), count $(last_level_count)")
+				end
+#				println("level $i, sol = [$(mol.atoms[i].x),$(mol.atoms[i].y),$(mol.atoms[i].z)]")
 				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
@@ -236,7 +244,17 @@ function classical_bp(n :: Int,
 #		@info "partial solution in ρ =$(ρ) " sol
 		if ρ == 1 
 			if i<n
-				println("level $i, sol = [$(mol.atoms[i].x),$(mol.atoms[i].y),$(mol.atoms[i].z)]")
+				if last_level <= i
+					last_level = i
+					last_level_count = 1
+				end
+				if last_level == i
+					last_level_count = last_level_count +1
+					
+					println("level $(last_level), count $(last_level_count)")
+				end
+
+#				println("level $i, sol = [$(mol.atoms[i].x),$(mol.atoms[i].y),$(mol.atoms[i].z)]")
 				bp(i+1,n,mol,C,D,ε,allmol,ndiag)
 			else
 				#vsol[k]=sol
@@ -264,6 +282,8 @@ function classical_bp(n :: Int,
 	nsol = 0
 	repsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
+	last_level = 1
+	last_level_count = 1
 	bp(1,n,mol,C,D,ε,allmol,ndiag)
 	with_logger(classical_bp_logger) do
 		@info "number of solutions " nsol
