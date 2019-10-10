@@ -1,4 +1,7 @@
 using DelimitedFiles,MolecularConformation, PyPlot
+
+include("rmsd.jl")
+
 function tests(diag)
 opt = ConformationSetup(0.001,4.5,classical_bp,false)
 qopt = ConformationSetup(0.001,4.5,quaternion_bp,false)
@@ -96,4 +99,44 @@ plot(prob,tquat,"--k",label="QuaternionBP")
 plot(prob,tclass,"-k",label="ClassicBP")
 legend(loc="upper right",fancybox="false")
 savefig("perfomance_$(diag).png")
+end
+
+function rmsd_run()
+
+	opt = ConformationSetup(0.001,5.5,classical_bp,false)
+	qopt = ConformationSetup(0.001,5.5,quaternion_bp,false)
+	
+	problems = ["pdb1a03v1","pdb1a03v2","pdb1a57v1","pdb1a7fv1","pdb1a7fv2","pdb1aczv1","pdb1aczv2","pdb2l2iv1","pdb2l3bv1","pdb2l3dv1","pdb2l2gv1","pdb2l2gv2","pdb2l32v1","pdb2l32v2","pdb2l33v1","pdb2l33v2"]
+	
+	# unsolved pdb1a57v2,pdb2l2iv2,pdb2l3bv2,pdb2l3dv2
+	#
+	f = open("rmsd_output.tex","w")	
+	println(f,"problem  &  method & rmsd_before & rmsd_after")
+	for name in problems
+		print("\n Solving the problem $(name) ...\n")
+		D = readdlm("PDB/$(name).txt")
+		y = readdlm("PDB/$(name).xyz")
+		s_classic = conformation(D,opt);
+		n = length(s_classic.molecules[1].atoms)
+		s = zeros(n,3)
+		for i=1:n
+			s[i,1] = s_classic.molecules[1].atoms[i].x
+			s[i,2] = s_classic.molecules[1].atoms[i].y
+			s[i,3] = s_classic.molecules[1].atoms[i].z
+		end
+		rb,ra = rmsd(s,y)  	
+		println(f, "$(name) & BP Classic & $(rb) & $(ra)")
+		s = zeros(n,3)
+		s_quaternion = conformation(D,qopt);
+		for i=1:n
+			s[i,1] = s_quaternion.molecules[1].atoms[i].x
+			s[i,2] = s_quaternion.molecules[1].atoms[i].y
+			s[i,3] = s_quaternion.molecules[1].atoms[i].z
+		end
+		rb,ra = rmsd(s,y)
+		println(f, "$(name) & BP Quaternion & $(rb) & $(ra)")
+		
+	end
+	close(f)
+
 end
