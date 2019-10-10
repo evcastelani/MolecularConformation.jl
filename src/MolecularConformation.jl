@@ -80,7 +80,7 @@ module MolecularConformation
 			end
 			print(" Solving the problem with $(cs.solver) ...")
 		
-			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.precision,cs.allsolutions,ndiag)
+			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.reorder,cs.precision,cs.allsolutions,ndiag)
 		else
 			print(" No cut off distances ...")	
 			(m,n) = size(D)
@@ -101,7 +101,7 @@ module MolecularConformation
 			end
 			print(" Solving the problem with $(cs.solver) ...")
 		
-			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.precision,cs.allsolutions,ndiag)
+			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.reorder,cs.precision,cs.allsolutions,ndiag)
 
 		end
 		print(" Done! \n")

@@ -136,6 +136,7 @@ function classical_bp(n :: Int,
 			D :: Array{Float64,2},
 			nad :: Int,
 			v:: Vector{Int64},
+			optimize::Bool,
 			ε :: Float64,
 			allmol :: Bool,ndiag::Int)
 	#defining bp using closure in order to count
@@ -144,7 +145,6 @@ function classical_bp(n :: Int,
 		C::Vector{Array{Float64,2}},
 		D::Array{Float64,2},
 		ε::Float64,
-		optimize::Bool,
 		allmol::Bool,ndiag::Int)
 		if i == 1
 			#first atom
