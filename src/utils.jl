@@ -1,3 +1,8 @@
+mutable struct NMRtype
+	
+end
+
+
 # Quaternion small library
 mutable struct Quaternion
 	s :: Float64
