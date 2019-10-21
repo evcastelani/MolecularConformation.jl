@@ -1,7 +1,49 @@
+# these types are mandatory indepedent of used solver##############################
+"""
+```
+NMRtype
+```
+This type is used as input data. The present type was motivated by 
+https://github.com/mucherino/mdjeep
+and it is used to avoid the definition of distance matrix. 
+Once the .nmr file is read, this type is produced as output. Therefore, 
+the simplest construction of this type is done using the nmr function as 
+in the following example.
+
+## Example
+
+```julia-repl
+nmr("1a57")
+```
+As return an element of NMRtype is created. We are assuming that a .nmr file 
+as in  https://github.com/mucherino/mdjeep is given.
+"""
 mutable struct NMRtype
-	
+	vertex1 :: Vector{Int64}
+	vertex2 :: Vector{Int64}
+	gvertex1 :: Vector{Int64}
+	gvertex2 :: Vector{Int64}
+	lowerbound :: Vector{Float64}
+	upperbound :: Vector{Float64}
+	label1 :: Vector{String}
+	label2 :: Vector{String}
+	labelg1 :: Vector{String}
+	labelg2 :: Vector{String}
 end
 
+"""
+```
+nmr
+```
+It is a function used to read a PBD file in format ...
+"""
+function nmr(file::String,opt="read")
+	if opt == "read"
+		nmrfile = readdml("$(file).nmr")
+		nmrt = NMRtype(nmrfile[:,1],nmrfile[:,2],nmrfile[:,3],nmrfile[:,4],nmrfile[:,5],nmrfile[:,6],nmrfile[:,7],nmrfile[:,8],nmrfile[:,9],nmrfile[:,10],)
+	end
+	return nmrt
+end
 
 # Quaternion small library
 mutable struct Quaternion
