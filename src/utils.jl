@@ -3,20 +3,14 @@
 ```
 NMRtype
 ```
-This type is used as input data. The present type was motivated by 
-https://github.com/mucherino/mdjeep
-and it is used to avoid the definition of distance matrix. 
-Once the .nmr file is read, this type is produced as output. Therefore, 
-the simplest construction of this type is done using the nmr function as 
-in the following example.
+This type is used as input data. The present type was motivated by https://github.com/mucherino/mdjeep and it is used to avoid the definition of distance matrix. Once the .nmr file is read, this type is produced as output. Therefore, the simplest construction of this type is done using the nmr function as in the following example.
 
 ## Example
 
 ```julia-repl
 nmr("1a57")
 ```
-As return an element of NMRtype is created. We are assuming that a .nmr file 
-as in  https://github.com/mucherino/mdjeep is given.
+As return an element of NMRtype is created. We are assuming that a .nmr file as in  https://github.com/mucherino/mdjeep is given.
 """
 mutable struct NMRtype
 	vertex1 :: Vector{Int64}
@@ -35,7 +29,7 @@ end
 ```
 nmr
 ```
-It is a function used to read a PBD file in format ...
+It is a function used to read a PBD file in format ...  Currently, just one option is available: read .nmr file https://github.com/mucherino/mdjeep
 """
 function nmr(file::String,opt="read")
 	if opt == "read"
@@ -45,58 +39,20 @@ function nmr(file::String,opt="read")
 	return nmrt
 end
 
-# Quaternion small library
-mutable struct Quaternion
-	s :: Float64
-	v1 :: Float64
-	v2 :: Float64
-	v3 :: Float64
-end
-
-function qsign(q::Quaternion)
-	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
-end
-
-function qsum(q::Quaternion,w::Quaternion)
-	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
-end
-
-function qminus(q::Quaternion,w::Quaternion)
-	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
-end
-    
-function qprod(q::Quaternion,w::Quaternion)
-	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
-                           q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
-                           q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
-                           q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
-end
-
-function conj(q::Quaternion)
-	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
-end
-
-
-function rot(Q::Quaternion,t::Float64)
-	return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
-end
-
 
 # these types are mandatory indepedent of used solver##############################
 """
 ```
 ConformationSetup
 ```
-This type is used to define the main options of the function used to conformation.
-Essentially, this type has four fields: precision,cutoff,solver,allsolutions. 
+This type is used to define the main options of the function used to conformation.Essentially, this type has four fields: precision,cutoff,solver,allsolutions, reorder, interval
 
 ## Example
 
 ```julia-repl
 options = ConformationSetup(0.001,5.5,classical_bp,true)
 ```
-As return an element options was created an it will used in conformation function. 
-It is a mandatory definition before run conformation function.
+As return an element options was created an it will used in conformation function. It is a mandatory definition before run conformation function.
 
 """
 mutable struct ConformationSetup
@@ -105,14 +61,14 @@ mutable struct ConformationSetup
 	solver :: Function 
 	allsolutions :: Bool
 	reorder :: Bool
+	interval :: Bool
 end
 
 """
 ```
 AtomType
 ```
-It is the most primitive type and it is used to store the spatial positions of atoms.
-It is a mutable type. This type has three field: .x, .y and .z
+It is the most primitive type and it is used to store the spatial positions of atoms. It is a mutable type. This type has three field: .x, .y and .z
 """
 mutable struct AtomType
 	x :: Float64
@@ -125,9 +81,7 @@ end
 ```
 MoleculeType
 ```
-It is used to store a (just one) solution find by conformation process. It is a 
-mutable struct and has two fields: .atoms (used to store a vector of AtomType)
-and .lde (used to store the lde of an molecule)
+It is used to store a (just one) solution find by conformation process. It is a mutable struct and has two fields: .atoms (used to store a vector of AtomType) and .lde (used to store the lde of an molecule)
 """
 mutable struct MoleculeType
 	atoms :: Vector{AtomType}
@@ -138,9 +92,7 @@ end
 ```
 ConformationOutput
 ```
-It is a mutable type used to store the output provided by conformation function.
-With this type is possible to handle with some importants elements given by 
-the following fields:.number,.molecules,.elapsedtime,.bytes and .gctime
+It is a mutable type used to store the output provided by conformation function. With this type is possible to handle with some importants elements given by the following fields:.number,.molecules,.elapsedtime,.bytes and .gctime
 """
 mutable struct ConformationOutput
 	number :: Int64
@@ -150,22 +102,6 @@ mutable struct ConformationOutput
 	gctime :: Any
 end
 ###################################################################################
-
-
-# these types are used for classical_bp solver#####################################
-struct BPBondAngle
-	cosθ :: Float64
-	sinθ :: Float64 
-end
-
-struct BPTorsionAngle
-	cosω :: Float64
-	sinω :: Float64
-end
-####################################################################################
-
-
-
 # these functions are used by bp_classical##########################################
 function bondangle(i,D)#i=3,...,n
 	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
@@ -176,7 +112,7 @@ function bondangle(i,D)#i=3,...,n
 		c=1.0
 	end
 	s = sqrt(1.0-c^2)
-	return BPBondAngle(c,s)
+	return c,s
 end
 
 function torsionangle(i,D)#i=4,...,n
@@ -207,7 +143,7 @@ function torsionangle(i,D)#i=4,...,n
 		valc =  1.0
 	end
 	vals=sqrt(1.0-valc^2)
-	return BPTorsionAngle(valc,vals)
+	return valc,vals
 end
 
 function torsionmatrix(i,D,sign::Char)
@@ -398,3 +334,41 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	end
 	return C 
 end
+
+# Quaternion small library
+mutable struct Quaternion
+	s :: Float64
+	v1 :: Float64
+	v2 :: Float64
+	v3 :: Float64
+end
+
+function qsign(q::Quaternion)
+	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
+end
+
+function qsum(q::Quaternion,w::Quaternion)
+	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
+end
+
+function qminus(q::Quaternion,w::Quaternion)
+	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
+end
+    
+function qprod(q::Quaternion,w::Quaternion)
+	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
+                           q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
+                           q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
+                           q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+end
+
+function conj(q::Quaternion)
+	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
+end
+
+
+function rot(Q::Quaternion,t::Float64)
+	return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
+end
+
+
