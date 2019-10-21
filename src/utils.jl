@@ -39,7 +39,7 @@ It is a function used to read a PBD file in format ...
 """
 function nmr(file::String,opt="read")
 	if opt == "read"
-		nmrfile = readdml("$(file).nmr")
+		nmrfile = readdlm("$(file).nmr")
 		nmrt = NMRtype(nmrfile[:,1],nmrfile[:,2],nmrfile[:,3],nmrfile[:,4],nmrfile[:,5],nmrfile[:,6],nmrfile[:,7],nmrfile[:,8],nmrfile[:,9],nmrfile[:,10],)
 	end
 	return nmrt
