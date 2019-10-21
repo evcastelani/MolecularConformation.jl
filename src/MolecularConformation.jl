@@ -1,6 +1,6 @@
 module MolecularConformation
 		
-	export conformation,ConformationSetup,ConformationOutput,
+	export nmr,NMRType,conformation,ConformationSetup,ConformationOutput,
 			AtomType,MoleculeType,classical_bp, quaternion_bp,≈
 	
 	
@@ -11,7 +11,7 @@ module MolecularConformation
 	quaternion_bp_logger = ConsoleLogger(stdout,Logging.Error)
 
 	# loading basic packages
-	using LinearAlgebra
+	using LinearAlgebra,DelimitedFiles
 	#using Quaternions
 	import Base.show
 	
