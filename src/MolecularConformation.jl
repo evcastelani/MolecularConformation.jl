@@ -74,6 +74,6 @@ module MolecularConformation
 
 		print(" Done! \n")
 		
-		
+	end		
 
 end
