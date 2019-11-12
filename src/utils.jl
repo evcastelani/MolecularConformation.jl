@@ -130,7 +130,7 @@ function generate_virtual_path(NMRdata::NMRType)
 			elseif NMRdata.vertex2[ind[2:3]] == virtual_path[li-2:li-1]
 				la+=2
 				push!(virtual_path,NMRdata.vertex2[ind[1]])
-			elseif D[ind[2:3],2] == virtual_path[li-2:li]
+			elseif NMRdata.vertex2[ind[2:3]] == virtual_path[li-2:li]
 				la+=2
 				push!(virtual_path,NMRdata.vertex2[ind[1]])
 			else
