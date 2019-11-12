@@ -60,7 +60,7 @@ module MolecularConformation
 		print(" Checking if the file is a 3-click ... ")
 		n=last(NMRdata.vertex1)
 		virtual_path = generate_virtual_path(NMRdata)
-		if n == lenght(virtual_path)
+		if n == length(virtual_path)
 			print("the file is a 3-click \n")
 		else
 			print("using a virtual path for re-order \n")
