@@ -111,7 +111,7 @@ generate_virtual_path
 This function is an auxiliary function used to define a useful vector called in our context as virtual path. This vector allows to handle with re-order approach. 
 """
 function generate_virtual_path(NMRdata::NMRType)
-	D = [NMRdata.vertex1 NMRdata.vertex2]
+#	D = [NMRdata.vertex1 NMRdata.vertex2]
 	virtual_path = [1,2,3,4]
 	k = 5
 	li = 4
@@ -135,7 +135,7 @@ function generate_virtual_path(NMRdata::NMRType)
 				push!(virtual_path,NMRdata.vertex2[ind[1]])
 			else
 				la+=4
-				append!(virtual_path,NMRvertex2[ind[1:3]])
+				append!(virtual_path,NMRdata.vertex2[ind[1:3]])
 			end
 
 		end
