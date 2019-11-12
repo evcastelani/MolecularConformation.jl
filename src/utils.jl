@@ -110,8 +110,8 @@ generate_virtual_vector
 ```
 This function is an auxiliary function used to define a useful vector called in our context as virtual vector. This vector allows to handle with re-order approach. 
 """
-function generate_virtual_path(file::String)
-	D = readdlm(file)
+function generate_virtual_path(NMRdata::NMRType)
+	D = [NMRdata.vertex1 NMRdata.vertex2]
 	virtual_vector = [1,2,3,4]
 	k = 5
 	li = 4
