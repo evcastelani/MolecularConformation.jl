@@ -12,7 +12,7 @@ nmr("1a57")
 ```
 As return an element of NMRtype is created. We are assuming that a .nmr file as in  https://github.com/mucherino/mdjeep is given.
 """
-struct NMRtype
+struct NMRType
 	vertex1 :: Vector{Int64}
 	vertex2 :: Vector{Int64}
 	gvertex1 :: Vector{Int64}
