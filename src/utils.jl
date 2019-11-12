@@ -1,7 +1,7 @@
 # these types are mandatory indepedent of used solver##############################
 """
 ```
-NMRtype
+NMRType
 ```
 This type is used as input data. The present type was motivated by https://github.com/mucherino/mdjeep and it is used to avoid the definition of distance matrix. Once the .nmr file is read, this type is produced as output. Therefore, the simplest construction of this type is done using the nmr function as in the following example.
 
@@ -12,7 +12,7 @@ nmr("1a57")
 ```
 As return an element of NMRtype is created. We are assuming that a .nmr file as in  https://github.com/mucherino/mdjeep is given.
 """
-mutable struct NMRtype
+struct NMRtype
 	vertex1 :: Vector{Int64}
 	vertex2 :: Vector{Int64}
 	gvertex1 :: Vector{Int64}
@@ -34,7 +34,7 @@ It is a function used to read a PBD file in format .nmr or .mdjeep. Just one opt
 function nmr(file::String,opt="read")
 	if opt == "read"
 		nmrfile = readdlm("$(file)")
-		nmrt = NMRtype(nmrfile[:,1],nmrfile[:,2],nmrfile[:,3],nmrfile[:,4],nmrfile[:,5],nmrfile[:,6],nmrfile[:,7],nmrfile[:,8],nmrfile[:,9],nmrfile[:,10])
+		nmrt = NMRType(nmrfile[:,1],nmrfile[:,2],nmrfile[:,3],nmrfile[:,4],nmrfile[:,5],nmrfile[:,6],nmrfile[:,7],nmrfile[:,8],nmrfile[:,9],nmrfile[:,10])
 	else
 		error("Unidentified option or file")	
 	end
@@ -110,7 +110,7 @@ generate_virtual_vector
 ```
 This function is an auxiliary function used to define a useful vector called in our context as virtual vector. This vector allows to handle with re-order approach. 
 """
-function generate_virtual_vector(file::String)
+function generate_virtual_path(file::String)
 	D = readdlm(file)
 	virtual_vector = [1,2,3,4]
 	k = 5

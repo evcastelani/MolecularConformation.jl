@@ -23,102 +23,57 @@ module MolecularConformation
 	# main function to run the solver and related problem
 	"""
 	``` 
-	conformation(D::Array{Float64,2},cs::ConformationSetup)
+	conformation(NMRdata,cs::ConformationSetup)
 	
 	```
-	This is the main function in order to get the conformation of a molecule 
-	from a distance matrix. To run this function, we need to setup a distance 
-	array and then define some options using the ConformationSetup type. 
+	This is the main function in order to get the conformation of a molecule. To run this function, we need to setup a NMR file and then define some options using the ConformationSetup type. 
 
 	## Example 
 	
 	```julia-repl
-	julia> D = [0.0      1.526    2.49239  2.89143  3.48974  4.58574  4.37632  3.94086  2.60817  3.06475;
-				1.526    0.0      1.526    2.49239  2.93393  4.35209  4.66009  4.41794  3.03012  3.63256;
-				2.49239  1.526    0.0      1.526    2.49239  3.83961  4.34457  3.88905  2.53092  2.97774;
-				2.89143  2.49239  1.526    0.0      1.526    2.49239  2.9232   2.50687  1.49017  2.48433;
-				3.48974  2.93393  2.49239  1.526    0.0      1.526    2.49239  2.93393  2.48279  3.84346;
-				4.58574  4.35209  3.83961  2.49239  1.526    0.0      1.526    2.49239  2.90194  4.30309;
-				4.37632  4.66009  4.34457  2.9232   2.49239  1.526    0.0      1.526    2.49239  3.84092;
-				3.94086  4.41794  3.88905  2.50687  2.93393  2.49239  1.526    0.0      1.526    2.49239;
-				2.60817  3.03012  2.53092  1.49017  2.48279  2.90194  2.49239  1.526    0.0      1.526;  
-				3.06475  3.63256  2.97774  2.48433  3.84346  4.30309  3.84092  2.49239  1.526    0.0;]
 	julia> options = ConformationSetup(0.001,5.5,classical_bp,true)
 
-	julia> conformation(D,options)
+	julia> conformation(NMRdata,options)
 	```
 	as return a ConformationOutput type is provided.
 	"""
-	function conformation(A::Array{Float64,2},cs::ConformationSetup,vorder::Vector{Int64}=[1];ndiag=0)
-		D=copy(A)
-		print("\n Checking symmetry...")
-		if D!=D'
-			error("Distance matrix is not symmetric")
+	function conformation(NMRdata::NMRType,
+			           cs::ConformationSetup)
+		
+		print(" Cutting of distances greater than $(cs.cutoff) ... ")
+		dcutoff = findall(map(x->x>cs.cutoff,NMRdata.upperbound)) 
+		if isempty(dcutoff)
+			print("there are no distances greater than $(cs.cutoff) \n")
 		else
-			print(" Done!\n")
+			# Ainda precisamos discutir melhor a questão dos cortes
+			k = 0
+			for i in dcutoff
+				if NMRdata.label1 == "H" && NMRfile.label2 == "H"
+					NMRdata.lowerbound[i] = 0.0
+					NMRdata.upperbound[i] = 0.0
+					k += 1
+				end
+			end
+			print("$(k) distances were removed \n")
 		end
-		if ndiag == 0
-			print(" Cut off distances greater than $(cs.cutoff)...")	
-			(m,n) = size(D)
-			nad = 0 #number of additional distances
-			for i=1:n
-				for j=i+4:n
-					if D[i,j]>cs.cutoff
-						D[i,j] = 0.0
-						D[j,i] = 0.0
-					else
-						nad = nad + 1
-					end
-				end
-			end
-			print(" Done!\n")
-			with_logger(conformation_logger) do
-				@info "Distance Matrix" D
-			end
-			if cs.reorder == false
-				vorder = [1:1:n;]
-			end
-			print(" Solving the problem with $(cs.solver) ...")
 		
-			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.reorder,cs.precision,cs.allsolutions,ndiag)
+		print(" Checking if the file is a 3-click ... ")
+		n=last(NMRdata.vertex1)
+		virtual_path = generate_virtual_path(NMRdata)
+		if n == lenght(virtual_path)
+			print("the file is a 3-click \n")
 		else
-			print(" No cut off distances ...")	
-			(m,n) = size(D)
-			nad = max(1,n*(ndiag-3)) #number of additional distances
-			for i=1:n
-				for j=i+ndiag:n
-					D[i,j] = 0.0
-					D[j,i] = 0.0
-		#			nad = nad + 1
-				end
-			end
-			print(" Done!\n")
-			with_logger(conformation_logger) do
-				@info "Distance Matrix" D
-			end
-			if cs.reorder == false
-				vorder = [1:1:n;]
-			end
-			print(" Solving the problem with $(cs.solver) ...")
+			print("using a virtual path for re-order \n")
+		end
+	
 		
-			solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.reorder,cs.precision,cs.allsolutions,ndiag)
+	
+		print(" Solving the problem with $(cs.solver) ...")
+		
+#		solutions, t, bytes, gctime, memallocs = @timed cs.solver(n,D,nad,vorder,cs.reorder,cs.precision,cs.allsolutions,ndiag)
 
-		end
 		print(" Done! \n")
-		print(" Computing LDE for all solutions ...")
-		worstlde = 0.0
-		for i=1:solutions[1]
-			
-			solutions[2][i].lde = LDE(solutions[2][i],D,n,nad)
-			if worstlde < solutions[2][i].lde
-				worstlde = solutions[2][i].lde
-			end
-	#		println(storage_mol[i].atoms[n])
-		end
-		print("Done! \n")
-		print(" Info: $(solutions[1]) solutions found with worst LDE given by $(worstlde) \n")
-		return ConformationOutput(solutions[1],solutions[2],t,bytes,gctime)
 		
-	end
+		
 
 end
