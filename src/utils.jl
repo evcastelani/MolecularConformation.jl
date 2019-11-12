@@ -106,44 +106,44 @@ end
 
 """
 ```
-generate_virtual_vector
+generate_virtual_path
 ```
-This function is an auxiliary function used to define a useful vector called in our context as virtual vector. This vector allows to handle with re-order approach. 
+This function is an auxiliary function used to define a useful vector called in our context as virtual path. This vector allows to handle with re-order approach. 
 """
 function generate_virtual_path(NMRdata::NMRType)
 	D = [NMRdata.vertex1 NMRdata.vertex2]
-	virtual_vector = [1,2,3,4]
+	virtual_path = [1,2,3,4]
 	k = 5
 	li = 4
-	while k <= last(D[:,1])
-		ind = findall(x->x==k,D[:,1])
+	while k <= last(NMRdata.vertex1)
+		ind = findall(x->x==k,NMRdata.vertex1)
 		la = 0 
-		if D[ind[1:3],2] ==  virtual_vector[li-2:li]
+		if NMRdata.vertex2[ind[1:3]] ==  virtual_path[li-2:li]
 			la+=1
 		else 
-			if D[ind[1:2],2] == virtual_vector[li-2:li-1] 
+			if NMRdata.vertex2[ind[1:2]] == virtual_path[li-2:li-1] 
 				la+=2
-				push!(virtual_vector,D[ind[3],2])
-			elseif D[ind[1:2],2] == virtual_vector[li-1:li]
+				push!(virtual_path,NMRdata.vertex2[ind[3]])
+			elseif NMRdata.vertex2[ind[1:2]] == virtual_path[li-1:li]
 				la+=2
-				push!(virtual_vector,D[ind[3],2])
-			elseif D[ind[2:3],2] == virtual_vector[li-2:li-1]
+				push!(virtual_path,NMRdata.vertex2[ind[3]])
+			elseif NMRdata.vertex2[ind[2:3]] == virtual_path[li-2:li-1]
 				la+=2
-				push!(virtual_vector,D[ind[1],2])
-			elseif D[ind[2:3],2] == virtual_vector[li-2:li]
+				push!(virtual_path,NMRdata.vertex2[ind[1]])
+			elseif D[ind[2:3],2] == virtual_path[li-2:li]
 				la+=2
-				push!(virtual_vector,D[ind[1],2])
+				push!(virtual_path,NMRdata.vertex2[ind[1]])
 			else
 				la+=4
-				append!(virtual_vector,D[ind[1:3],2])
+				append!(virtual_path,NMRvertex2[ind[1:3]])
 			end
 
 		end
 		li = li+la
-		push!(virtual_vector,k)
+		push!(virtual_path,k)
 		k += 1
 	end
-	return virtual_vector
+	return virtual_path
 end
 
 

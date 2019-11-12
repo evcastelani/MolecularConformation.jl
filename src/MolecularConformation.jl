@@ -40,7 +40,7 @@ module MolecularConformation
 	function conformation(NMRdata::NMRType,
 			           cs::ConformationSetup)
 		
-		print(" Cutting of distances greater than $(cs.cutoff) ... ")
+		print(" Cutting off distances greater than $(cs.cutoff) ... ")
 		dcutoff = findall(map(x->x>cs.cutoff,NMRdata.upperbound)) 
 		if isempty(dcutoff)
 			print("there are no distances greater than $(cs.cutoff) \n")
