@@ -28,21 +28,21 @@ function classicBP(NMRdata :: NMRtype,
 			D12 = NMRdata.upperbound[1]
 			D13 = NMRdata.upperbound[2]
 			D23 = NMRdata.upperbound[3]
-			bdangle = bondangle(D12,D13,D23)
-			mol.atoms[3].x = -D[1,2]+D[2,3]*bdangle.cosθ
-			mol.atoms[3].y = D[2,3]*bdangle.sinθ
+			cθ,sθ = bondangle(D12,D13,D23)
+			mol.atoms[3].x = -D12+D23*cθ
+			mol.atoms[3].y = D23*sθ
 			mol.atoms[3].z = 0.0
 			B = zeros(4,4)
-			B[1,1] = -bdangle.cosθ
-			B[1,2] = -bdangle.sinθ
-			B[1,4] = -D[3,2]*bdangle.cosθ
-			B[2,1] = bdangle.sinθ
-			B[2,2] = -bdangle.cosθ
-			B[2,4] = D[3,2]*bdangle.sinθ
+			B[1,1] = -cθ
+			B[1,2] = -sθ
+			B[1,4] = -D23*cθ
+			B[2,1] = sθ
+			B[2,2] = -cθ
+			B[2,4] = D23*sθ
 			B[3,3] = 1.0
 			B[4,4] = 1.0
 			C[3] = C[2]*B
-			i = 4 # branching starts at atom 4
+			l = 4 # branching starts at atom 4
 		end
 
 
