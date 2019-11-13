@@ -1,14 +1,13 @@
 module MolecularConformation
 		
 	export nmr,NMRType,conformation,ConformationSetup,ConformationOutput,
-			AtomType,MoleculeType,classical_bp, quaternion_bp,≈
+			AtomType,MoleculeType,classical_bp, quaternion_bp,≈,
+			generate_virtual_path
 	
 	
 	# clean logging output
 	using Logging
 	conformation_logger = ConsoleLogger(stdout, Logging.Error)
-	classical_bp_logger = ConsoleLogger(stdout, Logging.Error)
-	quaternion_bp_logger = ConsoleLogger(stdout,Logging.Error)
 
 	# loading basic packages
 	using LinearAlgebra,DelimitedFiles
