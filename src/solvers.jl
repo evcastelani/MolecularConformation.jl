@@ -3,6 +3,15 @@ function classicBP(NMRdata :: NMRtype,
 		   virtual_path :: Vector,
 		   ε :: Float64,
 		   allmol :: Bool)
+	natoms = last(NMRdata.label1)
+	queue = zeros(Int,natoms)
+	for i=2:length(natoms)
+		k = 1
+		while NMRdata.label1[sum(queue[1:i-1])+1] == i
+			k+=1
+		end
+		queue[i] = k
+	end
 	# defining closure
 	function classicBP_closure(i :: Int,
 				   n :: Int,
@@ -15,7 +24,7 @@ function classicBP(NMRdata :: NMRtype,
 			mol.atoms[1].z = 0.0
 			C[1] = Diagonal{Float64}(I,4)
 			#second atom
-			mol.atoms[2].x = -NMRdata.upperbound[1]
+			mol.atoms[2].x = -NMRdata.upperbound[l+queue[1]]
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
 			C[2] = zeros(4,4)
