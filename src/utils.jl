@@ -1,4 +1,16 @@
 # these types are mandatory indepedent of used solver##############################
+#
+"""
+```
+NMRinfo
+```
+This type contains the information for NMRtype. In this point of the project it contains two fields: dist and typeatom. 
+"""
+struct NMRinfo
+	dist::Float64
+	typeatom::String
+end
+
 """
 ```
 NMRType
@@ -13,16 +25,8 @@ nmr("1a57")
 As return an element of NMRtype is created. We are assuming that a .nmr file as in  https://github.com/mucherino/mdjeep is given.
 """
 struct NMRType
-	vertex1 :: Vector{Int64}
-	vertex2 :: Vector{Int64}
-	gvertex1 :: Vector{Int64}
-	gvertex2 :: Vector{Int64}
-	lowerbound :: Vector{Float64}
-	upperbound :: Vector{Float64}
-	label1 :: Vector{String}
-	label2 :: Vector{String}
-	labelg1 :: Vector{String}
-	labelg2 :: Vector{String}
+	virtual_path :: Vector{Int}
+	info :: SparseMatrixCSC{NMRinfo,Int64}
 end
 
 """
@@ -34,12 +38,71 @@ It is a function used to read a PBD file in format .nmr or .mdjeep. Just one opt
 function nmr(file::String,opt="read")
 	if opt == "read"
 		nmrfile = readdlm("$(file)")
-		nmrt = NMRType(nmrfile[:,1],nmrfile[:,2],nmrfile[:,3],nmrfile[:,4],nmrfile[:,5],nmrfile[:,6],nmrfile[:,7],nmrfile[:,8],nmrfile[:,9],nmrfile[:,10])
+		I = nmrfile[:,1]
+		J = nmrfile[:,2]
+		vpath = generate_virtual_path(I,J)
+		lenI = length(I)
+		V = Vector{NMRinfo}(undef,lenI)
+		for i=1:lenI
+			V[i]=NMRinfo(nmrfile[i,5],nmrfile[i,7])
+		end
+		for i=1:len(I)
+               		if I[i]!=J[i]
+                   		push!(I,J[i])
+                        	push!(J,I[i])
+                  	 	push!(V,V[i])
+			end
+		end
+		nmrt = NMRtype(vpath,sparse(I,J,V))
 	else
 		error("Unidentified option or file")	
 	end
 	return nmrt
 end
+
+"""
+```
+generate_virtual_path
+```
+This function is an auxiliary function used to define a useful vector called in our context as virtual path. This vector allows to handle with re-order approach. 
+"""
+function generate_virtual_path(NMRdatavertex1::Vector{Int64},NMRdatavertex2::Vector{Int64})
+#	D = [NMRdata.vertex1 NMRdata.vertex2]
+	virtual_path = [1,2,3,4]
+	k = 5
+	li = 4
+	while k <= last(NMRdatavertex1)
+		ind = findall(x->x==k,NMRdatavertex1)
+		la = 0 
+		if NMRdatavertex2[ind[1:3]] ==  virtual_path[li-2:li]
+			la+=1
+		else 
+			if NMRdatavertex2[ind[1:2]] == virtual_path[li-2:li-1] 
+				la+=2
+				push!(virtual_path,NMRdatavertex2[ind[3]])
+			elseif NMRdatavertex2[ind[1:2]] == virtual_path[li-1:li]
+				la+=2
+				push!(virtual_path,NMRdatavertex2[ind[3]])
+			elseif NMRdatavertex2[ind[2:3]] == virtual_path[li-2:li-1]
+				la+=2
+				push!(virtual_path,NMRdatavertex2[ind[1]])
+			elseif NMRdatavertex2[ind[2:3]] == virtual_path[li-2:li]
+				la+=2
+				push!(virtual_path,NMRdatavertex2[ind[1]])
+			else
+				la+=4
+				append!(virtual_path,NMRdatavertex2[ind[1:3]])
+			end
+
+		end
+		li = li+la
+		push!(virtual_path,k)
+		k += 1
+	end
+	return virtual_path
+end
+
+
 
 
 # these types are mandatory indepedent of used solver##############################
@@ -104,54 +167,12 @@ mutable struct ConformationOutput
 	gctime :: Any
 end
 
-"""
-```
-generate_virtual_path
-```
-This function is an auxiliary function used to define a useful vector called in our context as virtual path. This vector allows to handle with re-order approach. 
-"""
-function generate_virtual_path(NMRdata::NMRType)
-#	D = [NMRdata.vertex1 NMRdata.vertex2]
-	virtual_path = [1,2,3,4]
-	k = 5
-	li = 4
-	while k <= last(NMRdata.vertex1)
-		ind = findall(x->x==k,NMRdata.vertex1)
-		la = 0 
-		if NMRdata.vertex2[ind[1:3]] ==  virtual_path[li-2:li]
-			la+=1
-		else 
-			if NMRdata.vertex2[ind[1:2]] == virtual_path[li-2:li-1] 
-				la+=2
-				push!(virtual_path,NMRdata.vertex2[ind[3]])
-			elseif NMRdata.vertex2[ind[1:2]] == virtual_path[li-1:li]
-				la+=2
-				push!(virtual_path,NMRdata.vertex2[ind[3]])
-			elseif NMRdata.vertex2[ind[2:3]] == virtual_path[li-2:li-1]
-				la+=2
-				push!(virtual_path,NMRdata.vertex2[ind[1]])
-			elseif NMRdata.vertex2[ind[2:3]] == virtual_path[li-2:li]
-				la+=2
-				push!(virtual_path,NMRdata.vertex2[ind[1]])
-			else
-				la+=4
-				append!(virtual_path,NMRdata.vertex2[ind[1:3]])
-			end
-
-		end
-		li = li+la
-		push!(virtual_path,k)
-		k += 1
-	end
-	return virtual_path
-end
-
-
 
 ###################################################################################
 # these functions are used by bp_classical##########################################
-function bondangle(i,D)#i=3,...,n
-	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
+function bondangle(d23,d24,d34)#i=3,...,n
+	c = (-d24^2 + d34^2 + d23^2)/(2.0*d34*d23)
+#	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
 	if c<-1.0
 		c=-1.0
 	end
@@ -162,13 +183,13 @@ function bondangle(i,D)#i=3,...,n
 	return c,s
 end
 
-function torsionangle(i,D)#i=4,...,n
-	d12=D[i-3,i-2]
-	d13=D[i-3,i-1]
-	d14=D[i-3,i]
-	d23=D[i-2,i-1]
-	d24=D[i-2,i]
-	d34=D[i-1,i]
+function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
+	#d12=D[i-3,i-2]
+	#d13=D[i-3,i-1]
+	#d14=D[i-3,i]
+	#d23=D[i-2,i-1]
+	#d24=D[i-2,i]
+	#d34=D[i-1,i]
 	a = d12*d12 + d24*d24 - d14*d14
 	a = a/(2.0*d12*d24)
 	b = d24*d24 + d23*d23 - d34*d34        
@@ -193,40 +214,36 @@ function torsionangle(i,D)#i=4,...,n
 	return valc,vals
 end
 
-function torsionmatrix(i,D,sign::Char)
+function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Char)
 	if sign == '+'
-		ba = bondangle(i,D)
-		ta = torsionangle(i,D)
 	
 		B=zeros(4,4)
-		B[1,1] = -ba.cosθ
-		B[1,2] = -ba.sinθ
-		B[1,4] = -D[i,i-1]*ba.cosθ
-		B[2,1] = ba.sinθ*ta.cosω
-		B[2,2] = -ba.cosθ*ta.cosω
-		B[2,3] = -ta.sinω
-		B[2,4] = D[i,i-1]*ba.sinθ*ta.cosω
-		B[3,1] = ba.sinθ*ta.sinω
-		B[3,2] = -ba.cosθ*ta.sinω
-		B[3,3] = ta.cosω
-		B[3,4] = D[i,i-1]*ba.sinθ*ta.sinω 
+		B[1,1] = -cosθ
+		B[1,2] = -sinθ
+		B[1,4] = -d34*cosθ
+		B[2,1] = sinθ*cosω
+		B[2,2] = -cosθ*cosω
+		B[2,3] = -sinω
+		B[2,4] = d34*sinθ*cosω
+		B[3,1] = sinθ*sinω
+		B[3,2] = -cosθ*sinω
+		B[3,3] = cosω
+		B[3,4] = d34*sinθ*sinω 
 		B[4,4] = 1
 	else
-		ba = bondangle(i,D)
-		ta = torsionangle(i,D)
 	
 		B=zeros(4,4)
-		B[1,1] = -ba.cosθ
-		B[1,2] = -ba.sinθ
-		B[1,4] = -D[i,i-1]*ba.cosθ
-		B[2,1] = ba.sinθ*ta.cosω
-		B[2,2] = -ba.cosθ*ta.cosω
-		B[2,3] = ta.sinω
-		B[2,4] = D[i,i-1]*ba.sinθ*ta.cosω
-		B[3,1] = -ba.sinθ*ta.sinω
-		B[3,2] = ba.cosθ*ta.sinω
-		B[3,3] = ta.cosω
-		B[3,4] = -D[i,i-1]*ba.sinθ*ta.sinω 
+		B[1,1] = -cosθ
+		B[1,2] = -sinθ
+		B[1,4] = -d34*cosθ
+		B[2,1] = sinθ*cosω
+		B[2,2] = -cosθ*cosω
+		B[2,3] = sinω
+		B[2,4] = d34*sinθ*cosω
+		B[3,1] = -sinθ*sinω
+		B[3,2] = cosθ*sinω
+		B[3,3] = cosω
+		B[3,4] = -d34*sinθ*sinω 
 		B[4,4] = 1
 	
 	end
@@ -324,6 +341,17 @@ function Base.:≈(A::MoleculeType,B::MoleculeType)
 	return true
 end
 ####################################################################################
+function symsparse(I,J,v)
+           for i=1:length(I)
+               if I[i]!=J[i]
+                   push!(I,J[i])
+                  
+                   push!(J,I[i])
+                   push!(v,v[i])
+               end
+           end
+               return sparse(I,J,v)
+       end
 
 # these functions are used by quaternion_bp#########################################
 function qbondangle(i,D)#i=3,...,n

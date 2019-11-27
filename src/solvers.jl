@@ -1,46 +1,44 @@
-
+using SparseArrays
 function classicBP(NMRdata :: NMRtype,
+		   n::Int,
 		   virtual_path :: Vector,
 		   ε :: Float64,
 		   allmol :: Bool)
-	natoms = last(NMRdata.label1)
-	queue = zeros(Int,natoms)
-	for i=2:length(natoms)
-		k = 1
-		while NMRdata.label1[sum(queue[1:i-1])+1] == i
-			k+=1
-		end
-		queue[i] = k
-	end
 	# defining closure
-	function classicBP_closure(i :: Int,
-				   n :: Int,
+	function classicBP_closure(l :: Int,
+				   pos::Int,
+				   D :: SparseMatrixCSC{Float64,Int64},
 				   mol :: MoleculeType,
-				   C :: Array{Float64,2})
+				   sign:: Vector{Char} 
+				   C :: Vector{Array{Float64,2}})
 		if l == 1
 			# first atom
 			mol.atoms[1].x = 0.0
 			mol.atoms[1].y = 0.0
 			mol.atoms[1].z = 0.0
+			sign[1] = '+'
 			C[1] = Diagonal{Float64}(I,4)
 			#second atom
-			mol.atoms[2].x = -NMRdata.upperbound[l+queue[1]]
+			#mol.atoms[2].x = -NMRdata.upperbound[1]
+			mol.atoms[2].x = -D[1,2]
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
+			sign[2] = '+'
 			C[2] = zeros(4,4)
 			C[2][1,1] = -1.0
 			C[2][2,2] = 1.0
 			C[2][3,3] = -1.0
 			C[2][4,4] = 1.0
-			C[2][1,4] = -NMRdata.upperbound[1]
+			C[2][1,4] = -D[1,2]
 			# tird atom
-			D12 = NMRdata.upperbound[1]
-			D13 = NMRdata.upperbound[2]
-			D23 = NMRdata.upperbound[3]
+			D12 = D[1,2]
+			D13 = D[1,3]
+			D23 = D[2,3]
 			cθ,sθ = bondangle(D12,D13,D23)
 			mol.atoms[3].x = -D12+D23*cθ
 			mol.atoms[3].y = D23*sθ
 			mol.atoms[3].z = 0.0
+			sign[3] = '+'
 			B = zeros(4,4)
 			B[1,1] = -cθ
 			B[1,2] = -sθ
@@ -52,10 +50,108 @@ function classicBP(NMRdata :: NMRtype,
 			B[4,4] = 1.0
 			C[3] = C[2]*B
 			l = 4 # branching starts at atom 4
+			pos = 4 # position in virtual path
 		end
 
+		λ = 1
+		ρ = 1
+		while l>=virtual_path[pos]	
+			D14 = D[virtual_path[pos-3],virtual_path[pos]]
+			D24 = D[virtual_path[pos-2],virtual_path[pos]]
+			D34 = D[virtual_path[pos-1],virtual_path[pos]]
+			D12 = D[virtual_path[pos-3],virtual_path[pos-2]]
+			D13 = D[virtual_path[pos-3],virtual_path[pos-1]]
+			D23 = D[virtual_path[pos-2],virtual_path[pos-1]]
+			cθ,sθ = bondangle(D23,D24,D34)
+			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
+			if l==virtual_path[pos]
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,'+')
+				C[l] = C[l-1]*B
+			else
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[virtual_path[pos]])
+				C[l-1] = C[l-1]*B
+				pos = pos+1
+			end
+		end
+		
+		mol.atoms[l].x = C[l][1,4]
+		mol.atoms[l].y = C[l][2,4]
+		mol.atoms[l].z = C[l][3,4]
+		λ  = pruningtest(mol,l,D,ε) #preciso modificar
 
+		if λ == 1 
+			if l<n
+				classicBP_closure(l+1,pos+1,D,mol,C)
+			
+			else
+				nsol=nsol+1
+				storage_mol[nsol] = copy(mol)
+				with_logger(classicBP_logger) do
+					@info "Rank n was reached, a solution was found " mol LDE(mol,D,n,nad)
+				end
+				return 0
+			end
+		end
+		if allmol==false && nsol>0
+
+			#@info "LDE = " LDE(mol,D,n,nad)
+			@goto exit
+		end
+
+		B = torsionmatrix(cθ,sθ,cω,sω,D34,'-')
+		C[l] = C[l-1]*B
+		mol.atoms[l].x = C[l][1,4]
+		mol.atoms[l].y = C[l][2,4]
+		mol.atoms[l].z = C[l][3,4]
+		ρ  = pruningtest(mol,l,D,ε) #preciso modificar
+		if ρ == 1 
+			if l<n
+				classicBP_closure(l+1,pos+1,D,mol,C)
+			else
+				nsol = nsol+1
+				storage_mol[nsol] = copy(mol)				
+				with_logger(classicBP_logger) do
+					@info "Rank n was reached, a solution was found " mol LDE(mol,D,n,nad)
+				end
+				return 0
+			end
+		end
+
+		@label exit
+		return 0
 	end
+	# end of bp_closure
+
+
+	natoms = last(NMRdata.vertex1)
+	#queue_ndist = zeros(Int,natoms)
+	#queue_index = zeros(Int,natoms)
+	#for i=2:length(natoms)
+	#	k = 1
+	#	while NMRdata.vertex1[queue_index[i-1]+k] == i
+	#		k+=1
+	#	end
+	#	queue_ndist[i] = k
+	#	queue_index[i] = queue_index[i-1]+k
+	#end
+
+	V = NMRdata.upperbound
+	
+	D = symsparse(NMRdata.vertex1,NMRdata.vertex2,V)
+	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
+
+	for i=1:n
+		mol.atoms[i] = AtomType(0.0,0.0,0.0)
+	end
+	C = Vector{Array{Float64,2}}(undef,n)
+	for i=1:n
+		C[i] = zeros(4,4)
+	end
+	nsol = 0
+	storage_mol = Dict{Int64,MoleculeType}()
+	classicBP_closure(1,mol,C,D)
+	return nsol, storage_mol
+
 end
 
 
