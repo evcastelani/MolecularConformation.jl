@@ -26,7 +26,7 @@ As return an element of NMRtype is created. We are assuming that a .nmr file as 
 """
 struct NMRType
 	virtual_path :: Vector{Int}
-	info :: SparseMatrixCSC{NMRinfo,Int64}
+	info :: SparseMatrixCSC{NMRInfo,Int64}
 end
 
 """
