@@ -1,13 +1,11 @@
 
 function classicBP(NMRdata :: NMRType,
 		   n::Int,
-		   virtual_path :: Vector,
 		   ε :: Float64,
 		   allmol :: Bool)
 	# defining closure
 	function classicBP_closure(l :: Int,
 				   pos::Int,
-				   D :: SparseMatrixCSC{Float64,Int64},
 				   mol :: MoleculeType,
 				   sign:: Vector{Char}, 
 				   C :: Vector{Array{Float64,2}})
@@ -19,8 +17,8 @@ function classicBP(NMRdata :: NMRType,
 			sign[1] = '+'
 			C[1] = Diagonal{Float64}(I,4)
 			#second atom
-			#mol.atoms[2].x = -NMRdata.upperbound[1]
-			mol.atoms[2].x = -D[1,2]
+			#mol.atoms[2].x = -D[1,2]
+			mol.atoms[2].x = -NMRdata.info[1,2].dist
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
 			sign[2] = '+'
@@ -29,11 +27,11 @@ function classicBP(NMRdata :: NMRType,
 			C[2][2,2] = 1.0
 			C[2][3,3] = -1.0
 			C[2][4,4] = 1.0
-			C[2][1,4] = -D[1,2]
+			C[2][1,4] = -NMRdata.info[1,2].dist
 			# tird atom
-			D12 = D[1,2]
-			D13 = D[1,3]
-			D23 = D[2,3]
+			D12 = NMRdata.info[1,2].dist
+			D13 = NMRdata.info[1,3].dist
+			D23 = NMRdata.info[2,3].dist
 			cθ,sθ = bondangle(D12,D13,D23)
 			mol.atoms[3].x = -D12+D23*cθ
 			mol.atoms[3].y = D23*sθ
@@ -55,20 +53,21 @@ function classicBP(NMRdata :: NMRType,
 
 		λ = 1
 		ρ = 1
-		while l>=virtual_path[pos]	
-			D14 = D[virtual_path[pos-3],virtual_path[pos]]
-			D24 = D[virtual_path[pos-2],virtual_path[pos]]
-			D34 = D[virtual_path[pos-1],virtual_path[pos]]
-			D12 = D[virtual_path[pos-3],virtual_path[pos-2]]
-			D13 = D[virtual_path[pos-3],virtual_path[pos-1]]
-			D23 = D[virtual_path[pos-2],virtual_path[pos-1]]
+		while l>=NMRdata.virtual_path[pos]	
+			D14 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos]].dist
+			D24 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos]].dist
+			D34 = NMRdata.info[NMRdata.virtual_path[pos-1],NMRdata.virtual_path[pos]].dist
+			D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtal_path[pos-2]].dist
+			D13 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-1]].dist
+			D23 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos-1]].dist
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
-			if l==virtual_path[pos]
+			if l==NMRdata.virtual_path[pos]
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,'+')
 				C[l] = C[l-1]*B
+				sign[l]='+'
 			else
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[virtual_path[pos]])
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[NMRdata.virtual_path[pos]])
 				C[l-1] = C[l-1]*B
 				pos = pos+1
 			end
@@ -81,8 +80,7 @@ function classicBP(NMRdata :: NMRType,
 
 		if λ == 1 
 			if l<n
-				classicBP_closure(l+1,pos+1,D,mol,C)
-			
+				classicBP_closure(l+1,pos+1,mol,sign,C)
 			else
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
@@ -106,7 +104,7 @@ function classicBP(NMRdata :: NMRType,
 		ρ  = pruningtest(mol,l,D,ε) #preciso modificar
 		if ρ == 1 
 			if l<n
-				classicBP_closure(l+1,pos+1,D,mol,C)
+				classicBP_closure(l+1,pos+1,NMRdata,mol,sign,C)
 			else
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
@@ -121,35 +119,21 @@ function classicBP(NMRdata :: NMRType,
 		return 0
 	end
 	# end of bp_closure
-
-
-	#natoms = last(NMRdata.vertex1)
-	#queue_ndist = zeros(Int,natoms)
-	#queue_index = zeros(Int,natoms)
-	#for i=2:length(natoms)
-	#	k = 1
-	#	while NMRdata.vertex1[queue_index[i-1]+k] == i
-	#		k+=1
-	#	end
-	#	queue_ndist[i] = k
-	#	queue_index[i] = queue_index[i-1]+k
-	#end
-
-	#V = NMRdata.upperbound
 	
-	#D = symsparse(NMRdata.vertex1,NMRdata.vertex2,V)
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
 
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
 	end
 	C = Vector{Array{Float64,2}}(undef,n)
+	signal = Vector{Char}(undef,n)
 	for i=1:n
+		signal[i] = '+'
 		C[i] = zeros(4,4)
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	#classicBP_closure(1,mol,C,D)
+	classicBP_closure(1,1,mol,signal,C)
 	return nsol, storage_mol
 
 end
