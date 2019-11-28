@@ -46,7 +46,7 @@ function nmr(file::String,opt="read")
 		for i=1:lenI
 			V[i]=NMRInfo(nmrfile[i,5],nmrfile[i,7])
 		end
-		for i=1:len(I)
+		for i=1:lenI
                		if I[i]!=J[i]
                    		push!(I,J[i])
                         	push!(J,I[i])
