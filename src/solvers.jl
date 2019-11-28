@@ -1,5 +1,5 @@
 
-function classicBP(NMRdata :: NMRtype,
+function classicBP(NMRdata :: NMRType,
 		   n::Int,
 		   virtual_path :: Vector,
 		   ε :: Float64,

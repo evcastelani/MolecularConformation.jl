@@ -6,7 +6,7 @@ NMRinfo
 ```
 This type contains the information for NMRtype. In this point of the project it contains two fields: dist and typeatom. 
 """
-struct NMRinfo
+struct NMRInfo
 	dist::Float64
 	typeatom::String
 end
@@ -42,9 +42,9 @@ function nmr(file::String,opt="read")
 		J = nmrfile[:,2]
 		vpath = generate_virtual_path(I,J)
 		lenI = length(I)
-		V = Vector{NMRinfo}(undef,lenI)
+		V = Vector{NMRInfo}(undef,lenI)
 		for i=1:lenI
-			V[i]=NMRinfo(nmrfile[i,5],nmrfile[i,7])
+			V[i]=NMRInfo(nmrfile[i,5],nmrfile[i,7])
 		end
 		for i=1:len(I)
                		if I[i]!=J[i]
@@ -53,7 +53,7 @@ function nmr(file::String,opt="read")
                   	 	push!(V,V[i])
 			end
 		end
-		nmrt = NMRtype(vpath,sparse(I,J,V))
+		nmrt = NMRType(vpath,sparse(I,J,V))
 	else
 		error("Unidentified option or file")	
 	end
