@@ -38,8 +38,8 @@ It is a function used to read a PBD file in format .nmr or .mdjeep. Just one opt
 function nmr(file::String,opt="read")
 	if opt == "read"
 		nmrfile = readdlm("$(file)")
-		I = nmrfile[:,1]
-		J = nmrfile[:,2]
+		I = Int64.(nmrfile[:,1])
+		J = Int64.(nmrfile[:,2])
 		vpath = generate_virtual_path(I,J)
 		lenI = length(I)
 		V = Vector{NMRInfo}(undef,lenI)
