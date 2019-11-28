@@ -9,7 +9,7 @@ function classicBP(NMRdata :: NMRtype,
 				   pos::Int,
 				   D :: SparseMatrixCSC{Float64,Int64},
 				   mol :: MoleculeType,
-				   sign:: Vector{Char} 
+				   sign:: Vector{Char}, 
 				   C :: Vector{Array{Float64,2}})
 		if l == 1
 			# first atom
