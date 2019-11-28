@@ -1,4 +1,4 @@
-using SparseArrays
+
 function classicBP(NMRdata :: NMRtype,
 		   n::Int,
 		   virtual_path :: Vector,
@@ -123,7 +123,7 @@ function classicBP(NMRdata :: NMRtype,
 	# end of bp_closure
 
 
-	natoms = last(NMRdata.vertex1)
+	#natoms = last(NMRdata.vertex1)
 	#queue_ndist = zeros(Int,natoms)
 	#queue_index = zeros(Int,natoms)
 	#for i=2:length(natoms)
@@ -135,9 +135,9 @@ function classicBP(NMRdata :: NMRtype,
 	#	queue_index[i] = queue_index[i-1]+k
 	#end
 
-	V = NMRdata.upperbound
+	#V = NMRdata.upperbound
 	
-	D = symsparse(NMRdata.vertex1,NMRdata.vertex2,V)
+	#D = symsparse(NMRdata.vertex1,NMRdata.vertex2,V)
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
 
 	for i=1:n
@@ -149,7 +149,7 @@ function classicBP(NMRdata :: NMRtype,
 	end
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	classicBP_closure(1,mol,C,D)
+	#classicBP_closure(1,mol,C,D)
 	return nsol, storage_mol
 
 end
