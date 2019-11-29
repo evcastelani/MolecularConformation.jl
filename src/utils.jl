@@ -49,8 +49,8 @@ function nmr(file::String,opt="read")
 		end
 		V = Vector{NMRInfo}(undef,lenI)
 		for i=1:lenI
-			k = 4 
-			while i+k<lenI && I[i]==I[i+k] 
+			k = 3 
+			while i+k<=lenI && I[i]==I[i+k] 
 				push!(vadd[I[i]],J[i+k])
 				k = k+1
 			end
