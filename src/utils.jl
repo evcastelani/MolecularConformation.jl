@@ -51,7 +51,7 @@ function nmr(file::String,opt="read")
 		i = 1
 		while i<=lenI
 			k = 3 
-			while i<=lenI && I[i]==I[i+k] 
+			while i+k<=lenI && I[i]==I[i+k] 
 				push!(vadd[I[i]],J[i+k])
 				k = k+1
 			end
