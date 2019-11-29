@@ -26,6 +26,7 @@ As return an element of NMRtype is created. We are assuming that a .nmr file as 
 """
 struct NMRType
 	virtual_path :: Vector{Int}
+	additional_distance::Vector{Vector{Int64}}
 	info :: SparseMatrixCSC{NMRInfo,Int64}
 end
 
@@ -42,8 +43,19 @@ function nmr(file::String,opt="read")
 		J = Int64.(nmrfile[:,2])
 		vpath = generate_virtual_path(I,J)
 		lenI = length(I)
+		vadd = Vector{Vector{Int64}}(undef,I[lenI])
+		for i=1:I[lenI]
+			vadd[i]=[]
+		end
 		V = Vector{NMRInfo}(undef,lenI)
 		for i=1:lenI
+			k = 1
+			while I[i]==I[i+k]
+				k = k+1
+				if k>3
+					push!(vadd[I[i]],J[i+k])
+				end
+			end
 			V[i]=NMRInfo(nmrfile[i,5],nmrfile[i,7])
 		end
 		for i=1:lenI
@@ -53,7 +65,7 @@ function nmr(file::String,opt="read")
                   	 	push!(V,V[i])
 			end
 		end
-		nmrt = NMRType(vpath,sparse(I,J,V))
+		nmrt = NMRType(vpath,vadd,sparse(I,J,V))
 	else
 		error("Unidentified option or file")	
 	end
@@ -126,7 +138,6 @@ mutable struct ConformationSetup
 	solver :: Function 
 	allsolutions :: Bool
 	reorder :: Bool
-	interval :: Bool
 end
 
 """
@@ -252,19 +263,14 @@ end
 
 """
 ```
-pruningteste
+pruningtest
 ```
 This functions is an auxiliary function used to test if some molecule is 
 feasible or not.
 """
-function pruningtest(v::MoleculeType,i::Int,D::Array{Float64,2},ε::Float64,ndiag::Int)
-	if ndiag == 0
-		initj = 1
-	else
-		initj = max(1,i-ndiag)
-	end
+function pruningtest(v::MoleculeType,i::Int,D::NMRtype,ε::Float64)
 	for j=initj:i-1
-		if D[i,j]>0.0
+		if D.info[i,j].dist>0.0
 			dij = (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
 			if (D[i,j]^2-dij)^2 > ε
 				return 0 
