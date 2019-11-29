@@ -268,7 +268,7 @@ pruningtest
 This functions is an auxiliary function used to test if some molecule is 
 feasible or not.
 """
-function pruningtest(v::MoleculeType,i::Int,D::NMRtype,ε::Float64)
+function pruningtest(v::MoleculeType,i::Int,D::NMRType,ε::Float64)
 	for j=initj:i-1
 		if D.info[i,j].dist>0.0
 			dij = (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
