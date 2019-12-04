@@ -306,19 +306,20 @@ end
 LDE
 ```
 This function is an auxiliary function used to compute the LDE of some molecule.
-This function change the .lde field of molecule.
+This function change the .lde field of the molecule.
 """
-function LDE(v::MoleculeType,D::Array{Float64,2},n::Int,nad::Int)
+function LDE(v::MoleculeType,D::NMRType)
 	dij=0.0
-	for i=1:n
-		for j=i+1:n
-			if 0.0<D[i,j]
-				dij = dij+(D[i,j]^2-((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2))^2/D[i,j]
-			end
-		end
+	nne = findnz(D.info)
+	num_nne = length(nne[1])
+	for k=1:num_nne
+		i=nne[1][k]
+		j=nne[2][k]
+		dij = dij+(D.info[i,j].dist^2-((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2))^2/D.info[i,j].dist
 	end
+	
 #	if nad>0.0
-		return dij/nad
+	return dij/(2.0*num_nne)
 #	else
 #		return dij
 #	end
