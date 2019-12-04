@@ -69,7 +69,7 @@ module MolecularConformation
 #
 	print(" Solving the problem with $(cs.solver) ...")
 #	
-	solutions, t, bytes, gctime, memallocs = @timed cs.solver(NMRdata,n,cs.precision,cs.allsolutions)
+	solutions, t, bytes, gctime, memallocs = @timed cs.solver(NMRdata,cs.precision,cs.allsolutions)
 
 	print(" Done! \n")
 	end				

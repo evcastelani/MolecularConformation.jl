@@ -1,6 +1,5 @@
 
 function classicBP(NMRdata :: NMRType,
-		   n::Int,
 		   ε :: Float64,
 		   allmol :: Bool)
 	# defining closure
@@ -119,7 +118,7 @@ function classicBP(NMRdata :: NMRType,
 		return 0
 	end
 	# end of bp_closure
-	
+	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
 
 	for i=1:n

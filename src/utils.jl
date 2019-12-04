@@ -25,9 +25,10 @@ nmr("1a57")
 As return an element of NMRtype is created. We are assuming that a .nmr file as in  https://github.com/mucherino/mdjeep is given.
 """
 struct NMRType
-	virtual_path :: Vector{Int}
+	virtual_path :: Vector{Int64}
 	additional_distance::Vector{Vector{Int64}}
 	info :: SparseMatrixCSC{NMRInfo,Int64}
+	dim :: Int64
 end
 
 """
@@ -41,6 +42,7 @@ function nmr(file::String,opt="read")
 		nmrfile = readdlm("$(file)")
 		I = Int64.(nmrfile[:,1])
 		J = Int64.(nmrfile[:,2])
+		n = last(I)
 		vpath = generate_virtual_path(I,J)
 		lenI = length(I)
 		vadd = Vector{Vector{Int64}}(undef,I[lenI])
@@ -68,7 +70,7 @@ function nmr(file::String,opt="read")
                   	 	push!(V,V[i])
 			end
 		end
-		nmrt = NMRType(vpath,vadd,sparse(I,J,V))
+		nmrt = NMRType(vpath,vadd,sparse(I,J,V),n)
 	else
 		error("Unidentified option or file")	
 	end
