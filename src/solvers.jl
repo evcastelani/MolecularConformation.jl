@@ -73,6 +73,7 @@ function classicBP(NMRdata :: NMRType,
 				C[l-1] = C[l-1]*B
 				pos = pos+1
 			end
+			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 		end
 				
 		mol.atoms[l].x = C[l][1,4]
@@ -126,7 +127,6 @@ function classicBP(NMRdata :: NMRType,
 	# end of bp_closure
 	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
-	println("data initialization ")
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
 	end
