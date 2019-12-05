@@ -209,12 +209,13 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	a = d12*d12 + d24*d24 - d14*d14
 	a = a/(2.0*d12*d24)
 	b = d24*d24 + d23*d23 - d34*d34        
-	b = b / (2.0*d24*d23)
+	b = b/(2.0*d24*d23)
 	c = d12*d12 + d23*d23 - d13*d13
-	c = c / (2.0*d12*d23)
+	c = c/(2.0*d12*d23)
 	e = 1.0 - b^2;
 	f = 1.0 - c^2;
 	if (e < 0.0 || f < 0.0)  
+		@debug "some problem in torsion angle"
 		return -2
 	end
 	e = sqrt(e)

@@ -51,7 +51,7 @@ function classicBP(NMRdata :: NMRType,
 		end
 
 #		with_logger(classicBP_logger) do
-			@debug "Partial Conformation in level $(l) = " mol
+		@debug "Partial Conformation in level $(l) = " mol
 #		end
 		λ = 1
 		ρ = 1
@@ -82,19 +82,14 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].y = C[l][2,4]
 		mol.atoms[l].z = C[l][3,4]
 		λ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
-
-#		with_logger(classicBP_logger) do
-			@debug "Partial Conformation in level $(l) = " mol
-#		end
+		@debug "Partial Conformation in level $(l) = " mol
 		if λ == 1 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,sign,C)
 			else
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
-				with_logger(classicBP_logger) do
-					@info "Rank n was reached, a solution was found " mol LDE(mol,D,n,nad)
-				end
+				@debug "Rank n was reached, a solution was found " 
 				return 0
 			end
 		end
@@ -116,9 +111,7 @@ function classicBP(NMRdata :: NMRType,
 			else
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
-				with_logger(classicBP_logger) do
-					@info "Rank n was reached, a solution was found " mol LDE(mol,D,n,nad)
-				end
+				@debug "Rank n was reached, a solution was found " 
 				return 0
 			end
 		end
