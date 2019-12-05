@@ -71,12 +71,15 @@ function classicBP(NMRdata :: NMRType,
 				pos = pos+1
 			end
 		end
-		
+				
 		mol.atoms[l].x = C[l][1,4]
 		mol.atoms[l].y = C[l][2,4]
 		mol.atoms[l].z = C[l][3,4]
 		λ  = pruningtest(mol,l,D,ε) #preciso modificar
 
+		with_logger(classicBP_logger) do
+			@info "Partial Conformation in level $(l) = " mol
+		end
 		if λ == 1 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,sign,C)
