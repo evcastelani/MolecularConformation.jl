@@ -126,7 +126,7 @@ function classicBP(NMRdata :: NMRType,
 	# end of bp_closure
 	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
-	@debug "data initialization " n mol 
+	println("data initialization ")
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
 	end
