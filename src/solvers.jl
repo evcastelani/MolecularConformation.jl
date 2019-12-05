@@ -50,6 +50,9 @@ function classicBP(NMRdata :: NMRType,
 			pos = 4 # position in virtual path
 		end
 
+		with_logger(classicBP_logger) do
+			@debug "Partial Conformation in level $(l) = " mol
+		end
 		λ = 1
 		ρ = 1
 		while l>=NMRdata.virtual_path[pos]	
@@ -78,7 +81,7 @@ function classicBP(NMRdata :: NMRType,
 		λ  = pruningtest(mol,l,D,ε) #preciso modificar
 
 		with_logger(classicBP_logger) do
-			@info "Partial Conformation in level $(l) = " mol
+			@debug "Partial Conformation in level $(l) = " mol
 		end
 		if λ == 1 
 			if l<n
