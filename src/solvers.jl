@@ -55,7 +55,8 @@ function classicBP(NMRdata :: NMRType,
 #		end
 		λ = 1
 		ρ = 1
-		while l>=NMRdata.virtual_path[pos]	
+		keep = true
+		while keep 	
 			D14 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos]].dist
 			D24 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos]].dist
 			D34 = NMRdata.info[NMRdata.virtual_path[pos-1],NMRdata.virtual_path[pos]].dist
@@ -68,6 +69,7 @@ function classicBP(NMRdata :: NMRType,
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,'+')
 				C[l] = C[l-1]*B
 				sign[l]='+'
+				keep = false
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[NMRdata.virtual_path[pos]])
 				C[l-1] = C[l-1]*B
