@@ -104,6 +104,7 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].x = C[l][1,4]
 		mol.atoms[l].y = C[l][2,4]
 		mol.atoms[l].z = C[l][3,4]
+		sign[l]='-'
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
 		if ρ == 1 
 			if l<n
