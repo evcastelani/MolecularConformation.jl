@@ -31,6 +31,9 @@ function classicBP(NMRdata :: NMRType,
 			D12 = NMRdata.info[1,2].dist
 			D13 = NMRdata.info[1,3].dist
 			D23 = NMRdata.info[2,3].dist
+			D14 = 0.0
+			D23 = 0.0
+			D34 = 0.0
 			cθ,sθ = bondangle(D12,D13,D23)
 			cω,sω = (0.0,0.0)
 			mol.atoms[3].x = -D12+D23*cθ
