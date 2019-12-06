@@ -96,7 +96,7 @@ function classicBP(NMRdata :: NMRType,
 			end
 		end
 		if allmol==false && nsol>0
-
+			@debug "number of solutions"  nsol
 			#@info "LDE = " LDE(mol,D,n,nad)
 			@goto exit
 		end
