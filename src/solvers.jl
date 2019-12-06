@@ -68,12 +68,13 @@ function classicBP(NMRdata :: NMRType,
 				C[l] = C[l-1]*B
 				sign[l]='+'
 				keep = false
+				@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[NMRdata.virtual_path[pos]])
 				C[l-1] = C[l-1]*B
+				@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 				pos = pos+1
 			end
-			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 		end
 				
 		mol.atoms[l].x = C[l][1,4]
@@ -106,7 +107,7 @@ function classicBP(NMRdata :: NMRType,
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
 		if ρ == 1 
 			if l<n
-				@debug "Partial solution by right side" mol
+				@debug "Partial solution by left side" mol
 				classicBP_closure(l+1,pos+1,NMRdata,mol,sign,C)
 			else
 				nsol = nsol+1
