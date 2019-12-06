@@ -48,11 +48,9 @@ function classicBP(NMRdata :: NMRType,
 			C[3] = C[2]*B
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
+			@debug "Partial Conformation in level $(l) (first path) = " mol
 		end
 
-#		with_logger(classicBP_logger) do
-		@debug "Partial Conformation in level $(l) = " mol
-#		end
 		λ = 1
 		ρ = 1
 		keep = true
@@ -82,9 +80,9 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].y = C[l][2,4]
 		mol.atoms[l].z = C[l][3,4]
 		λ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
-		@debug "Partial Conformation in level $(l) = " mol
 		if λ == 1 
 			if l<n
+				@debug "Partial solution by right side" mol
 				classicBP_closure(l+1,pos+1,mol,sign,C)
 			else
 				nsol=nsol+1
@@ -108,6 +106,7 @@ function classicBP(NMRdata :: NMRType,
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
 		if ρ == 1 
 			if l<n
+				@debug "Partial solution by right side" mol
 				classicBP_closure(l+1,pos+1,NMRdata,mol,sign,C)
 			else
 				nsol = nsol+1
