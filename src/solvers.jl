@@ -96,7 +96,7 @@ function classicBP(NMRdata :: NMRType,
 			#@info "LDE = " LDE(mol,D,n,nad)
 			@goto exit
 		end
-		@debug "value of cθ,sθ ", cθ,sθ
+		@debug "value of c,s for all ", cθ,sθ
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,'-')
 		C[l] = C[l-1]*B
 		mol.atoms[l].x = C[l][1,4]
