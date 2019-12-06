@@ -111,7 +111,7 @@ function classicBP(NMRdata :: NMRType,
 		if ρ == 1 
 			if l<n
 				@debug "Partial solution by left side" mol
-				classicBP_closure(l+1,pos+1,NMRdata,mol,sign,C)
+				classicBP_closure(l+1,pos+1,mol,sign,C)
 			else
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
