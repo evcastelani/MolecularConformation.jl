@@ -196,7 +196,7 @@ function bondangle(d23,d24,d34)#i=3,...,n
 		c=1.0
 	end
 	s = sqrt(1.0-c^2)
-	@debug "value of cθ and sθ"
+	@debug "value of cθ and sθ" c,s
 	return c,s
 end
 
