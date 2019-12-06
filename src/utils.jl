@@ -228,6 +228,7 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 		valc =  1.0
 	end
 	vals=sqrt(1.0-valc^2)
+	@debug "value of cω and sω" valc,vals
 	return valc,vals
 end
 
