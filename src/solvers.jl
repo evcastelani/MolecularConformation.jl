@@ -48,7 +48,6 @@ function classicBP(NMRdata :: NMRType,
 			C[3] = C[2]*B
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
-			@debug "Partial Conformation in level $(l) (first path) = " mol
 		end
 
 		λ = 1
