@@ -57,7 +57,8 @@ function classicBP(NMRdata :: NMRType,
 		λ = 1
 		ρ = 1
 		keep = true
-		while keep 	
+		while keep
+			@debug "NMRdata index " pos-3
 			D14 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos]].dist
 			D24 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos]].dist
 			D34 = NMRdata.info[NMRdata.virtual_path[pos-1],NMRdata.virtual_path[pos]].dist
