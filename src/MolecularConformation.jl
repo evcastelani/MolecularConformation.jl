@@ -72,6 +72,8 @@ module MolecularConformation
 	solutions, t, bytes, gctime, memallocs = @timed cs.solver(NMRdata,cs.precision,cs.allsolutions)
 
 	print(" Done! \n")
+
+	return ConformationOutput(solutions[1],solutions[2],t,bytes,gctime)
 	end				
 
 end
