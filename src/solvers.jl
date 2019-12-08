@@ -154,7 +154,7 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
 	end
 	C = Vector{Array{Float64,2}}(undef,n)
-	signal = Vector{Char}(undef,n)
+	signal = Vector{Bool}(undef,n)
 	for i=1:n
 		signal[i] = true
 		C[i] = zeros(4,4)
