@@ -91,7 +91,7 @@ function classicBP(NMRdata :: NMRType,
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
 			if l==NMRdata.virtual_path[pos]
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
 				C[l] = C[l-1]*B
 				sign[l] = true
 				keep = false
@@ -156,7 +156,7 @@ function classicBP(NMRdata :: NMRType,
 	C = Vector{Array{Float64,2}}(undef,n)
 	signal = Vector{Char}(undef,n)
 	for i=1:n
-		signal[i] = '+'
+		signal[i] = true
 		C[i] = zeros(4,4)
 	end
 	nsol = 0
