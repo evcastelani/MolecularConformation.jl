@@ -97,7 +97,7 @@ function classicBP(NMRdata :: NMRType,
 				keep = false
 				@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			else
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[NMRdata.virtual_path[pos]])
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
 				C[l-1] = C[l-1]*B
 				@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 				pos = pos+1
