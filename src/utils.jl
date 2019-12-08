@@ -233,8 +233,8 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	return valc,vals
 end
 
-function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Char)
-	if sign == '+'
+function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
+	if sign == true
 	
 		B=zeros(4,4)
 		B[1,1] = -cosθ

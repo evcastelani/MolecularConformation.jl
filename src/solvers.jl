@@ -6,21 +6,21 @@ function classicBP(NMRdata :: NMRType,
 	function classicBP_closure(l :: Int,
 				   pos::Int,
 				   mol :: MoleculeType,
-				   sign:: Vector{Char}, 
+				   sign:: Vector{Bool}, 
 				   C :: Vector{Array{Float64,2}})
 		if l == 1
 			# first atom
 			mol.atoms[1].x = 0.0
 			mol.atoms[1].y = 0.0
 			mol.atoms[1].z = 0.0
-			sign[1] = '+'
+			sign[1] = true
 			C[1] = Diagonal{Float64}(I,4)
 			#second atom
 			#mol.atoms[2].x = -D[1,2]
 			mol.atoms[2].x = -NMRdata.info[1,2].dist
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
-			sign[2] = '+'
+			sign[2] = true
 			C[2] = zeros(4,4)
 			C[2][1,1] = -1.0
 			C[2][2,2] = 1.0
@@ -39,7 +39,7 @@ function classicBP(NMRdata :: NMRType,
 			mol.atoms[3].x = -D12+D23*cθ
 			mol.atoms[3].y = D23*sθ
 			mol.atoms[3].z = 0.0
-			sign[3] = '+'
+			sign[3] = true
 			B = zeros(4,4)
 			B[1,1] = -cθ
 			B[1,2] = -sθ
@@ -91,9 +91,9 @@ function classicBP(NMRdata :: NMRType,
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
 			if l==NMRdata.virtual_path[pos]
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,'+')
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 				C[l] = C[l-1]*B
-				sign[l]='+'
+				sign[l] = true
 				keep = false
 				@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			else
@@ -125,12 +125,12 @@ function classicBP(NMRdata :: NMRType,
 			@goto exit
 		end
 		@debug "value of c,s for all ", cθ,sθ
-		B = torsionmatrix(cθ,sθ,cω,sω,D34,'-')
+		B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 		C[l] = C[l-1]*B
 		mol.atoms[l].x = C[l][1,4]
 		mol.atoms[l].y = C[l][2,4]
 		mol.atoms[l].z = C[l][3,4]
-		sign[l]='-'
+		sign[l]=false
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
 		if ρ == 1 
 			if l<n
