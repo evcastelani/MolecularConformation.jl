@@ -107,8 +107,8 @@ function classicBP(NMRdata :: NMRType,
 				@debug "λ = " λ
 				if 	λ == 0
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
-					C[l-1] = C[l-1]*B
 				end
+				C[l-1] = Aux*B
 				pos = pos+1		
 			end
 		end
