@@ -98,10 +98,10 @@ function classicBP(NMRdata :: NMRType,
 				@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
-				C[l-1] = C[l-1]*B
-				mol.atoms[l].x = C[l-1][1,4]
-				mol.atoms[l].y = C[l-1][2,4]
-				mol.atoms[l].z = C[l-1][3,4]
+				Aux = copy!(C[l-1]*B)
+				mol.atoms[l].x = Aux[1,4]
+				mol.atoms[l].y = Aux[2,4]
+				mol.atoms[l].z = Aux[3,4]
 				λ  = pruningtest(mol,pos,NMRdata,ε)
 				@debug "λ = " λ
 				if 	λ == 0
