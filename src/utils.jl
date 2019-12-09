@@ -329,11 +329,38 @@ function LDE(v::MoleculeType,D::NMRType)
 	end
 	
 #	if nad>0.0
-	return dij/(2.0*num_nne)
+	v.lde = dij/(2.0*num_nne)
 #	else
 #		return dij
 #	end
 end
+
+"""
+```
+build_distance_matrix
+```
+This function can be useful to visualize a the distance array associated to an
+MoleculeType solution
+
+## Example
+
+```julia-repl
+v = conformation(data,opt)
+build_distance_array(v.molecules[1].atoms)
+
+```
+"""
+function build_distance_matrix(v::MoleculeType)
+       n=length(v)
+       D=zeros(n,n)
+       for i=1:n
+           for j=1:n
+               D[i,j] = sqrt((v[i].x-v[j].x)^2+(v[i].y-v[j].y)^2+(v[i].z-v[j].z)^2)
+           end
+       end
+       return D
+end
+
 
 function Base.copy(A::AtomType)
 	return AtomType(A.x,A.y,A.z)
