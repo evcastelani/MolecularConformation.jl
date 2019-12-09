@@ -92,7 +92,7 @@ function classicBP(NMRdata :: NMRType,
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 				C[l] = C[l-1]*B
 				sign[l] = true
 				keep = false
@@ -140,7 +140,7 @@ function classicBP(NMRdata :: NMRType,
 			#@info "LDE = " LDE(mol,D,n,nad)
 			@goto exit
 		end
-		B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
+		B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
 		C[l] = C[l-1]*B
 		mol.atoms[l].x = C[l][1,4]
 		mol.atoms[l].y = C[l][2,4]
