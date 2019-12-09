@@ -124,9 +124,10 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].y = C[l][2,4]
 		mol.atoms[l].z = C[l][3,4]
 		λ  = pruningtest(mol,l,NMRdata,ε) 
+		@debug "C[l] at level $(l) right side " C[l]
 		if λ == 1 
 			if l<n
-				@debug "Partial solution by right side at level $(l)" C[l], mol
+				@debug "Partial solution by right side at level $(l)"  mol
 				classicBP_closure(l+1,pos+1,mol,sign,C)
 			else
 				nsol=nsol+1
@@ -147,9 +148,10 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].z = C[l][3,4]
 		sign[l]=false
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
+		@debug "C[l] at level $(l) left side " C[l]
 		if ρ == 1 
 			if l<n
-				@debug "Partial solution by left side at level $(l)" C[l], mol
+				@debug "Partial solution by left side at level $(l)" mol
 				classicBP_closure(l+1,pos+1,mol,sign,C)
 			else
 				nsol = nsol+1
