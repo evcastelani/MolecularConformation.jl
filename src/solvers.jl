@@ -107,7 +107,6 @@ function classicBP(NMRdata :: NMRType,
 				mol.atoms[NMRdata.virtual_path[pos]].y = Aux[2,4]
 				mol.atoms[NMRdata.virtual_path[pos]].z = Aux[3,4]
 				λ  = pruningtest(mol,NMRdata.virtual_path[pos],NMRdata,ε)
-				@debug "λ = " λ
 				if 	λ == 0
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 					Aux = C[l-1]*B
@@ -141,7 +140,6 @@ function classicBP(NMRdata :: NMRType,
 			#@info "LDE = " LDE(mol,D,n,nad)
 			@goto exit
 		end
-		@debug "value of c,s for all ", cθ,sθ,cω,sω
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 		C[l] = C[l-1]*B
 		mol.atoms[l].x = C[l][1,4]
