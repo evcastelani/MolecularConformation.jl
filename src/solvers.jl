@@ -93,27 +93,12 @@ function classicBP(NMRdata :: NMRType,
 				keep = false
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
-#				Aux = zeros(4,4)
-#				copyto!(Aux,C_before*B)
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
-#				mol.atoms[NMRdata.virtual_path[pos]].x = Aux[1,4]
-#				mol.atoms[NMRdata.virtual_path[pos]].y = Aux[2,4]
-#				mol.atoms[NMRdata.virtual_path[pos]].z = Aux[3,4]
-#				λ  = pruningtest(mol,NMRdata.virtual_path[pos],NMRdata,ε)
-#				if 	λ == 0
-#					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
-#					Aux = C_before*B
-#				end
-#				C_before = Aux
-				
-#				mol.atoms[NMRdata.virtual_path[pos]].x = cpx
-#				mol.atoms[NMRdata.virtual_path[pos]].y = cpy
-#				mol.atoms[NMRdata.virtual_path[pos]].z = cpz
 
 				Virtual_Torsion = C_before*B
-				if (Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2> ε
+				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> ε
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 				end
 				C_before = C_before*B	
