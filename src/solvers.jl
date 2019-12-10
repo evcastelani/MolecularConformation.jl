@@ -92,7 +92,7 @@ function classicBP(NMRdata :: NMRType,
 				C = C_before*B
 				keep = false
 			else
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 #				Aux = zeros(4,4)
 #				copyto!(Aux,C_before*B)
 #				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
