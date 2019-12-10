@@ -73,7 +73,7 @@ module MolecularConformation
 	print(" Done! \n")
 	print(" Computing the LDE for all solutions ... ")
 	s = ConformationOutput(solutions[1],solutions[2],t,bytes,gctime)
-	map(i->MolecularConformation.LDE(s.molecules[i],data),[1:1:s.number;])
+	map(i->MolecularConformation.LDE(s.molecules[i],NMRdata),[1:1:s.number;])
 	print(" Done! \n")
 	return s
 	end				
