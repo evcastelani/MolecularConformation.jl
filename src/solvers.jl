@@ -112,7 +112,7 @@ function classicBP(NMRdata :: NMRType,
 #				mol.atoms[NMRdata.virtual_path[pos]].y = cpy
 #				mol.atoms[NMRdata.virtual_path[pos]].z = cpz
 				C_before = C_before*B
-				@debug "virtual atom position  " C_before[1,4],C[2,4],C[3,4]
+				@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
 				pos = pos+1		
 			end
 		end
