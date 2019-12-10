@@ -113,8 +113,7 @@ function classicBP(NMRdata :: NMRType,
 #				mol.atoms[NMRdata.virtual_path[pos]].z = cpz
 
 				Virtual_Torsion = C_before*B
-				virtual_atom = [Virtual_Torsion[1:3,4]]
-				if (Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2(Virtual_Torsion[3,4]- cpz)^2>0.00001
+				if (Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2>0.00001
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 				end
 				C_before = C_before*B	
