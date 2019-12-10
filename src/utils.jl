@@ -350,7 +350,7 @@ build_distance_array(v.molecules[1].atoms)
 
 ```
 """
-function build_distance_matrix(v::MoleculeType)
+function build_distance_matrix(v::Array{AtomType,1})
        n=length(v)
        D=zeros(n,n)
        for i=1:n
