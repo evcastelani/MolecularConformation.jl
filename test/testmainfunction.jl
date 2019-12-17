@@ -1,7 +1,7 @@
 using DelimitedFiles
 @testset "Testing main functions" begin
 
-options = ConformationSetup(0.00001,classicalBP,false)
+options = ConformationSetup(0.00001,classicBP,false)
 data = nmr("ins_15v2.pdb")
 
 sol = conformation(data,options)
