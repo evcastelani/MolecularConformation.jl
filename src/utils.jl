@@ -127,22 +127,20 @@ end
 ```
 ConformationSetup
 ```
-This type is used to define the main options of the function used to conformation.Essentially, this type has four fields: precision,cutoff,solver,allsolutions, reorder, interval
+This type is used to define the main options of the function used to conformation.Essentially, this type has three fields: precision,solver,allsolutions
 
 ## Example
 
 ```julia-repl
-options = ConformationSetup(0.001,5.5,classical_bp,true)
+options = ConformationSetup(0.001,classicBP,true)
 ```
 As return an element options was created an it will used in conformation function. It is a mandatory definition before run conformation function.
 
 """
 mutable struct ConformationSetup
 	precision :: Float64
-	cutoff :: Float64
 	solver :: Function 
 	allsolutions :: Bool
-	reorder :: Bool
 end
 
 """
