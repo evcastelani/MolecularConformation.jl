@@ -142,6 +142,9 @@ mutable struct ConformationSetup
 	virtual_precision :: Float64
 	solver :: Function 
 	allsolutions :: Bool
+	function ConformationSetup(a,b=1.0e-6,c,d)
+		return new(a,b,c,d)
+	end
 end
 
 """
