@@ -139,6 +139,7 @@ As return an element options was created an it will used in conformation functio
 """
 mutable struct ConformationSetup
 	precision :: Float64
+	virtual_precision :: Float64
 	solver :: Function 
 	allsolutions :: Bool
 end

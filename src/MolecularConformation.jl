@@ -37,7 +37,7 @@ module MolecularConformation
 		
 
 	print(" Solving the problem with $(cs.solver) ... ")
-	solutions, t, bytes, gctime, memallocs = @timed cs.solver(NMRdata,cs.precision,cs.allsolutions)
+	solutions, t, bytes, gctime, memallocs = @timed cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions)
 	print(" Done! \n")
 	print(" Computing the LDE for all solutions ... ")
 	s = ConformationOutput(solutions[1],solutions[2],t,bytes,gctime)

@@ -1,6 +1,7 @@
 
 function classicBP(NMRdata :: NMRType,
 		   ε :: Float64,
+		   virtual_ε :: Float64,
 		   allmol :: Bool)
 	# defining closure
 	function classicBP_closure(l :: Int,
@@ -98,7 +99,7 @@ function classicBP(NMRdata :: NMRType,
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
 
 				Virtual_Torsion = C_before*B
-				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> ε
+				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 				end
 				C_before = C_before*B	
