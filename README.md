@@ -17,8 +17,8 @@ Pkg> add https://github.com/evcastelani/MolecularConformation.jl#nameofbranch
 ## Basic usage
 
 
+
 This new version of Molecular Conformation works using a data list in `NMRType` format. In this sense, in order to run the `conformation function` we need to read a `.pdb` file. For example, let us consider the `pdb1a03.pdb`. In this case, we need convert the `.pdb` file to NMRType as follows 
-Considering D a distance matrix given by
 
 ```julia
 julia> data = nmr("pdb1a03.pdb") 
