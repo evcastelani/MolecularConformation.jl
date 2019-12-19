@@ -41,7 +41,7 @@ julia> conformation(data,options)
 ```
 As return a `ConformationOutput` type is provided with all required information.
 
-## TODO
+## TO DO
 
 
 1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
