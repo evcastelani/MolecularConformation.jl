@@ -8,6 +8,7 @@
 ## Install 
 
 
+
 This package was developed to Julia version >=1.0. Consequently, in order to install this package we need to type "]" in Julia REPL and after 
 
 ```julia
@@ -18,7 +19,8 @@ Pkg> add https://github.com/evcastelani/MolecularConformation.jl#nameofbranch
 
 
 
-This new version of Molecular Conformation works using a data list in `NMRType` format. In this sense, in order to run the `conformation function` we need to read a `.pdb` file. For example, let us consider the `pdb1a03.pdb`. In this case, we need convert the `.pdb` file to NMRType as follows 
+
+This new version of Molecular Conformation works using a data list in `NMRType` format. In this sense, in order to run the `conformation function` we need to read a `.pdb` or `.mdjeep` file. For example, let us consider the `pdb1a03.mdjeep`. In this case, we need convert the `.mdjeep` file to `NMRType` as follows 
 
 ```julia
 julia> data = nmr("pdb1a03.pdb") 
@@ -30,16 +32,16 @@ julia> data = nmr("pdb1a03.pdb")
 ```julia
 julia> options = ConformationSetup(0.000001,classicBP,true)
 ```
-where `0.000001` is the precision,  `classicBP` is the solver used to solve the problem and `true` value is used to compute all possible solutions.  In order to determine the positions  of atoms we to run the main function:
+where `0.000001` is the precision,  `classicBP` is the solver used to solve the problem and `true` value is used to compute all possible solutions.  In order to determine the positions  of atoms we can run the main function:
  
 ```julia
 julia> conformation(data,options)
 ```
-As return a ConformationOutput type is provided with all required information.
+As return a `ConformationOutput` type is provided with all required information.
 
 ## TODO
 
-
+1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
 1. [ ] Include signs vector;
 1. [ ] Include in the data list the information about both atoms not just one 
 1. [ ] Include in the data list the symmetry in the information too;
@@ -47,7 +49,7 @@ As return a ConformationOutput type is provided with all required information.
 1. [ ] Optimize redundant plan;
 1. [ ] Implement chirality;
 1. [ ] Optimize torsion angle in the repeating process;
-1. [ ] Modify the quaternion version to new input and improvements.
-
+1. [ ] Modify the quaternion version to new input and improvements;
+1. [ ] Run all examples and create a table of tests.
 
 
