@@ -39,13 +39,15 @@ As return a ConformationOutput type is provided with all required information.
 
 ## TODO
 
-1. [] Include signs vector;
-1. [] Include in the data list the information about both atoms not just one 
-1. [] Include in the data list the symmetry in the information too;
-1. [] Discuss preprocessing;
-1. [] Optimize redundant plan;
-1. [] Implement chirality;
-1. [] Optimize torsion angle in the repeating process. 
+
+1. [ ] Include signs vector;
+1. [ ] Include in the data list the information about both atoms not just one 
+1. [ ] Include in the data list the symmetry in the information too;
+1. [ ] Discuss preprocessing;
+1. [ ] Optimize redundant plan;
+1. [ ] Implement chirality;
+1. [ ] Optimize torsion angle in the repeating process;
+1. [ ] Modify the quaternion version to new input and improvements.
 
 
 
