@@ -9,6 +9,7 @@
 
 
 
+
 This package was developed to Julia version >=1.0. Consequently, in order to install this package we need to type "]" in Julia REPL and after 
 
 ```julia
@@ -20,10 +21,11 @@ Pkg> add https://github.com/evcastelani/MolecularConformation.jl#nameofbranch
 
 
 
+
 This new version of Molecular Conformation works using a data list in `NMRType` format. In this sense, in order to run the `conformation function` we need to read a `.pdb` or `.mdjeep` file. For example, let us consider the `pdb1a03.mdjeep`. In this case, we need convert the `.mdjeep` file to `NMRType` as follows 
 
 ```julia
-julia> data = nmr("pdb1a03.pdb") 
+julia> data = nmr("pdb1a03.mdjeep") 
     
 ```
   
@@ -41,6 +43,7 @@ As return a `ConformationOutput` type is provided with all required information.
 
 ## TODO
 
+
 1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
 1. [ ] Include signs vector;
 1. [ ] Include in the data list the information about both atoms not just one 
@@ -50,6 +53,6 @@ As return a `ConformationOutput` type is provided with all required information.
 1. [ ] Implement chirality;
 1. [ ] Optimize torsion angle in the repeating process;
 1. [ ] Modify the quaternion version to new input and improvements;
-1. [ ] Run all examples and create a table of tests.
-
+1. [ ] Run all examples and create a table of tests;
+1. [ ] Include a decent documentation using `Documenter.jl`.
 
