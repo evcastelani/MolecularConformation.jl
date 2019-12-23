@@ -45,9 +45,9 @@ As return a `ConformationOutput` type is provided with all required information.
 
 
 1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
-1. [ X ] Include signs vector (this idea doesn't work);
-1. [ X ] Include in the data list the information about both atoms not just one 
-1. [ X ] Include in the data list the symmetry in the information too;
+1. [X] Include signs vector (this idea doesn't work);
+1. [X] Include in the data list the information about both atoms not just one 
+1. [X] Include in the data list the symmetry in the information too;
 1. [ ] Discuss preprocessing;
 1. [ ] Optimize redundant plan;
 1. [ ] Implement chirality;
