@@ -164,7 +164,7 @@ function classicBP(NMRdata :: NMRType,
 	vsignal = Vector{Bool}(undef,n)
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
-		vsignal = true 
+		vsignal[i] = true 
 	end
 	C = zeros(4,4)
 	nsol = 0
