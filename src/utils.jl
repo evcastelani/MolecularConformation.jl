@@ -8,7 +8,8 @@ This type contains the information for NMRtype. In this point of the project it 
 """
 struct NMRInfo
 	dist::Float64
-	typeatom::String
+	atom1::String
+	atom2::String
 end
 
 """
@@ -61,13 +62,13 @@ function nmr(file::String,opt="read")
 		end
 
 		for i=1:lenI
-			V[i]=NMRInfo(nmrfile[i,5],nmrfile[i,7])
+			V[i]=NMRInfo(nmrfile[i,5],nmrfile[i,7],nmrfile[i,8])
 		end
 		for i=1:lenI
                		if I[i]!=J[i]
                    		push!(I,J[i])
-                        	push!(J,I[i])
-                  	 	push!(V,V[i])
+                        push!(J,I[i])
+                  	 	push!(V,NMRInfo(V[i].dist,V[i].atom2,V[i].atom1))
 			end
 		end
 		nmrt = NMRType(vpath,vadd,sparse(I,J,V),n)
