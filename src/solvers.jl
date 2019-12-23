@@ -7,7 +7,8 @@ function classicBP(NMRdata :: NMRType,
 	function classicBP_closure(l :: Int,
 				   pos::Int,
 				   mol :: MoleculeType,
-				   C :: Array{Float64,2})
+				   C :: Array{Float64,2},
+				   sign :: Vector{Bool})
 		if l == 1
 			# first atom
 			mol.atoms[1].x = 0.0
@@ -92,15 +93,18 @@ function classicBP(NMRdata :: NMRType,
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
 				C = C_before*B
 				keep = false
+				sign[l] = true
 			else
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
-				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
-				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
-				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
-
-				Virtual_Torsion = C_before*B
-				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,sign[NMRdata.virtual_path[pos]])
+				if NMRdata.virtual_path[pos]==1
+					cpx = mol.atoms[NMRdata.virtual_path[pos]].x
+					cpy = mol.atoms[NMRdata.virtual_path[pos]].y
+					cpz = mol.atoms[NMRdata.virtual_path[pos]].z
+			
+					Virtual_Torsion = C_before*B
+					if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
+						B = torsionmatrix(cθ,sθ,cω,sω,D34,!NMRdata.virtual_path[pos])
+					end
 				end
 				C_before = C_before*B	
 
@@ -118,7 +122,7 @@ function classicBP(NMRdata :: NMRType,
 		if λ == 1 
 			if l<n
 				@debug "Partial solution by right side at level $(l)"  mol
-				classicBP_closure(l+1,pos+1,mol,C)
+				classicBP_closure(l+1,pos+1,mol,C,sign)
 			else
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
@@ -132,6 +136,7 @@ function classicBP(NMRdata :: NMRType,
 			@goto exit
 		end
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
+		sign[l] = false
 		C = C_before*B
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
@@ -141,7 +146,7 @@ function classicBP(NMRdata :: NMRType,
 		if ρ == 1 
 			if l<n
 				@debug "Partial solution by left side at level $(l)" mol
-				classicBP_closure(l+1,pos+1,mol,C)
+				classicBP_closure(l+1,pos+1,mol,C,sign)
 			else
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
@@ -156,13 +161,15 @@ function classicBP(NMRdata :: NMRType,
 	# end of bp_closure
 	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
+	vsignal = Vector{Bool}(undef,n)
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
+		vsignal = true 
 	end
 	C = zeros(4,4)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	classicBP_closure(1,1,mol,C)
+	classicBP_closure(1,1,mol,C,vsignal)
 	return nsol, storage_mol
 
 end
