@@ -1,6 +1,6 @@
 module MolecularConformation
 		
-	export  preprocessing,NMRinfo,NMRType,conformation,ConformationSetup,ConformationOutput,
+	export  preprocessing,NMRInfo,NMRType,conformation,ConformationSetup,ConformationOutput,
 			AtomType,MoleculeType,classicBP, classicBP_closure,
 			quaternion_bp,≈,generate_virtual_path
 	
