@@ -2,9 +2,9 @@
 #
 """
 ```
-NMRinfo
+NMRinfo :: Type
 ```
-This type contains the information for NMRtype. In this point of the project it contains two fields: dist and typeatom. 
+This type contains the information for NMRtype. In this point of the project it contains two fields: dist, atom1 and atom2. Essentially, dist is the distance between atom1 and atom2 which are strings related to the name of atoms.  
 """
 struct NMRInfo
 	dist::Float64
@@ -14,16 +14,16 @@ end
 
 """
 ```
-NMRType
+NMRType :: Type
 ```
-This type is used as input data. The present type was motivated by https://github.com/mucherino/mdjeep and it is used to avoid the definition of distance matrix. Once the .nmr file is read, this type is produced as output. Therefore, the simplest construction of this type is done using the nmr function as in the following example.
+This type is used as input data. Essentially, this type carry itself fields for internal solvers. Although it is possible to input data directly into the type, it is highly recommended that this type be constructed from the function preprocessing, like in the following example 
 
 ## Example
 
 ```julia-repl
-nmr("1a57")
+nmr_data_example = preprocessing("1A57.nmr")
 ```
-As return an element of NMRtype is created. We are assuming that a .nmr file as in  https://github.com/mucherino/mdjeep is given.
+As return an element of NMRtype is created. We are assuming that a 1A57.nmr file is provided.
 """
 struct NMRType
 	virtual_path :: Vector{Int64}
@@ -34,11 +34,16 @@ end
 
 """
 ```
-nmr
+preprocessing :: Function
 ```
-It is a function used to read a PBD file in format .nmr or .mdjeep. Just one option is avaiable: read.
+This function is able to read a .nmr file and generate a NMRType, which is an internal type with fields that can be used by internals solvers. Given a list in .nmr format, let us say the 1A57.nmr file, the following example show how simple is to use this function.
+
+## Example
+```julia-repl
+preprocessing("1A57.nmr")
+```
 """
-function nmr(file::String,opt="read")
+function preprocessing(file::String,opt="read")
 	if opt == "read"
 		nmrfile = readdlm("$(file)")
 		I = Int64.(nmrfile[:,1])
@@ -80,7 +85,7 @@ end
 
 """
 ```
-generate_virtual_path
+generate_virtual_path :: Function
 ```
 This function is an auxiliary function used to define a useful vector called in our context as virtual path. This vector allows to handle with re-order approach. 
 """
@@ -126,19 +131,25 @@ end
 # these types are mandatory indepedent of used solver##############################
 """
 ```
-ConformationSetup
+ConformationSetup :: Type
 ```
-This type is used to define the main options of the function used to conformation.Essentially, this type has three fields: precision,solver,allsolutions
+This type is used to define the main options of the function used to conformation. Essentially, this type has three fields: precision, solver, allsolutions. 
+
+precision ::  is associated to current internal solver which depends on some level do a pruning test.
+
+solver :: is the name of function which define the solver. 
+
+allsolution :: is a bool variable used to define the behavior of the method. Is set as true, the internal solver try to find all possible solutions. 
 
 ## Example
 
 ```julia-repl
-options = ConformationSetup(0.001,classicBP,true)
+options = ConformationSetup(0.00001,classicBP,true)
 ```
 As return an element options was created an it will used in conformation function. It is a mandatory definition before run conformation function.
 
 """
-mutable struct ConformationSetup
+struct ConformationSetup
 	precision :: Float64
 	virtual_precision :: Float64
 	solver :: Function 
@@ -150,7 +161,7 @@ end
 
 """
 ```
-AtomType
+AtomType :: Type
 ```
 It is the most primitive type and it is used to store the spatial positions of atoms. It is a mutable type. This type has three field: .x, .y and .z
 """
@@ -163,7 +174,7 @@ end
 
 """
 ```
-MoleculeType
+MoleculeType :: Type
 ```
 It is used to store a (just one) solution find by conformation process. It is a mutable struct and has two fields: .atoms (used to store a vector of AtomType) and .lde (used to store the lde of an molecule)
 """
@@ -174,7 +185,7 @@ end
 
 """
 ```
-ConformationOutput
+ConformationOutput :: Type
 ```
 It is a mutable type used to store the output provided by conformation function. With this type is possible to handle with some importants elements given by the following fields:.number,.molecules,.elapsedtime,.bytes and .gctime
 """
