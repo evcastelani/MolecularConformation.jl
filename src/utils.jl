@@ -200,7 +200,13 @@ end
 
 ###################################################################################
 # these functions are used by bp_classical##########################################
-function bondangle(d23,d24,d34)#i=3,...,n
+"""
+```
+bondangle :: Function
+```
+This is an auxiliary function used by ClassicBP solver in order to compute the bond angle by cosine rule. As output the cosine and sine are given.
+"""
+function bondangle(d23,d24,d34)
 	c = (-d24^2 + d34^2 + d23^2)/(2.0*d34*d23)
 #	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
 	if c<-1.0
@@ -214,6 +220,12 @@ function bondangle(d23,d24,d34)#i=3,...,n
 	return c,s
 end
 
+"""
+```
+torsionangle :: Function
+```
+This is an auxiliary function used by ClassicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
+"""
 function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	#d12=D[i-3,i-2]
 	#d13=D[i-3,i-1]
