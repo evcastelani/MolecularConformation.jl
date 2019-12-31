@@ -259,6 +259,12 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	return valc,vals
 end
 
+"""
+```
+torsionmatrix :: Function
+```
+This is an auxiliary function  used by ClassicBP solver to compute the torsion array.
+"""
 function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
 	if sign == true
 	
@@ -297,7 +303,7 @@ end
 
 """
 ```
-pruningtest
+pruningtest :: Function
 ```
 This functions is an auxiliary function used to test if some molecule is 
 feasible or not.
@@ -339,7 +345,7 @@ end
 # these functions can be used by any solver#########################################
 """
 ```
-LDE
+LDE :: Function
 ```
 This function is an auxiliary function used to compute the LDE of some molecule.
 This function change the .lde field of the molecule.
