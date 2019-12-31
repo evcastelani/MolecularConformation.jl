@@ -4,7 +4,7 @@
 ```
 NMRinfo :: Type
 ```
-This type contains the information for NMRtype. In this point of the project it contains two fields: dist, atom1 and atom2. Essentially, dist is the distance between atom1 and atom2 which are strings related to the name of atoms.  
+This type contains the information for `NMRtype`. In this point of the project it contains two fields: dist, atom1 and atom2. Essentially, dist is the distance between atom1 and atom2 which are strings related to the name of atoms.  
 """
 struct NMRInfo
 	dist::Float64
@@ -16,14 +16,14 @@ end
 ```
 NMRType :: Type
 ```
-This type is used as input data. Essentially, this type carry itself fields for internal solvers. Although it is possible to input data directly into the type, it is highly recommended that this type be constructed from the function preprocessing, like in the following example 
+This type is used as input data. Essentially, this type carry itself fields for internal solvers. Although it is possible to input data directly into the type, it is highly recommended that this type be constructed from the function `preprocessing`, like in the following example 
 
 ## Example
 
 ```julia-repl
 nmr_data_example = preprocessing("1A57.nmr")
 ```
-As return an element of NMRtype is created. We are assuming that a 1A57.nmr file is provided.
+As return an element of `NMRtype` is created. We are assuming that a `1A57.nmr` file is provided.
 """
 struct NMRType
 	virtual_path :: Vector{Int64}
@@ -36,7 +36,7 @@ end
 ```
 preprocessing :: Function
 ```
-This function is able to read a .nmr file and generate a NMRType, which is an internal type with fields that can be used by internals solvers. Given a list in .nmr format, let us say the 1A57.nmr file, the following example show how simple is to use this function.
+This function is able to read a `.nmr` file and generate a `NMRType`, which is an internal type with fields that can be used by internals solvers. Given a list in `.nmr` format, let us say the `1A57.nmr` file, the following example show how simple is to use this function.
 
 ## Example
 ```julia-repl
@@ -199,7 +199,7 @@ end
 
 
 ###################################################################################
-# these functions are used by bp_classical##########################################
+# these functions are used by ClassicBP  ##########################################
 """
 ```
 bondangle :: Function
@@ -327,21 +327,8 @@ function pruningtest(v::MoleculeType,i::Int,D::NMRType,ε::Float64)
 	return 1 
 end
 
-#unction perfpruningtest(v::MoleculeType,i::Int,D::Array{Float64,2},ε::Float64,ndiag::Int)
-#       
-#       for j=max(1,i-ndiag):i-1
-#       	if D[i,j]>0.0
-#       		dij = (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
-#       		if (D[i,j]^2-dij)^2 > ε
-#       			return 0 
-#       		end
-#       	end
-#       end
-#       return 1 
-#nd
 
 ####################################################################################
-
 # these functions can be used by any solver#########################################
 """
 ```
