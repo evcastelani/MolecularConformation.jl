@@ -280,7 +280,11 @@ function quaternionBP(NMRdata :: NMRType,
 				else
 					Q_before = Q_virtual
 				end
-
+				qmol_aux = rot(Q_before,D34) #? is 34?
+				vx = qmol_aux.v1 + mol.atoms[pos-1].x
+				vy = qmol_aux.v2 + mol.atoms[pos-1].y
+				vz = qmol_aux.v3 + mol.atoms[pos-1].z
+				@debug "repeated atom = vx,vz,vz"
 				pos = pos+1		
 			end
 		end
