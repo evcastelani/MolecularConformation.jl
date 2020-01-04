@@ -284,7 +284,7 @@ function quaternionBP(NMRdata :: NMRType,
 				vx = qmol_aux.v1 + mol.atoms[pos-1].x
 				vy = qmol_aux.v2 + mol.atoms[pos-1].y
 				vz = qmol_aux.v3 + mol.atoms[pos-1].z
-				@debug "repeated atom = vx,vz,vz"
+				@debug "repeated atom = $(vx),$(vy),$(vz)"
 				pos = pos+1		
 			end
 		end
