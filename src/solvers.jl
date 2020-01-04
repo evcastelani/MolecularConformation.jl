@@ -218,7 +218,10 @@ function quaternionBP(NMRdata :: NMRType,
 
 		λ = 1
 		ρ = 1
-	
+		a = 0.0
+		b = 0.0
+		c = 0.0
+		d = 0.0 
 		Q_before = Q
 		keep = true
 		while keep
