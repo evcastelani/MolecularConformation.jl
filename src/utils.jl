@@ -425,8 +425,8 @@ function symsparse(I,J,v)
        end
 
 # these functions are used by quaternion_bp#########################################
-function qbondangle(i,D)#i=3,...,n
-	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
+function qbondangle(d23,d24,d34)
+	c = (-d24^2+ d34^2+ d23^2)/(2.0*d34*d23)
 	if c<-1.0
 		c=-1.0
 	end
@@ -437,13 +437,7 @@ function qbondangle(i,D)#i=3,...,n
 	return sqrt(0.5 + cm),sqrt(0.5 - cm)
 end
 
-function qtorsionangle(i,D)#i=4,...,n
-	d12=D[i-3,i-2]
-	d13=D[i-3,i-1]
-	d14=D[i-3,i]
-	d23=D[i-2,i-1]
-	d24=D[i-2,i]
-	d34=D[i-1,i]
+function qtorsionangle(d12,d13,d14,d23,d24,d34)
 	a = d12*d12 + d24*d24 - d14*d14
 	a = a/(2.0*d12*d24)
 	b = d24*d24 + d23*d23 - d34*d34        
