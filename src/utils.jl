@@ -476,7 +476,7 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 end
 
 # Quaternion small library
-mutable struct Quaternion
+struct Quaternion
 	s :: Float64
 	v1 :: Float64
 	v2 :: Float64

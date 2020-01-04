@@ -219,7 +219,7 @@ function quaternionBP(NMRdata :: NMRType,
 		λ = 1
 		ρ = 1
 	
-		Q_before = copy(Q)
+		Q_before = Q
 		keep = true
 		while keep
 			try
