@@ -333,7 +333,7 @@ function quaternionBP(NMRdata :: NMRType,
 	Q = Quaternion(0.0,0.0,0.0,0.0)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	classicBP_closure(1,1,mol,Q)
+	quaternionBP_closure(1,1,mol,Q)
 
 	return nsol, storage_mol
 
