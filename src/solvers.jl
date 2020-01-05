@@ -292,6 +292,7 @@ function quaternionBP(NMRdata :: NMRType,
 		mol.atoms[l].x = qmol.v1 + mol.atoms[l-1].x
 		mol.atoms[l].y = qmol.v2 + mol.atoms[l-1].y
 		mol.atoms[l].z = qmol.v3 + mol.atoms[l-1].z
+		@debug "candidate atom by right side at level $(l) = $(mol.atoms[l].x),$(mol.atoms[l].y),$(mol.atoms[l].z)"
 		λ  = pruningtest(mol,l,NMRdata,ε) 
 		if λ == 1 
 			if l<n
@@ -313,7 +314,7 @@ function quaternionBP(NMRdata :: NMRType,
 		mol.atoms[l].x = qmol.v1 + mol.atoms[l-1].x
 		mol.atoms[l].y = qmol.v2 + mol.atoms[l-1].y
 		mol.atoms[l].z = qmol.v3 + mol.atoms[l-1].z
-
+		@debug "candidate atom by left side at level $(l) = $(mol.atoms[l].x),$(mol.atoms[l].y),$(mol.atoms[l].z)"
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
 		if ρ == 1 
 			if l<n
