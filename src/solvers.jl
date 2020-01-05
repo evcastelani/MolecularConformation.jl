@@ -215,7 +215,7 @@ function quaternionBP(NMRdata :: NMRType,
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
-		lastpos = pos
+		lastpos = l-1
 		λ = 1
 		ρ = 1
 		a = 0.0
