@@ -268,9 +268,9 @@ function quaternionBP(NMRdata :: NMRType,
 			else
 				Q_virtual = qprod(Q_before,Quaternion(a,b,c,d))
 				qmol = rot(Q_virtual,D34) #? is 34?
-				vx = qmol.v1 + mol.atoms[pos-1].x
-				vy = qmol.v2 + mol.atoms[pos-1].y
-				vz = qmol.v3 + mol.atoms[pos-1].z
+				vx = qmol.v1 + mol.atoms[NMRdata.virtual_path[pos-1]].x
+				vy = qmol.v2 + mol.atoms[NMRdata.virtual_path[pos-1]].y
+				vz = qmol.v3 + mol.atoms[NMRdata.virtual_path[pos-1]].z
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
@@ -281,9 +281,9 @@ function quaternionBP(NMRdata :: NMRType,
 					Q_before = Q_virtual
 				end
 				qmol_aux = rot(Q_before,D34) #? is 34?
-				vx = qmol_aux.v1 + mol.atoms[pos-1].x
-				vy = qmol_aux.v2 + mol.atoms[pos-1].y
-				vz = qmol_aux.v3 + mol.atoms[pos-1].z
+				vx = qmol_aux.v1 + mol.atoms[NMRdata.virtual_path[pos-1]].x
+				vy = qmol_aux.v2 + mol.atoms[NMRdata.virtual_path[pos-1]].y
+				vz = qmol_aux.v3 + mol.atoms[NMRdata.virtual_path[pos-1]].z
 				@debug "repeated atom = $(vx),$(vy),$(vz)"
 				pos = pos+1		
 			end
