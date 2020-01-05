@@ -215,7 +215,7 @@ function quaternionBP(NMRdata :: NMRType,
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
-		lastpos = l-1
+		lastpos = 1
 		λ = 1
 		ρ = 1
 		a = 0.0
@@ -265,6 +265,7 @@ function quaternionBP(NMRdata :: NMRType,
 			if l==NMRdata.virtual_path[pos]
 				Q = qprod(Q_before,Quaternion(a,b,c,d))
 				keep = false
+				lastpos = pos
 			else
 				Q_virtual = qprod(Q_before,Quaternion(a,b,c,d))
 				qmol = rot(Q_virtual,D34) #? is 34?
@@ -284,15 +285,14 @@ function quaternionBP(NMRdata :: NMRType,
 				vx = qmol_aux.v1 + mol.atoms[NMRdata.virtual_path[pos-1]].x
 				vy = qmol_aux.v2 + mol.atoms[NMRdata.virtual_path[pos-1]].y
 				vz = qmol_aux.v3 + mol.atoms[NMRdata.virtual_path[pos-1]].z
-				lastpos = pos
 				@debug "repeated atom = $(vx),$(vy),$(vz)"
 				pos = pos+1		
 			end
 		end
 		qmol = rot(Q,D34)
-		mol.atoms[l].x = qmol.v1 + mol.atoms[NMRdata.virtual_path[lastpos]].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[NMRdata.virtual_path[lastpos]].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[NMRdata.virtual_path[lastpos]].z
+		mol.atoms[l].x = qmol.v1 + mol.atoms[NMRdata.virtual_path[lastpos-1]].x
+		mol.atoms[l].y = qmol.v2 + mol.atoms[NMRdata.virtual_path[lastpos-1]].y
+		mol.atoms[l].z = qmol.v3 + mol.atoms[NMRdata.virtual_path[lastpos-1]].z
 		@debug "candidate atom by right side at level $(l) = $(mol.atoms[l].x),$(mol.atoms[l].y),$(mol.atoms[l].z)"
 		λ  = pruningtest(mol,l,NMRdata,ε) 
 		if λ == 1 
@@ -312,9 +312,9 @@ function quaternionBP(NMRdata :: NMRType,
 		end
 		Q = qprod(Q_before,Quaternion(a,-b,-c,d))
 		qmol = rot(Q,D34)
-		mol.atoms[l].x = qmol.v1 + mol.atoms[NMRdata.virtual_path[lastpos]].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[NMRdata.virtual_path[lastpos]].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[NMRdata.virtual_path[lastpos]].z
+		mol.atoms[l].x = qmol.v1 + mol.atoms[NMRdata.virtual_path[lastpos-1]].x
+		mol.atoms[l].y = qmol.v2 + mol.atoms[NMRdata.virtual_path[lastpos-1]].y
+		mol.atoms[l].z = qmol.v3 + mol.atoms[NMRdata.virtual_path[lastpos-1]].z
 		@debug "candidate atom by left side at level $(l) = $(mol.atoms[l].x),$(mol.atoms[l].y),$(mol.atoms[l].z)"
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
 		if ρ == 1 
