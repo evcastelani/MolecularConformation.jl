@@ -1,7 +1,9 @@
 # MolecularConformation.jl
 
-![Build Status](https://travis-ci.com/evcastelani/MolecularConformation.jl.svg?branch=newinput)
-![codecov.io](http://codecov.io/github/evcastelani/MolecularConformation.jl/coverage.svg?branch=newinput)
+![Build Status](https://travis-ci.com/evcastelani/MolecularConformation.jl.svg?branch=master)
+![codecov.io](http://codecov.io/github/evcastelani/MolecularConformation.jl/coverage.svg?branch=master)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://evcastelani.github.io/MolecularConformation.jl/stable)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://evcastelani.github.io/MolecularConformation.jl/dev)
 
 `MolecularConformation.jl` is a Julia Package which can be used to solve the conformation problem of some structure defined by a distance matrix of exact distance.
 
