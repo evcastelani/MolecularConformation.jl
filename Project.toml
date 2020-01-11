@@ -1,6 +1,6 @@
 name = "MolecularConformation"
 uuid = "727cb4de-92cd-11e9-02b2-7deda15fe764"
-authors = ["evcastelani <emersonvitor@gmail.com>"]
+authors = ["evcastelani <emersonvitor@gmail.com>","Guilherme Philippi", "Felipe Fidalgo"]
 version = "0.1.0"
 
 [deps]
