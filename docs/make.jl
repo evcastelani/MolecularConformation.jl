@@ -10,4 +10,6 @@ makedocs(sitename= "MolecularConformation.jl Documentation",
 				   
 		)
 
-
+deploydocs(
+		   	repo = "github.com/evcastelani/MolecularConformation.jl.git"
+				)
