@@ -50,4 +50,5 @@ examples/performance_800.tex
 examples/performance_900.tex
 examples/report.txt
 examples/rmsd_output.tex
-
+# Ignore build subfolder from docs
+docs/build/*
