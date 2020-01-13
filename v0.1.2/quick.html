@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quick Start · MolecularConformation.jl Documentation</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">MolecularConformation.jl Documentation</span></div><form class="docs-search" action="search.html"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="index.html">Home</a></li><li class="is-active"><a class="tocitem" href="quick.html">Quick Start</a><ul class="internal"><li><a class="tocitem" href="#Installation-1"><span>Installation</span></a></li><li><a class="tocitem" href="#Basic-Usage-1"><span>Basic Usage</span></a></li><li><a class="tocitem" href="#About-the-solvers-1"><span>About the solvers</span></a></li></ul></li><li><a class="tocitem" href="api.html">API</a></li><li><a class="tocitem" href="contributing.html">Contributing</a></li><li><a class="tocitem" href="devstatus.html">Development Status</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href="quick.html">Quick Start</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href="quick.html">Quick Start</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/evcastelani/MolecularConformation.jl/blob/master/docs/src/quick.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h2 id="Installation-1"><a class="docs-heading-anchor" href="#Installation-1">Installation</a><a class="docs-heading-anchor-permalink" href="#Installation-1" title="Permalink"></a></h2><p>Currently, <code>MolecularConformation.jl</code> is not an registered package in Julia database, consequently, the best way to install is type <code>]</code> in Julia REPL and then</p><pre><code class="language-none">pkg&gt; add &quot;https://github.com/evcastelani/MolecularConformation.jl&quot;</code></pre><p>If you want to setup some especific branch, is necessary just include the term <code>#nameofbranch</code> in the end of previous string. </p><h2 id="Basic-Usage-1"><a class="docs-heading-anchor" href="#Basic-Usage-1">Basic Usage</a><a class="docs-heading-anchor-permalink" href="#Basic-Usage-1" title="Permalink"></a></h2><p>First of all, we need to load the package. </p><pre><code class="language-julia-repl">julia&gt; 	using MolecularConformation</code></pre><p>In order to conformalize some structure,  we need to get a list in <code>.nmr</code> format. This kind of list can get, for example, <a href="https://github.com/mucherino/mdjeep/tree/master/instances/0.3/proteinSet1">here</a>. </p><div class="admonition is-warning"><header class="admonition-header"> &#39;Warning&#39; </header><div class="admonition-body"><p>Currently, <code>MolecularConformation.jl</code> works only with file in <code>.nmr</code> format. </p></div></div><p>Since we have the list in this format, we must transform the data to <code>NMRType</code> format. The simplest way to do this is through the <code>preprocessing</code> function. An <code>NMRType</code> element contains information about order, additional distances and other elements that can be used to optimize the solver. The <code>preprocessing</code> function can handle with the <code>.nmr</code> file and provides a <code>NMRType</code> with all necessary information.</p><pre><code class="language-julia-repl">julia&gt; 	data_example = preprocessing(&quot;toyinstance.nmr&quot;)
+NMRType([1, 2, 3, 4, 1, 5, 6, 4, 7, 8  …  10, 7, 8, 10, 11, 12, 8, 13, 14, 15], Array{Int64,1}[[], [], [], [], [2], [], [3], [], [], [], [3, 5], [], [5], [], []],
+  [2 ,  1]  =  NMRInfo(1.526, &quot;H1&quot;, &quot;N&quot;)
+  [3 ,  1]  =  NMRInfo(2.4918, &quot;H2&quot;, &quot;N&quot;)
+  [4 ,  1]  =  NMRInfo(2.99897, &quot;CA&quot;, &quot;N&quot;)
+  [5 ,  1]  =  NMRInfo(4.44352, &quot;HA&quot;, &quot;N&quot;)
+  [6 ,  1]  =  NMRInfo(5.34443, &quot;C&quot;, &quot;N&quot;)
+  [1 ,  2]  =  NMRInfo(1.526, &quot;N&quot;, &quot;H1&quot;)
+  [3 ,  2]  =  NMRInfo(1.52543, &quot;H2&quot;, &quot;H1&quot;)
+  [4 ,  2]  =  NMRInfo(2.49207, &quot;CA&quot;, &quot;H1&quot;)
+  [5 ,  2]  =  NMRInfo(3.82847, &quot;HA&quot;, &quot;H1&quot;)
+  ⋮
+  [14, 13]  =  NMRInfo(1.52645, &quot;CA&quot;, &quot;H&quot;)
+  [15, 13]  =  NMRInfo(2.492, &quot;O&quot;, &quot;H&quot;)
+  [8 , 14]  =  NMRInfo(6.44745, &quot;CA&quot;, &quot;CA&quot;)
+  [12, 14]  =  NMRInfo(2.49324, &quot;C&quot;, &quot;CA&quot;)
+  [13, 14]  =  NMRInfo(1.52645, &quot;H&quot;, &quot;CA&quot;)
+  [15, 14]  =  NMRInfo(1.52582, &quot;O&quot;, &quot;CA&quot;)
+  [8 , 15]  =  NMRInfo(7.24892, &quot;CA&quot;, &quot;O&quot;)
+  [13, 15]  =  NMRInfo(2.492, &quot;H&quot;, &quot;O&quot;)
+  [14, 15]  =  NMRInfo(1.52582, &quot;CA&quot;, &quot;O&quot;), 15)</code></pre><p>Note that the type of <code>data_example</code> is a <code>NMRType</code></p><pre><code class="language-julia-repl">julia&gt; 	typeof(data_example)
+NMRType</code></pre><p>which means that <code>data_example</code> is has four fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(NMRType)
+(:virtual_path, :additional_distance, :info, :dim)</code></pre><p>One of most important fields is <code>.info</code>. This field is a symmetric <code>CSVSparseMatrix</code> where each input value is a <code>NMRInfo</code> element. This kind of structure provides a fast acess and considerable storage savings. A <code>NMRInfo</code> element contains information about the <code>distance</code> and two bond atoms.  </p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(NMRInfo)
+(:dist, :atom1, :atom2)</code></pre><p>Once the type of data this package handles is well established, let&#39;s look at the rest of the settings until the main function is executed. The next step is to define the options to be used for the solver. For this, we need to create a <code>ConformationSetup</code>. This kind of element has four fields but one is optional (<code>virtual_precision</code>).</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(ConformationSetup)
+(:precision, :virtual_precision, :solver, :allsolutions)</code></pre><p>The <code>precision</code>  will be used by the pruning test of the solver. The <code>solver</code> is the name of the function that was choose and <code>allsolution</code> is a bolean parameter for detect all solution if it is set as true.</p><pre><code class="language-julia-repl">julia&gt; 	opt = ConformationSetup(0.000001,MolecularConformation.classicBP,false)
+ConformationSetup(1.0e-6, 1.0e-6, MolecularConformation.classicBP, false)</code></pre><p>Now all that is required to execute the algorithm is ready and therefore, let us run the <code>conformation</code> function. </p><pre><code class="language-julia-repl">julia&gt; 	sol = conformation(data_example,opt)
+ Solving the problem with MolecularConformation.classicBP ...  Done! 
+ Computing the LDE for all solutions ... max ε = 2.5810266641383153e-25
+ Done! 
+
+ * Number of solutions = 1
+ * Solutions
+   Molecule 1 with LDE = 7.658904315532294e-28
+    ( 0.0 , 0.0 ,  0.0 )
+    ( -1.526 , 0.0 ,  0.0 )
+    ( -2.034999999999995 , 1.4379999999999997 ,  0.0 )
+    ( -1.674999999999997 , 2.1060000000000003 ,  -1.3239999999999965 )
+    ( -2.4299999999999944 , 3.426000000000001 ,  -1.449999999999998 )
+    ( -1.9960000000000164 , 4.140999999999982 ,  -2.726000000000016 )
+    ( -0.47700000000001164 , 4.283999999999978 ,  -2.738000000000042 )
+    ( -0.05900000000000932 , 5.365999999999996 ,  -1.7460000000000584 )
+    ( -0.6160000000000023 , 6.71299999999999 ,  -2.1980000000000803 )
+    ( -2.1380000000000035 , 6.632999999999996 ,  -2.283000000000105 )
+    ( -2.706000000000002 , 6.282000000000034 ,  -0.9110000000000915 )
+    ( -4.211000000000007 , 6.055000000000045 ,  -1.0260000000000813 )
+    ( -4.863999999999998 , 7.281000000000017 ,  -1.6600000000001371 )
+    ( -5.922122878027751 , 7.841170383964165 ,  -0.7130897001703517 )
+    ( -6.066369328967148 , 9.342642843087823 ,  -0.9430775604685658 )
+ * Elapsed Time = 1.562669441
+ * Allocated Memory = 185623746
+ * Garbage Collector Time = 0.062930216</code></pre><p>In our example, the solution is storage in <code>sol</code> whose type is <code>ConformationOutput</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol)
+ConformationOutput</code></pre><p>The <code>ConformationOutput</code> type, has the following fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(ConformationOutput)
+(:number, :molecules, :elapsedtime, :bytes, :gctime)</code></pre><p>The field <code>number</code> corresponds to the number of solutions. The field <code>molecules</code> is a dictionary of where associated to each key we have a solution of <code>MoleculeType</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol.molecules[1])
+MoleculeType</code></pre><p>A <code>MoleculeType</code> has two fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(MoleculeType)
+(:atoms, :lde)</code></pre><p>In our example this has the following values</p><pre><code class="language-julia-repl">julia&gt; 	sol.molecules[1].atoms
+15-element Array{AtomType,1}:
+ AtomType(0.0, 0.0, 0.0)
+ AtomType(-1.526, 0.0, 0.0)
+ AtomType(-2.034999999999995, 1.4379999999999997, 0.0)
+ AtomType(-1.674999999999997, 2.1060000000000003, -1.3239999999999965)
+ AtomType(-2.4299999999999944, 3.426000000000001, -1.449999999999998)
+ AtomType(-1.9960000000000164, 4.140999999999982, -2.726000000000016)
+ AtomType(-0.47700000000001164, 4.283999999999978, -2.738000000000042)
+ AtomType(-0.05900000000000932, 5.365999999999996, -1.7460000000000584)
+ AtomType(-0.6160000000000023, 6.71299999999999, -2.1980000000000803)
+ AtomType(-2.1380000000000035, 6.632999999999996, -2.283000000000105)
+ AtomType(-2.706000000000002, 6.282000000000034, -0.9110000000000915)
+ AtomType(-4.211000000000007, 6.055000000000045, -1.0260000000000813)
+ AtomType(-4.863999999999998, 7.281000000000017, -1.6600000000001371)
+ AtomType(-5.922122878027751, 7.841170383964165, -0.7130897001703517)
+ AtomType(-6.066369328967148, 9.342642843087823, -0.9430775604685658)
+
+julia&gt; 	sol.molecules[1].lde
+7.658904315532294e-28</code></pre><p>The other fields of <code>ConformationOutput</code> are self-explanatory and used to just to analyze the performance of the method.</p><h2 id="About-the-solvers-1"><a class="docs-heading-anchor" href="#About-the-solvers-1">About the solvers</a><a class="docs-heading-anchor-permalink" href="#About-the-solvers-1" title="Permalink"></a></h2><p>Currently, just one solver is available: <code>ClassicBP</code> </p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="index.html">« Home</a><a class="docs-footer-nextpage" href="api.html">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 13 January 2020 14:07">Monday 13 January 2020</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
