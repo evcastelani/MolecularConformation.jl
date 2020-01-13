@@ -23,7 +23,7 @@ The main inspirations for this work are given by:
 # Credits 
 
 - Felipe Fidalgo
-- Guilherme Philip
+- Guilherme Philippi
 - Emerson V. Castelani
 
 
