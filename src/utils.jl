@@ -359,6 +359,29 @@ end
 
 """
 ```
+outputfilter
+```
+This function is especially useful when we need to filter an information about a solution in ConformationOutput. For example, let us suppose that we want to compute the worst LDE measure. So, we need to type:
+
+julia> a = conformation(data,option)
+
+julia> outputfilter(a,"lde")
+"""
+function outputfilter(a::ConformationOutput,option="lde")
+            mol = a.molecules
+            num = a.number
+            if option == "lde"
+                    vlde = zeros(num)
+    
+                    for i=1:num
+                            vlde[i]=mol[i].lde
+                    end
+            return minimum(vlde)
+            end
+    end
+
+"""
+```
 build_distance_matrix
 ```
 This function can be useful to visualize a the distance array associated to an
