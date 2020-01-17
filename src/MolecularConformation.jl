@@ -2,7 +2,7 @@ module MolecularConformation
 		
 	export  preprocessing,NMRInfo,NMRType,conformation,ConformationSetup,ConformationOutput,
 			AtomType,MoleculeType,classicBP, classicBP_closure,
-			quaternion_bp,≈,generate_virtual_path, bondangle,torsionangle,torsionmatrix,
+			quaternionBP,≈,generate_virtual_path, bondangle,torsionangle,torsionmatrix,
 			pruningtest,LDE,build_distance_matrix
 	
 	
