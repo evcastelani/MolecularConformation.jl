@@ -1,7 +1,7 @@
 name = "MolecularConformation"
 uuid = "727cb4de-92cd-11e9-02b2-7deda15fe764"
 authors = ["evcastelani <emersonvitor@gmail.com>", "Guilherme Philippi", "Felipe Fidalgo"]
-version = "0.1.2"
+version = "0.1.3"
 
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
