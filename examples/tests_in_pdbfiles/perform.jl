@@ -1,6 +1,29 @@
 using MolecularConformation, PrettyTables
 
-function perform(;allsolutions=false,highlight="PT",color = :yellow)
+"""
+The perform functions is used to run tests in order to compare algorithms.
+The use is pretty simple but depends on PrettyTable.jl package. Consequently, 
+the user need to install this package. To run perform script just type (inside 
+examples/tests_in_pdbfiles folder):
+
+julia> include(perform.jl)
+julia> perform()
+
+As output a table is printed and .tex file is write in file. Several arguments can 
+be modified. By default the perform() function has the following arguments
+perform(;writefile="latex",allsolutions=false,highlight="PT",color = :yellow)
+
+As optional argument we can setup if we want all solutions:
+julia> perform(allsolutions=true)
+
+Or what aspect of the table given by output we want highlighted:
+julia> perform(highlight="PT") # for best processing time
+julia> perform(highlight="LDE") #for best LDE
+
+Changing writefile="html" and output.html file is provided.
+
+"""
+function perform(;writefile=:latex,allsolutions=false,highlight="PT",color = :yellow)
 
 	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions)
 	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions)
@@ -45,6 +68,15 @@ function perform(;allsolutions=false,highlight="PT",color = :yellow)
 	end
 	
 	pretty_table(content,table_header;highlighters=(H1,H2))
+	if writefile==:latex
+		open("output.tex","w") do f
+			pretty_table(f,content,table_header,backend=:latex)
+		end
+	else	
+		open("output.html","w") do f
+			pretty_table(f,content,table_header,backend=:html)
+		end
+	end
 end
 
 
