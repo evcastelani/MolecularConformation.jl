@@ -534,4 +534,15 @@ function rot(Q::Quaternion,t::Float64)
 	return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
 end
 
-
+# to be fair with memory acess in comparations
+function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
+	C=zeros(4,4)
+	for i=1:4
+		for j=1:4
+			for k=1:4
+				C[i,j]= C[i,j]+A[i,k]*B[k,j]
+			end
+		end
+	end
+	return C 
+end

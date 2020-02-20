@@ -53,7 +53,7 @@ function classicBP(NMRdata :: NMRType,
 			B[2,4] = D23*sθ
 			B[3,3] = 1.0
 			B[4,4] = 1.0
-			C = C*B
+			C = prodmatrix(C,B)
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
@@ -99,7 +99,7 @@ function classicBP(NMRdata :: NMRType,
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
-				C = C_before*B
+				C = prodmatrix(C_before,B)
 				keep = false
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
@@ -107,11 +107,11 @@ function classicBP(NMRdata :: NMRType,
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
 
-				Virtual_Torsion = C_before*B
+				Virtual_Torsion = prodmatrix(C_before,B)
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
 				end
-				C_before = C_before*B	
+				C_before = prodmatrix(C_before,B)	
 
 
 				@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
@@ -141,7 +141,7 @@ function classicBP(NMRdata :: NMRType,
 			@goto exit
 		end
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
-		C = C_before*B
+		C = prodmatrix(C_before,B)
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
