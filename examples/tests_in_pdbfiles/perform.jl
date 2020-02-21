@@ -2,9 +2,9 @@ using MolecularConformation, PrettyTables
 
 """
 The perform functions is used to run tests in order to compare algorithms.
-The use is pretty simple but depends on PrettyTable.jl package. Consequently, 
-the user need to install this package. To run perform script just type (inside 
-examples/tests_in_pdbfiles folder):
+The use is pretty simple but depends on PrettyTables.jl package. Consequently, 
+the user need to install this package (installation: pkg> add PrettyTables).
+To run perform script just type (inside examples/tests_in_pdbfiles folder):
 
 julia> include(perform.jl)
 julia> perform()
