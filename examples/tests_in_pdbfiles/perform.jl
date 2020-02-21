@@ -33,7 +33,7 @@ function perform(;writefile=:latex,allsolutions=false,highlight="PT",color = :ye
 	sol = conformation(data,opt_classic);
 	sol = conformation(data,opt_quaternion);
 	# run to all
-	list_of_problems = ["pdb1a03.nmr","pdb1a57.nmr","pdb1a7f.nmr"]
+	list_of_problems = ["pdb1a03.nmr"]
 	table_header = ["problem", "method", "LDE", "PT ", "Number of solutions"]
 	# defing array to storage table 
 	content = Array{Any,2}(undef,2*length(list_of_problems),5)
