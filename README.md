@@ -1,7 +1,8 @@
 # MolecularConformation.jl
 
-![Build Status](https://travis-ci.com/evcastelani/MolecularConformation.jl.svg?branch=master)
-![codecov.io](http://codecov.io/github/evcastelani/MolecularConformation.jl/coverage.svg?branch=master)
+[![Build Status](https://travis-ci.com/evcastelani/MolecularConformation.jl.svg?branch=master)](https://travis-ci.com/evcastelani/MolecularConformation.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/rxequ5lhhisgw196/branch/master?svg=true)](https://ci.appveyor.com/project/evcastelani/molecularconformation-jl/branch/master)
+[![codecov](https://codecov.io/gh/evcastelani/MolecularConformation.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/evcastelani/MolecularConformation.jl)
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://evcastelani.github.io/MolecularConformation.jl/stable)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://evcastelani.github.io/MolecularConformation.jl/dev)
 
