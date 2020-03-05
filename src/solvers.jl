@@ -190,6 +190,7 @@ function classicBP(NMRdata :: NMRType,
 	C = zeros(4,4)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
+	count_op =0
 	classicBP_closure(1,1,mol,C)
 	println(" *** number of main operations evaluated $(count_op)")
 	return nsol, storage_mol
