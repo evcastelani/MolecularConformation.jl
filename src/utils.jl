@@ -195,6 +195,7 @@ mutable struct ConformationOutput
 	elapsedtime :: Any
 	bytes :: Any 
 	gctime :: Any
+	nop :: Int64
 end
 
 

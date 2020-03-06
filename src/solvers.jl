@@ -192,8 +192,8 @@ function classicBP(NMRdata :: NMRType,
 	storage_mol = Dict{Int64,MoleculeType}()
 	count_op =0
 	classicBP_closure(1,1,mol,C)
-	println(" *** number of main operations evaluated $(count_op)")
-	return nsol, storage_mol
+#	println(" *** number of main operations evaluated $(count_op)")
+	return nsol, storage_mol,count_op
 
 end #solver classicBP
 
@@ -386,7 +386,7 @@ function quaternionBP(NMRdata :: NMRType,
 	count_op = 0
 	quaternionBP_closure(1,1,mol,Q)
 	println(" *** number of main operations evaluated $(count_op)")
-	return nsol, storage_mol
+	return nsol, storage_mol,count_op
 
 end #solver quaternionBO 
 
