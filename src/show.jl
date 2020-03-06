@@ -11,4 +11,5 @@ function Base.show(io::IO, c::ConformationOutput)
 	print(io," * Elapsed Time = $(c.elapsedtime)\n")
 	print(io," * Allocated Memory = $(c.bytes)\n")
 	print(io," * Garbage Collector Time = $(c.gctime)\n")
+	print(io," * Number of main operations = $(c.nop \n)")
 end
