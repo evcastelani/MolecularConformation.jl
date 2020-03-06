@@ -34,7 +34,7 @@ function perform(;writefile=:latex,allsolutions=false,highlight="PT",color = :ye
 	sol = conformation(data,opt_quaternion);
 	# run to all
 	list_of_problems = ["pdb1a03.nmr"]
-	table_header = ["problem", "method", "LDE", "PT ", "Number of solutions"]
+	table_header = ["problem", "method", "LDE", "PT ", "Number of solutions","Number of Operations"]
 	# defing array to storage table 
 	content = Array{Any,2}(undef,2*length(list_of_problems),5)
 	k=1
@@ -46,6 +46,7 @@ function perform(;writefile=:latex,allsolutions=false,highlight="PT",color = :ye
 		content[k,3] = outputfilter(sol,"lde")
 		content[k,4] = sol.elapsedtime
 		content[k,5] = sol.number
+		content[k,6] = sol.nop
 		k = k+1
 
 	
@@ -55,6 +56,7 @@ function perform(;writefile=:latex,allsolutions=false,highlight="PT",color = :ye
 		content[k,3] = outputfilter(sol,"lde")
 		content[k,4] = sol.elapsedtime
 		content[k,5] = sol.number
+		content[k,6] = sol.nop
 		k = k+1
 	end
 	if highlight == "PT"
