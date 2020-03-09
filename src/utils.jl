@@ -556,7 +556,7 @@ end
 
 
 function rot(Q::Quaternion,t::Float64)
-	return qprod(Quaternion([-Q.comp[2]*t,Q.comp[1]*t,Q.comp[4]*t,-Q.comp[3]*t]),conj(Q)])
+	return qprod(Quaternion([-Q.comp[2]*t,Q.comp[1]*t,Q.comp[4]*t,-Q.comp[3]*t]),conj(Q))
 end
 
 # to be fair with memory acess in comparations
