@@ -500,39 +500,63 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 end
 
 # Quaternion small library
-mutable struct Quaternion
+mutable struct Quaternion_old
 	s :: Float64
 	v1 :: Float64
 	v2 :: Float64
 	v3 :: Float64
 end
 
-function qsign(q::Quaternion)
-	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
+mutable struct Quaternion
+	comp :: Vector{Float64}
 end
+
+#function qsign_old(q::Quaternion)
+#	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
+#end
+
+function qsign(q::Quaternion)
+	return Quaternion(-q.comp)
+end
+
+#function qsum_old(q::Quaternion,w::Quaternion)
+#	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
+#end
 
 function qsum(q::Quaternion,w::Quaternion)
-	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
+	return Quaternion(q.comp+w.comp)
 end
+
+#function qminus_old(q::Quaternion,w::Quaternion)
+#	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
+#end
 
 function qminus(q::Quaternion,w::Quaternion)
-	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
+	return Quaternion(q.comp-w.comp)
 end
     
+#function qprod_old(q::Quaternion,w::Quaternion)
+#	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
+#                          q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
+#                          q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
+#                          q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+#end
+
 function qprod(q::Quaternion,w::Quaternion)
-	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
-                           q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
-                           q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
-                           q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+	return  Quaternion([q.comp[1] * w.comp[1] - q.comp[2] * w.comp[2] - q.comp[3] * w.comp[3] - q.comp[4] * w.comp[4], 
+			    q.comp[1] * w.comp[2] + q.comp[2] * w.comp[1] + q.comp[3] * w.comp[4] - q.comp[4] * w.comp[3],
+			    q.comp[1] * w.comp[3] - q.comp[2] * w.comp[4] + q.comp[3] * w.comp[1] + q.comp[4] * w.comp[2],
+			    q.comp[1] * w.comp[4] + q.comp[2] * w.comp[3] - q.comp[3] * w.comp[2] + q.comp[4] * w.comp[1]])
 end
 
+
 function conj(q::Quaternion)
-	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
+	return  Quaternion([q.comp[1], -q.comp[2], -q.comp[3], -q.comp[4]])
 end
 
 
 function rot(Q::Quaternion,t::Float64)
-	return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
+	return qprod(Quaternion([-Q.comp[2]*t,Q.comp[1]*t,Q.comp[4]*t,-Q.comp[3]*t]),conj(Q)])
 end
 
 # to be fair with memory acess in comparations

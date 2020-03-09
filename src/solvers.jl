@@ -223,7 +223,7 @@ function quaternionBP(NMRdata :: NMRType,
 			mol.atoms[2].x = -NMRdata.info[1,2].dist
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
-			Q_before = Quaternion(0.0,0.0,-1.0,0.0)
+			Q_before = Quaternion([0.0,0.0,-1.0,0.0])
 			# tird atom
 			D12 = NMRdata.info[1,2].dist
 			D13 = NMRdata.info[1,3].dist
@@ -232,11 +232,11 @@ function quaternionBP(NMRdata :: NMRType,
 			D24 = 0.0
 			D34 = 0.0
 			cθ,sθ = qbondangle(D12,D13,D23)
-			Q = qprod(Q_before,Quaternion(sθ,0.0,0.0,cθ))
+			Q = qprod(Q_before,Quaternion([sθ,0.0,0.0,cθ]))
 			qmol = rot(Q,D23)
-			mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
-			mol.atoms[3].y = qmol.v2 + mol.atoms[2].y
-			mol.atoms[3].z = qmol.v3 + mol.atoms[2].z
+			mol.atoms[3].x = qmol.comp[2] + mol.atoms[2].x
+			mol.atoms[3].y = qmol.comp[3] + mol.atoms[2].y
+			mol.atoms[3].z = qmol.comp[4] + mol.atoms[2].z
 			count_op +=3
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
@@ -248,7 +248,7 @@ function quaternionBP(NMRdata :: NMRType,
 		b = 0.0
 		c = 0.0
 		d = 0.0 
-		Q_before = Q
+		Q_before = Quaternion(Q.comp)
 		keep = true
 		while keep
 			try
@@ -298,24 +298,24 @@ function quaternionBP(NMRdata :: NMRType,
 			count_op+=4
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
-				Q = qprod(Q_before,Quaternion(a,b,c,d))
+				Q = qprod(Q_before,Quaternion([a,b,c,d]))
 				count_op += 28
 				keep = false
 				lastpos = pos
 			else
-				Q_virtual = qprod(Q_before,Quaternion(a,b,c,d))
+				Q_virtual = qprod(Q_before,Quaternion([a,b,c,d]))
 				count_op += 28
 				qmol = rot(Q_virtual,D34) #? is 34?
 				count_op += 32
-				vx = qmol.v1 + mol.atoms[NMRdata.virtual_path[pos-1]].x-mol.atoms[NMRdata.virtual_path[pos]].x
-				vy = qmol.v2 + mol.atoms[NMRdata.virtual_path[pos-1]].y-mol.atoms[NMRdata.virtual_path[pos]].y
-				vz = qmol.v3 + mol.atoms[NMRdata.virtual_path[pos-1]].z-mol.atoms[NMRdata.virtual_path[pos]].z
+				vx = qmol.comp[2] + mol.atoms[NMRdata.virtual_path[pos-1]].x-mol.atoms[NMRdata.virtual_path[pos]].x
+				vy = qmol.comp[3] + mol.atoms[NMRdata.virtual_path[pos-1]].y-mol.atoms[NMRdata.virtual_path[pos]].y
+				vz = qmol.comp[4] + mol.atoms[NMRdata.virtual_path[pos-1]].z-mol.atoms[NMRdata.virtual_path[pos]].z
 				count_op += 10 #(included square power and root)
 				if sqrt(vx^2+vy^2+vz^2)> virtual_ε
-					Q_before = qprod(Q_before,Quaternion(a,-b,-c,d))
+					Q_before = qprod(Q_before,Quaternion([a,-b,-c,d]))
 					count_op +=28
 				else
-					Q_before = Q_virtual
+					Q_before.comp = copy(Q_virtual.comp)
 				end
 				#qmol_aux = rot(Q_before,D34) #? is 34?
 				#vx = qmol_aux.v1 + mol.atoms[NMRdata.virtual_path[pos-1]].x
@@ -327,9 +327,9 @@ function quaternionBP(NMRdata :: NMRType,
 		end
 		qmol = rot(Q,D34)
 		count_op += 32
-		mol.atoms[l].x = qmol.v1 + mol.atoms[NMRdata.virtual_path[lastpos-1]].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[NMRdata.virtual_path[lastpos-1]].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[NMRdata.virtual_path[lastpos-1]].z
+		mol.atoms[l].x = qmol.comp[2] + mol.atoms[NMRdata.virtual_path[lastpos-1]].x
+		mol.atoms[l].y = qmol.comp[3] + mol.atoms[NMRdata.virtual_path[lastpos-1]].y
+		mol.atoms[l].z = qmol.comp[4] + mol.atoms[NMRdata.virtual_path[lastpos-1]].z
 		count_op += 3
 		@debug "candidate atom by right side at level $(l) = $(mol.atoms[l].x),$(mol.atoms[l].y),$(mol.atoms[l].z)"
 		λ  = pruningtest(mol,l,NMRdata,ε) 
@@ -348,13 +348,13 @@ function quaternionBP(NMRdata :: NMRType,
 			@debug "number of solutions"  nsol
 			@goto exit
 		end
-		Q = qprod(Q_before,Quaternion(a,-b,-c,d))
+		Q = qprod(Q_before,Quaternion([a,-b,-c,d]))
 		count_op +=28
 		qmol = rot(Q,D34)
 		count_op +=32
-		mol.atoms[l].x = qmol.v1 + mol.atoms[NMRdata.virtual_path[lastpos-1]].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[NMRdata.virtual_path[lastpos-1]].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[NMRdata.virtual_path[lastpos-1]].z
+		mol.atoms[l].x = qmol.comp[2] + mol.atoms[NMRdata.virtual_path[lastpos-1]].x
+		mol.atoms[l].y = qmol.comp[3] + mol.atoms[NMRdata.virtual_path[lastpos-1]].y
+		mol.atoms[l].z = qmol.comp[4] + mol.atoms[NMRdata.virtual_path[lastpos-1]].z
 		count_op += 3
 		@debug "candidate atom by left side at level $(l) = $(mol.atoms[l].x),$(mol.atoms[l].y),$(mol.atoms[l].z)"
 		ρ  = pruningtest(mol,l,NMRdata,ε) #preciso modificar
@@ -380,7 +380,7 @@ function quaternionBP(NMRdata :: NMRType,
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
 	end
-	Q = Quaternion(0.0,0.0,0.0,0.0)
+	Q = Quaternion([0.0,0.0,0.0,0.0])
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 	count_op = 0
