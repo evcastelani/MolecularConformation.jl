@@ -379,6 +379,16 @@ function outputfilter(a::ConformationOutput,option="lde")
                     end
             return minimum(vlde)
             end
+	    if option == "xyz"
+		    nl = length(a.molecules[1].atoms)
+		    solxyz = zeros(nl,3)
+		    for i=1:nl
+			    solxyz[i,1] = a.molecules[1].atoms[i].x
+			    solxyz[i,2] = a.molecules[1].atoms[i].y
+			    solxyz[i,3] = a.molecules[1].atoms[i].z
+		    end
+		    return solxyz
+	    end
     end
 
 """
