@@ -381,13 +381,14 @@ function outputfilter(a::ConformationOutput,option="lde")
             end
 	    if option == "xyz"
 		    nl = length(a.molecules[1].atoms)
-		    solxyz = zeros(nl,3)
-		    for i=1:nl
-			    solxyz[i,1] = a.molecules[1].atoms[i].x
-			    solxyz[i,2] = a.molecules[1].atoms[i].y
-			    solxyz[i,3] = a.molecules[1].atoms[i].z
+		    A=Array{Vector{Float64},2}(undef,nl,num)
+		    for j=1:num
+			    for i=1:nl
+				    A[i,j]=[a.molecules[i].atoms[j].x, a.molecules[i].atoms[j].y,
+					     a.molecules[i].atoms[j].z]
+			    end
 		    end
-		    return solxyz
+		    return A
 	    end
     end
 
