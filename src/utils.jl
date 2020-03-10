@@ -368,7 +368,7 @@ julia> a = conformation(data,option)
 
 julia> outputfilter(a,"lde")
 """
-function outputfilter(a::ConformationOutput; option::String = "lde")
+function outputfilter(a::ConformationOutput, option = "lde")
             mol = a.molecules
             num = a.number
             if option == "lde"
