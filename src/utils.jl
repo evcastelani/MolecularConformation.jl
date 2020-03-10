@@ -384,8 +384,8 @@ function outputfilter(a::ConformationOutput, option = "lde")
 		    A=Array{Vector{Float64},2}(undef,nl,num)
 		    for j=1:num
 			    for i=1:nl
-				    A[i,j]=[a.molecules[i].atoms[j].x, a.molecules[i].atoms[j].y,
-					     a.molecules[i].atoms[j].z]
+				    A[i,j]=[a.molecules[j].atoms[i].x, a.molecules[j].atoms[i].y,
+					     a.molecules[j].atoms[i].z]
 			    end
 		    end
 		    return A
