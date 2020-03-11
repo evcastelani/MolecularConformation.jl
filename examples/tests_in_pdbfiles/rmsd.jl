@@ -24,7 +24,7 @@ function rmsd(x,y)
 	end
 	rmsd_before = sqrt(rmsd_before/n)
 	rmsd_after = sqrt(rmsd_after/n)
-	println(" rmsd before = ", rmsd_before)
-	println(" rmsd after = ", rmsd_after)
-	return rmsd_before,rmsd_after
+#	println(" rmsd before = ", rmsd_before)
+#	println(" rmsd after = ", rmsd_after)
+	return [rmsd_before,rmsd_after]
 end

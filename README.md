@@ -47,15 +47,16 @@ As return a `ConformationOutput` type is provided with all required information.
 ## TO DO
 
 
+
 1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
 1. [X] Include signs vector (this idea doesn't work);
 1. [X] Include in the data list the information about both atoms not just one 
 1. [X] Include in the data list the symmetry in the information too;
-1. [ ] Discuss preprocessing;
+1. [X] Discuss preprocessing;
 1. [ ] Optimize redundant plan;
 1. [ ] Implement chirality;
 1. [ ] Optimize torsion angle in the repeating process;
 1. [X] Modify the quaternion version to new input and improvements;
-1. [ ] Run all examples and create a table of tests;
+1. [X ] Run all examples and create a table of tests;
 1. [X] Include a decent documentation using `Documenter.jl`.
 
