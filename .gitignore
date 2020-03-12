@@ -1,6 +1,6 @@
-tests_in_pdbfiles/1A03.pdb
-tests_in_pdbfiles/output.html
-tests_in_pdbfiles/output.tex
+examples/tests_in_pdbfiles/1A03.pdb
+examples/tests_in_pdbfiles/output.html
+examples/tests_in_pdbfiles/output.tex
 examples/1.xyz
 examples/2.xyz
 examples/PDB/
