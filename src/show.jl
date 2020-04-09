@@ -5,11 +5,8 @@ function Base.show(io::IO, c::ConformationOutput)
 	for k=1:c.number
 		print(io,"   Molecule $(k) with LDE = $(c.molecules[k].lde) \n")
 		for i=1:n
-			print(io,"$(c.molecules[k].atoms[i])) \n")
-			print(io,"    ( $(c.molecules[k].atoms[i].x) , $(c.molecules[k].atoms[i].y) ,  $(c.molecules[k].atoms[i].z) ) \n")
-			print(io,"      ( $(c.molecules[k].atoms[i].x̂.x) , $(c.molecules[k].atoms[i].x̂.y) ,  $(c.molecules[k].atoms[i].x̂.z) ) \n")
-			print(io,"      ( $(c.molecules[k].atoms[i].ŷ.x) , $(c.molecules[k].atoms[i].ŷ.y) ,  $(c.molecules[k].atoms[i].ŷ.z) ) \n")
-			print(io,"      ( $(c.molecules[k].atoms[i].ẑ.x) , $(c.molecules[k].atoms[i].ẑ.y) ,  $(c.molecules[k].atoms[i].ẑ.z) ) \n")
+			out = [[c.molecules[k].atoms[i].x̂.x c.molecules[k].atoms[i].x̂.y c.molecules[k].atoms[i].x̂.z 0]' [c.molecules[k].atoms[i].ŷ.x c.molecules[k].atoms[i].ŷ.y c.molecules[k].atoms[i].ŷ.z 0]' [c.molecules[k].atoms[i].ẑ.x c.molecules[k].atoms[i].ẑ.y c.molecules[k].atoms[i].ẑ.z 0]' [c.molecules[k].atoms[i].x c.molecules[k].atoms[i].y c.molecules[k].atoms[i].z 1]']
+			print(io,"$(out)) \n")
 		end
 	end
 	print(io," * Elapsed Time = $(c.elapsedtime)\n")
