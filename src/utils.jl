@@ -429,7 +429,7 @@ end
 
 
 function Base.copy(A::AtomType)
-	return AtomType(A.x,A.y,A.z)
+	return AtomType(A.x,A.y,A.z,A.x̂,A.ŷ,A.ẑ)
 end
 
 function Base.copy(M::MoleculeType)
