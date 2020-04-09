@@ -165,6 +165,13 @@ AtomType :: Type
 ```
 It is the most primitive type and it is used to store the spatial positions of atoms. It is a mutable type. This type has three field: .x, .y and .z
 """
+
+mutable struct AxeType
+	x :: Float64
+	y :: Float64
+	z :: Float64
+end
+
 mutable struct AtomType
 	x :: Float64
 	y :: Float64
@@ -173,13 +180,6 @@ mutable struct AtomType
 	ŷ :: AxeType
 	ẑ :: AxeType
 end
-
-mutable struct AxeType
-	x :: Float64
-	y :: Float64
-	z :: Float64
-end
-
 
 """
 ```
