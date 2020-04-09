@@ -169,6 +169,15 @@ mutable struct AtomType
 	x :: Float64
 	y :: Float64
 	z :: Float64
+	x̂ :: AxeType
+	ŷ :: AxeType
+	ẑ :: AxeType
+end
+
+mutable struct AxeType
+	x :: Float64
+	y :: Float64
+	z :: Float64
 end
 
 

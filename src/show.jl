@@ -6,6 +6,7 @@ function Base.show(io::IO, c::ConformationOutput)
 		print(io,"   Molecule $(k) with LDE = $(c.molecules[k].lde) \n")
 		for i=1:n
 			print(io,"    ( $(c.molecules[k].atoms[i].x) , $(c.molecules[k].atoms[i].y) ,  $(c.molecules[k].atoms[i].z) ) \n")
+			print(io,"        ( $(c.molecules[k].atoms[i].x̂.x) , $(c.molecules[k].atoms[i].x̂.y) ,  $(c.molecules[k].atoms[i].x̂.z) ) \n")
 		end
 	end
 	print(io," * Elapsed Time = $(c.elapsedtime)\n")
