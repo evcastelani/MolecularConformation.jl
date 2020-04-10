@@ -1,0 +1,21 @@
+HEADER    LAVOR-INSTANCES                         08-DEC-97   1A03              
+TITLE     THE THREE-DIMENSIONAL LAVOR INSTANCE OF LENGHT 15                     
+MODEL        1                                                                  
+ATOM      1  H1  MET A   1       0.000   0.000   0.000  1.00  0.00           H  
+ATOM      2  H2  MET A   1      -1.526   0.000   0.000  1.00  0.00           H  
+ATOM      3  H3  MET A   1      -2.035   1.438   0.000  1.00  0.00           H  
+ATOM      4  H4  MET A   1      -1.675   2.106  -1.324  1.00  0.00           H  
+ATOM      5  H5  MET A   1      -2.430   3.426  -1.450  1.00  0.00           H  
+ATOM      6  H6  MET A   1      -1.996   4.141  -2.726  1.00  0.00           H  
+ATOM      7  H7  MET A   1      -0.477   4.284  -2.738  1.00  0.00           H  
+ATOM      8  H8  MET A   1      -0.059   5.366  -1.746  1.00  0.00           H  
+ATOM      9  H9  MET A   1      -0.616   6.713  -2.198  1.00  0.00           H  
+ATOM     10  H10 MET A   1      -2.138   6.633  -2.283  1.00  0.00           H  
+ATOM     11  H11 MET A   1      -2.706   6.282  -0.911  1.00  0.00           H  
+ATOM     12  H12 MET A   1      -4.211   6.055  -1.026  1.00  0.00           H  
+ATOM     13  H13 MET A   1      -4.864   7.281  -1.660  1.00  0.00           H  
+ATOM     14  H14 MET A   1      -6.302   6.948  -2.049  1.00  0.00           H  
+ATOM     15  H15 MET A   1      -7.122   6.687  -0.789  1.00  0.00           H                                   
+ENDMDL                                                                          
+MASTER        0    0    0    0    0    0    0    15    0    0    0              
+END                                                                             

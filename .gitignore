@@ -1,2 +1,16 @@
 # Ignore build subfolder from docs
 docs/build/*
+# ignore folder with big size
+examples/lavor_instances/100
+examples/lavor_instances/200
+examples/lavor_instances/300
+examples/lavor_instances/400
+examples/lavor_instances/500
+examples/lavor_instances/600
+examples/lavor_instances/700
+examples/lavor_instances/800
+examples/lavor_instances/900
+examples/lavor_instances/1000
+examples/lavor_instances/2000
+examples/lavor_instances/3000
+ 

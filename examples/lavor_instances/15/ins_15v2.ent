@@ -1,0 +1,27 @@
+HEADER    LAVOR-INSTANCES                         08-DEC-97   1A03              
+TITLE     THE THREE-DIMENSIONAL LAVOR INSTANCE OF LENGHT 15                                                   
+MODEL        1                                                                  
+ATOM      1  N   MET A   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      2  H1  MET A   1      -1.526   0.000   0.000  1.00  0.00           H  
+ATOM      3  H2  MET A   1      -2.035   1.438   0.000  1.00  0.00           H  
+ATOM      4  CA  MET A   1      -1.675   2.106  -1.324  1.00  0.00           C  
+ATOM      1  N   MET A   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      5  HA  MET A   1      -2.430   3.426  -1.450  1.00  0.00           H  
+ATOM      6  C   MET A   1      -1.996   4.141  -2.726  1.00  0.00           C  
+ATOM      4  CA  MET A   1      -1.675   2.106  -1.324  1.00  0.00           C  
+ATOM      7  H   ALA A   2      -0.477   4.284  -2.738  1.00  0.00           H  
+ATOM      8  CA  ALA A   2      -0.059   5.366  -1.746  1.00  0.00           C  
+ATOM      9  O   MET A   1      -0.616   6.713  -2.198  1.00  0.00           O  
+ATOM     10  N   ALA A   2      -2.138   6.633  -2.283  1.00  0.00           N  
+ATOM      7  H   ALA A   2      -0.477   4.284  -2.738  1.00  0.00           H  
+ATOM      8  CA  ALA A   2      -0.059   5.366  -1.746  1.00  0.00           C  
+ATOM     10  N   ALA A   2      -2.138   6.633  -2.283  1.00  0.00           N  
+ATOM     11  HA  ALA A   2      -2.706   6.282  -0.911  1.00  0.00           H  
+ATOM     12  C   ALA A   2      -4.211   6.055  -1.026  1.00  0.00           C  
+ATOM      8  CA  ALA A   2      -0.059   5.366  -1.746  1.00  0.00           C  
+ATOM     13  H   ALA A   2      -4.864   7.281  -1.660  1.00  0.00           H  
+ATOM     14  CA  SER A   3      -6.302   6.948  -2.049  1.00  0.00           C  
+ATOM     15  O   ALA A   2      -7.122   6.687  -0.789  1.00  0.00           O  
+ENDMDL                                                                          
+MASTER        0    0    0    0    0    0    0    15    0    0    0          
+END                                                                             

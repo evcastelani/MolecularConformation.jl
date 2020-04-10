@@ -1,0 +1,16 @@
+HEADER    LAVOR-INSTANCES                         28-MAR-20   0000              
+TITLE     THE THREE-DIMENSIONAL LAVOR INSTANCE OF LENGHT        10             
+MODEL        1                                                                  
+ATOM      1  H   MET A   1       0.000   0.000   0.000  1.00  0.00           H  
+ATOM      2  H   MET A   1      -1.526   0.000   0.000  1.00  0.00           H  
+ATOM      3  H   MET A   1      -2.035   1.438   0.000  1.00  0.00           H  
+ATOM      4  H   MET A   1      -1.298   2.240   1.069  1.00  0.00           H  
+ATOM      5  H   MET A   1       0.198   1.951   0.981  1.00  0.00           H  
+ATOM      6  H   MET A   1       0.787   2.675  -0.226  1.00  0.00           H  
+ATOM      7  H   MET A   1       0.265   2.034  -1.509  1.00  0.00           H  
+ATOM      8  H   MET A   1       0.712   2.861  -2.710  1.00  0.00           H  
+ATOM      9  H   MET A   1       2.211   2.673  -2.929  1.00  0.00           H  
+ATOM     10  H   MET A   1       2.696   3.647  -3.999  1.00  0.00           H  
+ENDMDL                                                                          
+MASTER        0    0    0    0    0    0    0    10    0    0    0              
+END                                                                             
