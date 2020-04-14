@@ -108,19 +108,24 @@ function classicBP(NMRdata :: NMRType,
 				count_op +=9
 			end	
 			cθ,sθ = bondangle(D23,D24,D34)
-			count_op +=12
+			#count_mop = +12
+			count_op += 12
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
 			count_op += 37
+			#count_mop += 37
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
-				count_op+=9
+				count_op += 9
+				#count_mop += 9
 				C = prodmatrix(C_before,B)
-				count_op +=112
+				count_op += 112
+				#count_mop += 112
 				keep = false
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
-				count_op+=9
+				count_op += 9
+				#count_mop += 112
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z

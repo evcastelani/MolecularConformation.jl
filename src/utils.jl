@@ -555,7 +555,8 @@ end
 # to be fair with memory acess in comparations
 function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	C=zeros(4,4)
-	for i=1:4
+	C[4,4] = 1.0
+	for i=1:3
 		for j=1:4
 			for k=1:4
 				C[i,j]= C[i,j]+A[i,k]*B[k,j]
