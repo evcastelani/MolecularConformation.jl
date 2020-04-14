@@ -32,6 +32,8 @@ module MolecularConformation
 	julia> conformation(NMRdata,options)
 	```
 	as return a ConformationOutput type is provided.
+
+	There are others parameters to setup, for example, ...
 	"""
 	function conformation(NMRdata::NMRType,
 			           cs::ConformationSetup)
