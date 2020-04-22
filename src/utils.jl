@@ -313,7 +313,7 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
 		B[3,1] = -sinθ*sinω
 		B[3,2] = cosθ*sinω
 		B[3,3] = cosω
-		B[3,4] = -d34*B[3,1] 
+		B[3,4] = d34*B[3,1] 
 		B[4,4] = 1
 	
 	end
