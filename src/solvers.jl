@@ -138,7 +138,7 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
 		count = [0,0,0,0]
-		λ , count  = pruningtest(mol,l,NMRdata,ε,count_nop) 
+		λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
 		count_nop += count
 		@debug "C at level $(l) right side " C
 		if λ == 1 
@@ -167,7 +167,8 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
-		ρ ,count = pruningtest(mol,l,NMRdata,ε,count_nop) #preciso modificar
+		count = [0,0,0,0]
+		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
 		count_nop += count 
 		@debug "C at level $(l) left side " C
 		if ρ == 1 
