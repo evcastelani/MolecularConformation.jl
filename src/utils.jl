@@ -212,7 +212,7 @@ mutable struct ConformationOutput
 	solver :: Function
 	number :: Int64
 	molecules :: Dict{Int64,MoleculeType}
-	nop :: Int64
+	nop :: Vector{Int64}
 	nbranch :: Int64
 	nprune :: Int64
 end
@@ -265,9 +265,8 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 		@debug "some problem in torsion angle"
 		return -2
 	end
-	e = sqrt(e)
-	f = sqrt(f)
-	valc = (a - b*c)/(e*f)
+	ef = sqrt(e*f)
+	valc = (a - b*c)/(ef)
 	if (valc < -1.0)  
 		valc = -1.0
 	end
@@ -295,11 +294,11 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
 		B[2,1] = sinθ*cosω
 		B[2,2] = -cosθ*cosω
 		B[2,3] = -sinω
-		B[2,4] = d34*sinθ*cosω
+		B[2,4] = d34*B[2,1]
 		B[3,1] = sinθ*sinω
 		B[3,2] = -cosθ*sinω
 		B[3,3] = cosω
-		B[3,4] = d34*sinθ*sinω 
+		B[3,4] = d34*B[3,1] 
 		B[4,4] = 1
 	else
 	
@@ -310,11 +309,11 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
 		B[2,1] = sinθ*cosω
 		B[2,2] = -cosθ*cosω
 		B[2,3] = sinω
-		B[2,4] = d34*sinθ*cosω
+		B[2,4] = d34*B[2,1]
 		B[3,1] = -sinθ*sinω
 		B[3,2] = cosθ*sinω
 		B[3,3] = cosω
-		B[3,4] = -d34*sinθ*sinω 
+		B[3,4] = -d34*B[3,1] 
 		B[4,4] = 1
 	
 	end
@@ -328,23 +327,25 @@ pruningtest :: Function
 This functions is an auxiliary function used to test if some molecule is 
 feasible or not.
 """
-function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64)
+function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64,count::Vector{Float64})
 	if isempty(D.additional_distance[i])
 
 		@debug "result of prunning 1"
-		return 1
+		return 1,count
 	else
 		for j in D.additional_distance[i]
 			dij =  (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
+			count += [5,3,0,0]
 			if (D.info[i,j].dist^2 -dij)^2 >ε
+				count += [1,1,0,0]
 				@debug "result of prunning 0"
-				return 0
+				return 0,count
 			end
 		end
 	end
 
 	@debug "result of prunning 1"
-	return 1 
+	return 1,count
 end
 
 
@@ -489,6 +490,7 @@ function qbondangle(d23,d24,d34)
 	end
 	cm = c/2.0 
 	return sqrt(0.5 + cm),sqrt(0.5 - cm)
+	# number of operations =  13
 end
 
 function qtorsionangle(d12,d13,d14,d23,d24,d34)
@@ -514,6 +516,7 @@ function qtorsionangle(d12,d13,d14,d23,d24,d34)
 	end
 	cm = valc/2.0
 	return sqrt(0.5+cm),sqrt(0.5-cm)
+	# number of operations = 39 
 end
 
 # Quaternion small library
@@ -541,6 +544,7 @@ function qprod(q::Quaternion,w::Quaternion)
                            q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
                            q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
                            q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+	# number of operations = 28
 end
 
 function conj(q::Quaternion)
@@ -550,6 +554,7 @@ end
 
 function rot(Q::Quaternion,t::Float64)
 	return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
+	# number of operations = 32
 end
 
 # to be fair with memory acess in comparations
@@ -558,7 +563,8 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	C[4,4] = 1.0
 	for i=1:3
 		for j=1:4
-			for k=1:4
+			C[i,j] = A[i,1]*B[1,j]
+			for k=2:4
 				C[i,j]= C[i,j]+A[i,k]*B[k,j]
 			end
 		end

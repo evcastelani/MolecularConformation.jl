@@ -14,7 +14,7 @@ function Base.show(io::IO, c::ConformationOutput)
 		end
 	
 	end
-	print(io," * Number of main operations = $(c.nop) \n")
+	print(io," * Number of main operations [+-,*,/,√] = $(c.nop) \n")
 	print(io," * Number of branchs  = $(c.nbranch) \n")
 	print(io," * Number of pruning  = $(c.nprune) \n")
 end
