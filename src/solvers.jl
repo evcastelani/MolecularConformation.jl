@@ -64,7 +64,7 @@ function classicBP(NMRdata :: NMRType,
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
-
+		B = zeros(4,4)
 		λ = 1
 		ρ = 1
 		C_before = zeros(4,4)
