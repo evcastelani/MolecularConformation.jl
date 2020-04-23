@@ -284,7 +284,7 @@ torsionmatrix :: Function
 ```
 This is an auxiliary function  used by ClassicBP solver to compute the torsion array.
 """
-function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
+function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 	if sign == true
 	
 		B=zeros(4,4)
@@ -302,19 +302,9 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,sign::Bool)
 		B[4,4] = 1
 	else
 	
-		B=zeros(4,4)
-		B[1,1] = -cosθ
-		B[1,2] = -sinθ
-		B[1,4] = -d34*cosθ
-		B[2,1] = sinθ*cosω
-		B[2,2] = -cosθ*cosω
-		B[2,3] = sinω
-		B[2,4] = d34*B[2,1]
-		B[3,1] = -sinθ*sinω
-		B[3,2] = cosθ*sinω
-		B[3,3] = cosω
-		B[3,4] = d34*B[3,1] 
-		B[4,4] = 1
+		B[2,3] = -B[2,3]
+		B[3,1] = -B[3,1]
+		B[3,2] = -B[3,2]
 	
 	end
 	return B
@@ -505,9 +495,8 @@ function qtorsionangle(d12,d13,d14,d23,d24,d34)
 	if (e < 0.0 || f < 0.0)  
 		return -2
 	end
-	e = sqrt(e)
-	f = sqrt(f)
-	valc = (a - b*c)/(e*f)
+	ef = sqrt(e*f)
+	valc = (a - b*c)/(ef)
 	if (valc < -1.0)  
 		valc = -1.0
 	end

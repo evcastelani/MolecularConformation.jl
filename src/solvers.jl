@@ -107,13 +107,13 @@ function classicBP(NMRdata :: NMRType,
 			count_nop += [10,25,1,2]
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,B,true)
 				count_nop += [0,7,0,0]
 				C = prodmatrix(C_before,B)
 				count_nop += [24,33,0,0]
 				keep = false
 			else
-				B = torsionmatrix(cθ,sθ,cω,sω,D34,true)
+				B = torsionmatrix(cθ,sθ,cω,sω,D34,B,true)
 				count_nop += [0,7,0,0]
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
@@ -123,7 +123,7 @@ function classicBP(NMRdata :: NMRType,
 				count_nop += [24,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-					B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
+					B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
 					count_nop += [0,7,0,0]
 				end
 				C_before = prodmatrix(C_before,B)	
@@ -160,7 +160,7 @@ function classicBP(NMRdata :: NMRType,
 			#@info "LDE = " LDE(mol,D,n,nad)
 			@goto exit
 		end
-		B = torsionmatrix(cθ,sθ,cω,sω,D34,false)
+		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
 		count_nop += [0,7,0,0]
 		C = prodmatrix(C_before,B)
 		count_nop += [24,33,0,0]
@@ -215,6 +215,8 @@ This function defines a new solver. The implementation follows ideas describing 
 
 Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotiations in Branch and Prune Algorithtm to solve the Discretizable Molecular Distance Geometry Problem. In: Proceedings of AGACSE 2018, Campinas-SP, Brazil.
 """
+#qbondangle = [4,5,2,2]
+#qtorsionangle = [11,19]
 function quaternionBP(NMRdata :: NMRType,
 		   ε :: Float64,
 		   virtual_ε :: Float64,
