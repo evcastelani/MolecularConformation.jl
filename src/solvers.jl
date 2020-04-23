@@ -124,7 +124,7 @@ function classicBP(NMRdata :: NMRType,
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
-					count_nop += [0,7,0,0]
+					count_nop += [0,0,0,0]
 				end
 				C_before = prodmatrix(C_before,B)	
 				count_nop += [24,33,0,0]
@@ -161,7 +161,7 @@ function classicBP(NMRdata :: NMRType,
 			@goto exit
 		end
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
-		count_nop += [0,7,0,0]
+		count_nop += [0,0,0,0]
 		C = prodmatrix(C_before,B)
 		count_nop += [24,33,0,0]
 		mol.atoms[l].x = C[1,4]
