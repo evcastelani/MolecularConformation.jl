@@ -1,5 +1,5 @@
 function Base.show(io::IO,ct::Counter)
-	print(io,"\n    $(ct.node) <- In nodes")
+	print(io,"    $(ct.node) <- In nodes")
 	print(io,"\n    $(ct.virtual_path) <- In virtual path")
 	print(io,"\n    $(ct.ddf) <- In Direct Distance Feasibility")
 	print(io,"\n    $(ct.branch) <- Number of branches" )
