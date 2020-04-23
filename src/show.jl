@@ -1,3 +1,11 @@
+function Base.show(io::IO,ct::Counter)
+	print(io,"\n    $(ct.node) <- In nodes")
+	print(io,"\n    $(ct.virtual_path) <- In virtual path")
+	print(io,"\n    $(ct.ddf) <- In Direct Distance Feasibility")
+	print(io,"\n    $(ct.branch) <- Number of branches" )
+	print(io,"\n    $(ct.prune) <- Number of pruning")
+end
+
 function Base.show(io::IO, c::ConformationOutput)
 	print(io,"\n * Solver = $(c.solver)")
 	print(io,"\n * Number of solutions = $(c.number)\n")
@@ -14,7 +22,6 @@ function Base.show(io::IO, c::ConformationOutput)
 		end
 	
 	end
-	print(io," * Number of main operations [+-,*,/,√] = $(c.nop) \n")
-	print(io," * Number of branchs  = $(c.nbranch) \n")
-	print(io," * Number of pruning  = $(c.nprune) \n")
+	print(io," * Number of main operations [+-,*,/,√] \n")
+	print(io, "  $(c.nop) \n")
 end

@@ -42,13 +42,13 @@ function classicBP(NMRdata :: NMRType,
 			D24 = 0.0
 			D34 = 0.0
 			cθ,sθ = bondangle(D12,D13,D23)
-			count_nop += [3,6,1,1]
+			nop_node += [3,6,1,1]
 			cω,sω = (0.0,0.0)
 			mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
 			mol.atoms[3].x = -D12+D23*cθ
 			mol.atoms[3].y = D23*sθ
 			mol.atoms[3].z = 0.0
-			count_nop += [1,2,0,0]
+			nop_node += [1,2,0,0]
 			B = zeros(4,4)
 			B[1,1] = -cθ
 			B[1,2] = -sθ
@@ -58,9 +58,9 @@ function classicBP(NMRdata :: NMRType,
 			B[2,4] = D23*sθ
 			B[3,3] = 1.0
 			B[4,4] = 1.0
-			count_nop += [0,2,0,0] 
+			nop_node += [0,2,0,0] 
 			C = prodmatrix(C,B)
-			count_nop += [24,33,0,0]
+			nop_node += [24,33,0,0]
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
@@ -102,32 +102,33 @@ function classicBP(NMRdata :: NMRType,
 				D23 = sqrt((mol.atoms[NMRdata.virtual_path[pos-2]].x - mol.atoms[NMRdata.virtual_path[pos-1]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-2]].y - mol.atoms[NMRdata.virtual_path[pos-1]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-2]].z - mol.atoms[NMRdata.virtual_path[pos-1]].z)^2)   
 			end	
 			cθ,sθ = bondangle(D23,D24,D34)
-			count_nop += [3,6,1,1]
+			nop_vpath += [3,6,1,1]
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
-			count_nop += [10,25,1,2]
+			nop_vpath += [10,25,1,2]
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,B,true)
-				count_nop += [0,7,0,0]
+				nop_vpath += [0,7,0,0]
 				C = prodmatrix(C_before,B)
-				count_nop += [24,33,0,0]
+				nop_vpath += [24,33,0,0]
+				nop_node += [37,71,2,3]
 				keep = false
 			else
 				B = torsionmatrix(cθ,sθ,cω,sω,D34,B,true)
-				count_nop += [0,7,0,0]
+				nop_vpath += [0,7,0,0]
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
 
 				Virtual_Torsion = prodmatrix(C_before,B)
-				count_nop += [24,33,0,0]
+				nop_vpath += [24,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
-					count_nop += [0,0,0,0]
+					nop_vpath += [5,3,0,0]
 				end
 				C_before = prodmatrix(C_before,B)	
-				count_nop += [24,33,0,0]
+				nop_vpath += [24,33,0,0]
 
 				@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
 				pos = pos+1		
@@ -139,12 +140,12 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].z = C[3,4]
 		count = [0,0,0,0]
 		λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
-		count_nop += count
+		nop_ddf += count
 		@debug "C at level $(l) right side " C
 		if λ == 1 
 			if l<n
 				@debug "Partial solution by right side at level $(l)"  mol
-				count_branch +=1
+				n_branch +=1
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
 				nsol=nsol+1
@@ -153,7 +154,7 @@ function classicBP(NMRdata :: NMRType,
 				return 0
 			end
 		else
-			count_prun += 1
+			n_prune += 1
 		end
 		if allmol==false && nsol>0
 			@debug "number of solutions"  nsol
@@ -161,20 +162,20 @@ function classicBP(NMRdata :: NMRType,
 			@goto exit
 		end
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
-		count_nop += [0,0,0,0]
-		C = prodmatrix(C_before,B)
-		count_nop += [24,33,0,0]
+		#nop_node += [0,0,0,0]
+		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
+		nop_node += [24,33,0,0]
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
 		count = [0,0,0,0]
 		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
-		count_nop += count 
+		nop_ddf += count 
 		@debug "C at level $(l) left side " C
 		if ρ == 1 
 			if l<n
 				@debug "Partial solution by left side at level $(l)" mol
-				count_branch += 1
+				n_branch += 1
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
 				nsol = nsol+1
@@ -183,7 +184,7 @@ function classicBP(NMRdata :: NMRType,
 				return 0
 			end
 		else
-			count_prun += 1
+			n_prune += 1
 		end
 
 		@label exit
@@ -197,13 +198,15 @@ function classicBP(NMRdata :: NMRType,
 	C = zeros(4,4)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	count_prun = 0
-	count_branch = 0
+	n_prune = 0
+	n_branch = 0
 	#count_nop = [+-,*,/,√]
-	count_nop = [0,0,0,0]
+	nop_node = [0,0,0,0]
+	nop_ddf = [0,0,0,0]
+	nop_vpath = [0,0,0,0]
 	classicBP_closure(1,1,mol,C)
 #	println(" *** number of main operations evaluated $(count_op)")
-	return nsol, storage_mol,count_nop,count_branch,count_prun
+	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 
 end #solver classicBP
 
@@ -395,7 +398,7 @@ function quaternionBP(NMRdata :: NMRType,
 	count_prun = 0
 	quaternionBP_closure(1,1,mol,Q)
 	#println(" *** number of main operations evaluated $(count_op)")
-	return nsol, storage_mol,count_nop,count_branch,count_prun
+	return nsol, storage_mol,Counter([0,0,0,0],[0,0,0,0],[0,0,0,0],0,0)
 
 end #solver quaternionBP 
 

@@ -204,6 +204,20 @@ end
 
 """
 ```
+Counter :: Type
+```
+It is a mutable type for counting operations in solvers. This can handle with counters for nodes, virtual positions, ddf, branchs and prunes. 
+"""
+mutable struct Counter
+	node :: Vector{Int64}
+	virtual_path :: Vector{Int64}
+	ddf :: Vector{Int64}
+	branch :: Int64
+	prune :: Int64
+end
+
+"""
+```
 ConformationOutput :: Type
 ```
 It is a mutable type used to store the output provided by conformation function. With this type is possible to handle with some importants elements given by the following fields:.number,.molecules,.elapsedtime,.bytes and .gctime
@@ -212,9 +226,7 @@ mutable struct ConformationOutput
 	solver :: Function
 	number :: Int64
 	molecules :: Dict{Int64,MoleculeType}
-	nop :: Vector{Int64}
-	nbranch :: Int64
-	nprune :: Int64
+	nop :: Counter
 end
 
 
