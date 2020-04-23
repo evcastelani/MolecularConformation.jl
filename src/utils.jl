@@ -305,7 +305,7 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 		B[2,3] = -B[2,3]
 		B[3,1] = -B[3,1]
 		B[3,2] = -B[3,2]
-	
+		B[3,4] = -B[3,4]	
 	end
 	return B
 end
