@@ -551,12 +551,10 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	C=zeros(4,4)
 	C[4,4] = 1.0
 	for i=1:3
-		for j=1:4
-			C[i,j] = A[i,1]*B[1,j]
-			for k=2:4
-				C[i,j]= C[i,j]+A[i,k]*B[k,j]
-			end
-		end
+		C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
+		C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,3] 
+		C[i,3] = A[i,1]*B[1,3] + A[i,2]*B[2,3] + A[i,3]*B[3,3]
+		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
 	end
 	return C 
 end
