@@ -617,7 +617,7 @@ function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::A
 		
 		Q[1,4] = Q0[1,4]-p2q1
 		Q[2,4] = Q0[2,4]-p2q2
-		Q[2,3] = Q0[3,4]-p2q3
+		Q[3,4] = Q0[3,4]-p2q3
 		#[12,12,0,0]
 	end
 	return Q
