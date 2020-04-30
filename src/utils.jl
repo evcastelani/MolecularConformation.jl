@@ -597,8 +597,8 @@ function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::A
 		#[15,27,0,0]
 	else
 		p1 = 2.0*sω
-		p2 = a*sθ
-		p3 = a*cθ
+		p2 = p1*sθ
+		p3 = p1*cθ
 		p2q1 = p2*q[1,3]
 		p2q2 = p2*q[2,3]
 		p2q3 = p2*q[3,3]
