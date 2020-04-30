@@ -120,7 +120,7 @@ function classicBPOpt(NMRdata :: NMRType,
 					C_before = QxB(cθ,sθ,cω,sω,D34,C_before,Virtual_Torsion,false)
 					nop_vpath += [5,3,0,0]
 				else
-					copy!(C_before,Virtual_Torsion)	
+					copyto!(C_before,Virtual_Torsion)	
 					nop_vpath += [24,33,0,0]
 				end
 				@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
