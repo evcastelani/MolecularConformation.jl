@@ -570,3 +570,55 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	end
 	return C 
 end
+
+function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::Array{Float64,2},Q0::Array{Float64,2},position::Bool)
+
+	Q = zeros(4,4)
+	Q[4,4] = 1.0
+	if position == true
+		Ai1 = q[1,2]*cω+q[1,3]*sω
+		Ai2 = q[2,2]*cω+q[2,3]*sω
+		Ai3 = q[3,2]*cω+q[3,3]*sω
+		
+		Q[1,1] = -q[1,1]*cθ+Ai1*sθ
+		Q[1,2] = -q[1,1]*sθ+Ai1*cθ
+		Q[1,3] = -q[1,2]*sω+q[1,3]*cω
+		Q[1,4] = d*Q[1,1]+q[1,4]
+		
+		Q[2,1] = -q[2,1]*cθ+Ai2*sθ
+		Q[2,2] = -q[2,1]*sθ+Ai2*cθ
+		Q[2,3] = -q[2,2]*sω+q[2,3]*cω
+		Q[2,4] = d*Q[2,1]+q[2,4]
+		
+		Q[3,1] = -q[3,1]*cθ+Ai3*sθ
+		Q[3,2] = -q[3,1]*sθ+Ai3*cθ
+		Q[3,3] = -q[3,2]*sω+q[3,3]*cω
+		Q[3,4] = d*Q[3,1]+q[3,4]
+		#[15,27,0,0]
+	else
+		p1 = 2.0*sω
+		p2 = a*sθ
+		p3 = a*cθ
+		p2q1 = p2*q[1,3]
+		p2q2 = p2*q[2,3]
+		p2q3 = p2*q[3,3]
+
+		Q[1,1] = Q0[1,1]-p2q1
+		Q[2,1] = Q0[2,1]-p2q2
+		Q[3,1] = Q0[3,1]-p2q3
+		
+		Q[1,2] = Q0[1,2]+p3*q[1,3]
+		Q[2,2] = Q0[2,2]+p3*q[2,3]
+		Q[3,2] = Q0[3,2]+p3*q[3,3]
+		
+		Q[1,3] = Q0[1,3]+p1*q[1,2]
+		Q[2,3] = Q0[2,3]+p1*q[2,2]
+		Q[3,3] = Q0[3,3]+p1*q[3,2]
+		
+		Q[1,4] = Q0[1,4]-p2q1
+		Q[2,4] = Q0[2,4]-p2q2
+		Q[2,3] = Q0[3,4]-p2q3
+		#[12,12,0,0]
+	end
+	return Q
+end
