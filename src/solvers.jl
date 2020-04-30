@@ -198,7 +198,7 @@ function classicBPOpt(NMRdata :: NMRType,
 	nop_node = [0,0,0,0]
 	nop_ddf = [0,0,0,0]
 	nop_vpath = [0,0,0,0]
-	classicBP_closure(1,1,mol,C)
+	classicBPOpt_closure(1,1,mol,C)
 #	println(" *** number of main operations evaluated $(count_op)")
 	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 
