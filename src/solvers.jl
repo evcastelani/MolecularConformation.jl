@@ -16,7 +16,7 @@ function classicBPOpt(NMRdata :: NMRType,
 	function classicBPOpt_closure(l :: Int64,
 				   pos::Int64,
 				   mol :: MoleculeType,
-				   C :: Array{Float64,2})
+				   Q :: Array{Float64,2})
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
@@ -28,12 +28,12 @@ function classicBPOpt(NMRdata :: NMRType,
 			mol.atoms[2].x = -NMRdata.info[1,2].dist
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
-			C = zeros(4,4)
-			C[1,1] = -1.0
-			C[2,2] = 1.0
-			C[3,3] = -1.0
-			C[4,4] = 1.0
-			C[1,4] = -NMRdata.info[1,2].dist
+			q = zeros(4,4)
+			q[1,1] = -1.0
+			q[2,2] = 1.0
+			q[3,3] = -1.0
+			q[4,4] = 1.0
+			q[1,4] = -NMRdata.info[1,2].dist
 			# tird atom
 			D12 = NMRdata.info[1,2].dist
 			D13 = NMRdata.info[1,3].dist
@@ -49,16 +49,15 @@ function classicBPOpt(NMRdata :: NMRType,
 			mol.atoms[3].y = D23*sθ
 			mol.atoms[3].z = 0.0
 			nop_node += [1,2,0,0]
-			C = QxB(cθ,sθ,cω,sω,D34,C,C,true)
+			Q0 = QxB(cθ,sθ,cω,sω,D34,q,Q,true)
 			nop_node += [15,27,0,0]
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
-		B = zeros(4,4)
 		λ = 1
 		ρ = 1
-		C_before = zeros(4,4)
-		copyto!(C_before,C)
+		q = zeros(4,4)
+		copyto!(q,Q)
 		keep = true
 		while keep
 			try
@@ -100,7 +99,7 @@ function classicBPOpt(NMRdata :: NMRType,
 			#	B = torsionmatrix(cθ,sθ,cω,sω,D34,B,true)
 				nop_vpath += [0,7,0,0]
 			#	C = prodmatrix(C_before,B)
-				C = QxB(cθ,sθ,cω,sω,D34,C_before,C,true)
+				Q0 = QxB(cθ,sθ,cω,sω,D34,q,Q,true)
 				nop_vpath += [24,33,0,0]
 				nop_node += [37,71,2,3]
 				keep = false
@@ -112,15 +111,15 @@ function classicBPOpt(NMRdata :: NMRType,
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
 
 			#	Virtual_Torsion = prodmatrix(C_before,B)
-				Virtual_Torsion = QxB(cθ,sθ,cω,sω,D34,C_before,C,true)
+				Virtual_Torsion = QxB(cθ,sθ,cω,sω,D34,q,Q,true)
 				nop_vpath += [24,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 		#		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
-					C_before = QxB(cθ,sθ,cω,sω,D34,C_before,Virtual_Torsion,false)
+					q = QxB(cθ,sθ,cω,sω,D34,q,Virtual_Torsion,false)
 					nop_vpath += [5,3,0,0]
 				else
-					copyto!(C_before,Virtual_Torsion)	
+					copyto!(q,Virtual_Torsion)	
 					nop_vpath += [24,33,0,0]
 				end
 				@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
@@ -128,9 +127,9 @@ function classicBPOpt(NMRdata :: NMRType,
 			end
 		end
 		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
-		mol.atoms[l].x = C[1,4]
-		mol.atoms[l].y = C[2,4]
-		mol.atoms[l].z = C[3,4]
+		mol.atoms[l].x = Q0[1,4]
+		mol.atoms[l].y = Q0[2,4]
+		mol.atoms[l].z = Q0[3,4]
 		count = [0,0,0,0]
 		λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
 		nop_ddf += count
@@ -139,7 +138,7 @@ function classicBPOpt(NMRdata :: NMRType,
 			if l<n
 				@debug "Partial solution by right side at level $(l)"  mol
 				n_branch +=1
-				classicBPOpt_closure(l+1,pos+1,mol,C)
+				classicBPOpt_closure(l+1,pos+1,mol,Q0)
 			else
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
@@ -157,11 +156,11 @@ function classicBPOpt(NMRdata :: NMRType,
 		#B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
 		#nop_node += [0,0,0,0]
 		#C = prodmatrix(C_before,B)# tenho que otimizar este calculo
-		C = QxB(cθ,sθ,cω,sω,D34,C_before,C,false)
+		Q1 = QxB(cθ,sθ,cω,sω,D34,q,Q0,false)
 		nop_node += [24,33,0,0]
-		mol.atoms[l].x = C[1,4]
-		mol.atoms[l].y = C[2,4]
-		mol.atoms[l].z = C[3,4]
+		mol.atoms[l].x = Q1[1,4]
+		mol.atoms[l].y = Q1[2,4]
+		mol.atoms[l].z = Q1[3,4]
 		count = [0,0,0,0]
 		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
 		nop_ddf += count 
@@ -170,7 +169,7 @@ function classicBPOpt(NMRdata :: NMRType,
 			if l<n
 				@debug "Partial solution by left side at level $(l)" mol
 				n_branch += 1
-				classicBPOpt_closure(l+1,pos+1,mol,C)
+				classicBPOpt_closure(l+1,pos+1,mol,Q1)
 			else
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
@@ -189,7 +188,7 @@ function classicBPOpt(NMRdata :: NMRType,
 	for i=1:n
 		mol.atoms[i] = AtomType(0.0,0.0,0.0)
 	end
-	C = zeros(4,4)
+	Q = zeros(4,4)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 	n_prune = 0
@@ -198,7 +197,7 @@ function classicBPOpt(NMRdata :: NMRType,
 	nop_node = [0,0,0,0]
 	nop_ddf = [0,0,0,0]
 	nop_vpath = [0,0,0,0]
-	classicBPOpt_closure(1,1,mol,C)
+	classicBPOpt_closure(1,1,mol,Q)
 #	println(" *** number of main operations evaluated $(count_op)")
 	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 
