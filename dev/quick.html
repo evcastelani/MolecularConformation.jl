@@ -29,39 +29,42 @@ ConformationSetup(1.0e-6, 1.0e-6, MolecularConformation.classicBP, true, false)<
  * Solver = MolecularConformation.classicBP
  * Number of solutions = 1
  * Solutions
-   Molecule 1 with LDE = 7.862256122994717e-28
+   Molecule 1 with LDE = 6.962952034380382e-28
     ( 0.0 , 0.0 ,  0.0 )
     ( -1.526 , 0.0 ,  0.0 )
     ( -2.034999999999995 , 1.4379999999999997 ,  0.0 )
-    ( -1.6749999999999972 , 2.1060000000000003 ,  -1.3239999999999965 )
-    ( -2.4299999999999944 , 3.4260000000000015 ,  -1.4499999999999982 )
+    ( -1.6749999999999967 , 2.1060000000000008 ,  -1.3239999999999963 )
+    ( -2.4299999999999944 , 3.426000000000002 ,  -1.4499999999999973 )
     ⋮
-    ( -4.863999999999999 , 7.281000000000017 ,  -1.6600000000001363 )
-    ( -5.922122878027752 , 7.841170383964165 ,  -0.7130897001703507 )
-    ( -6.0663693289671485 , 9.342642843087825 ,  -0.9430775604685648 )
- * Number of main operations = 8505
- * Number of branchs  = 16
- * Number of pruning  = 11</code></pre><p>In our example, the solution is storage in <code>sol</code> whose type is <code>ConformationOutput</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol)
+    ( -4.864000000000004 , 7.281000000000013 ,  -1.6600000000001374 )
+    ( -5.922122878027762 , 7.8411703839641556 ,  -0.7130897001703549 )
+    ( -6.066369328967159 , 9.342642843087814 ,  -0.9430775604685617 )
+ * Number of main operations [+-,*,/,√]
+    In nodes           =  [921, 1613, 35, 52]
+    In virtual path    =  [1369, 2483, 62, 93]
+    In DDF             =  [91, 59, 0, 0]
+    Number of branches =  16
+    Number of pruning  =  11</code></pre><p>In our example, the solution is storage in <code>sol</code> whose type is <code>ConformationOutput</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol)
 ConformationOutput</code></pre><p>The <code>ConformationOutput</code> type, has the following fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(ConformationOutput)
-(:solver, :number, :molecules, :nop, :nbranch, :nprune)</code></pre><p>The field <code>number</code> corresponds to the number of solutions. The field <code>molecules</code> is a dictionary of where associated to each key we have a solution of <code>MoleculeType</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol.molecules[1])
+(:solver, :number, :molecules, :nop)</code></pre><p>The field <code>number</code> corresponds to the number of solutions. The field <code>molecules</code> is a dictionary of where associated to each key we have a solution of <code>MoleculeType</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol.molecules[1])
 MoleculeType</code></pre><p>A <code>MoleculeType</code> has two fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(MoleculeType)
 (:atoms, :lde)</code></pre><p>In our example this has the following values</p><pre><code class="language-julia-repl">julia&gt; 	sol.molecules[1].atoms
 15-element Array{AtomType,1}:
  AtomType(0.0, 0.0, 0.0, &quot;N&quot;)
  AtomType(-1.526, 0.0, 0.0, &quot;H1&quot;)
  AtomType(-2.034999999999995, 1.4379999999999997, 0.0, &quot;H2&quot;)
- AtomType(-1.6749999999999972, 2.1060000000000003, -1.3239999999999965, &quot;CA&quot;)
- AtomType(-2.4299999999999944, 3.4260000000000015, -1.4499999999999982, &quot;HA&quot;)
- AtomType(-1.9960000000000164, 4.140999999999982, -2.726000000000016, &quot;C&quot;)
- AtomType(-0.47700000000001186, 4.283999999999978, -2.7380000000000426, &quot;H&quot;)
- AtomType(-0.05900000000000982, 5.365999999999996, -1.746000000000059, &quot;CA&quot;)
- AtomType(-0.6160000000000029, 6.71299999999999, -2.198000000000081, &quot;O&quot;)
- AtomType(-2.138000000000004, 6.632999999999996, -2.283000000000105, &quot;N&quot;)
- AtomType(-2.7060000000000017, 6.282000000000035, -0.9110000000000911, &quot;HA&quot;)
- AtomType(-4.211000000000007, 6.055000000000045, -1.0260000000000806, &quot;C&quot;)
- AtomType(-4.863999999999999, 7.281000000000017, -1.6600000000001363, &quot;H&quot;)
- AtomType(-5.922122878027752, 7.841170383964165, -0.7130897001703507, &quot;CA&quot;)
- AtomType(-6.0663693289671485, 9.342642843087825, -0.9430775604685648, &quot;O&quot;)
+ AtomType(-1.6749999999999967, 2.1060000000000008, -1.3239999999999963, &quot;CA&quot;)
+ AtomType(-2.4299999999999944, 3.426000000000002, -1.4499999999999973, &quot;HA&quot;)
+ AtomType(-1.9960000000000124, 4.140999999999987, -2.7260000000000115, &quot;C&quot;)
+ AtomType(-0.47700000000000764, 4.283999999999985, -2.7380000000000315, &quot;H&quot;)
+ AtomType(-0.059000000000011765, 5.366000000000001, -1.7460000000000433, &quot;CA&quot;)
+ AtomType(-0.6160000000000054, 6.712999999999996, -2.198000000000064, &quot;O&quot;)
+ AtomType(-2.138000000000006, 6.632999999999997, -2.2830000000000954, &quot;N&quot;)
+ AtomType(-2.70600000000001, 6.282000000000031, -0.9110000000000851, &quot;HA&quot;)
+ AtomType(-4.2110000000000145, 6.05500000000004, -1.0260000000000828, &quot;C&quot;)
+ AtomType(-4.864000000000004, 7.281000000000013, -1.6600000000001374, &quot;H&quot;)
+ AtomType(-5.922122878027762, 7.8411703839641556, -0.7130897001703549, &quot;CA&quot;)
+ AtomType(-6.066369328967159, 9.342642843087814, -0.9430775604685617, &quot;O&quot;)
 
 julia&gt; 	sol.molecules[1].lde
-7.862256122994717e-28</code></pre><p>The other fields of <code>ConformationOutput</code> are self-explanatory and used to just to analyze the performance of the method.</p><h2 id="About-the-solvers-1"><a class="docs-heading-anchor" href="#About-the-solvers-1">About the solvers</a><a class="docs-heading-anchor-permalink" href="#About-the-solvers-1" title="Permalink"></a></h2><p>Currently, just one solver is available: <code>ClassicBP</code> </p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="index.html">« Home</a><a class="docs-footer-nextpage" href="api.html">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 10 April 2020 01:43">Friday 10 April 2020</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+6.962952034380382e-28</code></pre><p>The other fields of <code>ConformationOutput</code> are self-explanatory and used to just to analyze the performance of the method.</p><h2 id="About-the-solvers-1"><a class="docs-heading-anchor" href="#About-the-solvers-1">About the solvers</a><a class="docs-heading-anchor-permalink" href="#About-the-solvers-1" title="Permalink"></a></h2><p>Currently, just one solver is available: <code>ClassicBP</code> </p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="index.html">« Home</a><a class="docs-footer-nextpage" href="api.html">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Monday 29 June 2020 17:11">Monday 29 June 2020</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
