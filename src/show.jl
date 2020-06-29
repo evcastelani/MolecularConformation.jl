@@ -1,9 +1,9 @@
 function Base.show(io::IO,ct::Counter)
-	print(io,"    $(ct.node) <- In nodes")
-	print(io,"\n    $(ct.virtual_path) <- In virtual path")
-	print(io,"\n    $(ct.ddf) <- In Direct Distance Feasibility")
-	print(io,"\n    $(ct.branch) <- Number of branches" )
-	print(io,"\n    $(ct.prune) <- Number of pruning")
+	print(io,"\n    In nodes           =  $(ct.node)")
+	print(io,"\n    In virtual path    =  $(ct.virtual_path) ")
+	print(io,"\n    In DDF             =  $(ct.ddf)   ")
+	print(io,"\n    Number of branches =  $(ct.branch) " )
+	print(io,"\n    Number of pruning  =  $(ct.prune) ")
 end
 
 function Base.show(io::IO, c::ConformationOutput)
@@ -22,6 +22,6 @@ function Base.show(io::IO, c::ConformationOutput)
 		end
 	
 	end
-	print(io," * Number of main operations [+-,*,/,√] \n")
-	print(io, "  $(c.nop) \n")
+	print(io," * Number of main operations [+-,*,/,√] ")
+	print(io,"   $(c.nop) ")
 end

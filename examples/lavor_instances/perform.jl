@@ -1,6 +1,6 @@
 using MolecularConformation,PyPlot,BenchmarkTools
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 10
 
 
 """
@@ -9,13 +9,13 @@ to execute this routine is necessary to type in REPL
 
 julia> perform(d)
 
-where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
+where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]. Warning: some files need to be download.
 
 """
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
 function perform(ndiag,allsolutions=false,LDE=false)
 	#initialization
-	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,LDE)
+	opt_classic = ConformationSetup(0.000001,classicBPOpt,allsolutions,LDE)
 	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,LDE)
 	data = preprocessing("toyinstance.nmr")
 	sol = conformation(data,opt_quaternion)

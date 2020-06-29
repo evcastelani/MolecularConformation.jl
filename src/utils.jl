@@ -265,20 +265,28 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	#d23=D[i-2,i-1]
 	#d24=D[i-2,i]
 	#d34=D[i-1,i]
-	a = d12*d12 + d24*d24 - d14*d14
-	a = a/(2.0*d12*d24)
-	b = d24*d24 + d23*d23 - d34*d34        
-	b = b/(2.0*d24*d23)
-	c = d12*d12 + d23*d23 - d13*d13
-	c = c/(2.0*d12*d23)
-	e = 1.0 - b^2;
-	f = 1.0 - c^2;
-	if (e < 0.0 || f < 0.0)  
-		@debug "some problem in torsion angle"
-		return -2
-	end
-	ef = sqrt(e*f)
-	valc = (a - b*c)/(ef)
+	d12m = d12*d12 
+	d23m = d23*d23
+	d24m = d24*d24
+	d34m = d34*d34
+	dtil3 = d12m + d23m - d13*d13
+	dtil2 = d24m + d23m - d34m        
+	valc = 2.0*d23m*(d12m + d24m - d14^2) - dtil3*dtil2
+	valc = valc/sqrt((4.0*d12m*d23m - dtil3^2)*(4.0*d23m*d24m - dtil2^2))
+	#a = d12*d12 + d24*d24 - d14*d14
+	#a = a/(2.0*d12*d24)
+	#b = d24*d24 + d23*d23 - d34*d34        
+	#b = b/(2.0*d24*d23)
+	#c = d12*d12 + d23*d23 - d13*d13
+	#c = c/(2.0*d12*d23)
+	#e = 1.0 - b^2;
+	#f = 1.0 - c^2;
+	#if (e < 0.0 || f < 0.0)  
+	#	@debug "some problem in torsion angle"
+	#	return -2
+	#end
+	#ef = sqrt(e*f)
+	#valc = (a - b*c)/(ef)
 	if (valc < -1.0)  
 		valc = -1.0
 	end
@@ -288,6 +296,7 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	vals=sqrt(1.0-valc^2)
 	@debug "value of cω and sω" valc,vals
 	return valc,vals
+	#number of operations [10,17,1,2]
 end
 
 """
@@ -483,41 +492,60 @@ function symsparse(I,J,v)
 
 # these functions are used by quaternion_bp#########################################
 function qbondangle(d23,d24,d34)
-	c = (-d24^2+ d34^2+ d23^2)/(2.0*d34*d23)
-	if c<-1.0
-		c=-1.0
+	c = (-d24^2+ d34^2+ d23^2)/(4.0*d34*d23)
+	if c<-0.5
+		c=-0.5
 	end
-	if c>1.0
-		c=1.0
+	if c>0.5
+		c=0.5
 	end
-	cm = c/2.0 
-	return sqrt(0.5 + cm),sqrt(0.5 - cm)
-	# number of operations =  13
+	#cm = c/2.0 
+	return sqrt(0.5 + c),sqrt(0.5 - c)
+	# number of operations =  [4,5,1,2]
 end
 
 function qtorsionangle(d12,d13,d14,d23,d24,d34)
-	a = d12*d12 + d24*d24 - d14*d14
-	a = a/(2.0*d12*d24)
-	b = d24*d24 + d23*d23 - d34*d34        
-	b = b / (2.0*d24*d23)
-	c = d12*d12 + d23*d23 - d13*d13
-	c = c / (2.0*d12*d23)
-	e = 1.0 - b^2;
-	f = 1.0 - c^2;
-	if (e < 0.0 || f < 0.0)  
-		return -2
+############################################
+
+	d12m = d12*d12 
+	d23m = d23*d23
+	d24m = d24*d24
+	d34m = d34*d34
+	dtil3 = d12m + d23m - d13*d13
+	dtil2 = d24m + d23m - d34m        
+	valc = d23m*(d12m + d24m - d14^2) - 0.5*dtil3*dtil2
+	valc = valc/sqrt((4.0*d12m*d23m - dtil3^2)*(4.0*d23m*d24m - dtil2^2))
+#	if (valc < -1.0)  
+#		valc = -1.0
+#	end
+#	if (valc >  1.0)  
+#		valc =  1.0
+#	end
+#	vals=sqrt(1.0-valc^2)
+
+###########################################
+	
+#	a = d12*d12 + d24*d24 - d14*d14
+#	a = a/(2.0*d12*d24)
+#	b = d24*d24 + d23*d23 - d34*d34        
+#	b = b / (2.0*d24*d23)
+#	c = d12*d12 + d23*d23 - d13*d13
+#	c = c / (2.0*d12*d23)
+#	e = 1.0 - b^2;
+#	f = 1.0 - c^2;
+#	if (e < 0.0 || f < 0.0)  
+#		return -2
+#	end
+#	ef = 2.0*sqrt(e*f)
+#	valc = (a - b*c)/(ef)
+	if (valc < -0.5)  
+		valc = -0.5
 	end
-	ef = sqrt(e*f)
-	valc = (a - b*c)/(ef)
-	if (valc < -1.0)  
-		valc = -1.0
+	if (valc >  0.5)  
+		valc =  0.5
 	end
-	if (valc >  1.0)  
-		valc =  1.0
-	end
-	cm = valc/2.0
-	return sqrt(0.5+cm),sqrt(0.5-cm)
-	# number of operations = 39 
+	return sqrt(0.5+valc),sqrt(0.5-valc)
+	# number of operations = [11,16,1,3] 
 end
 
 # Quaternion small library
@@ -528,34 +556,39 @@ mutable struct Quaternion
 	v3 :: Float64
 end
 
-function qsign(q::Quaternion)
-	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
-end
+#function qsign(q::Quaternion)
+#	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
+#end
 
-function qsum(q::Quaternion,w::Quaternion)
-	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
-end
+#function qsum(q::Quaternion,w::Quaternion)
+#	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
+#end
 
-function qminus(q::Quaternion,w::Quaternion)
-	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
-end
+#function qminus(q::Quaternion,w::Quaternion)
+#	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
+#end
     
 function qprod(q::Quaternion,w::Quaternion)
 	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
                            q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
                            q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
                            q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
-	# number of operations = 28
+	# number of operations = [12,16,0,0]
 end
 
-function conj(q::Quaternion)
-	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
-end
+#function conj(q::Quaternion)
+#	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
+#end
 
 
 function rot(Q::Quaternion,t::Float64)
-	return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
-	# number of operations = 32
+	#return qprod(Quaternion(-Q.v1*t,Q.s*t,Q.v3*t,-Q.v2*t),conj(Q))
+	p1 = t*(Q.s^2 + Q.v1^2 - Q.v2^2 - Q.v3^2)
+	sl = 2.0*t
+	p2 = sl*(Q.v2*Q.v1 + Q.v3*Q.s)
+	p3 = sl*(Q.v3*Q.v1 - Q.v2*Q.s)
+	return Quaternion(0.0,p1,p2,p3)
+	# number of operations = [5,12,0,0]
 end
 
 # to be fair with memory acess in comparations
@@ -581,19 +614,21 @@ function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::A
 		Ai3 = q[3,2]*cω+q[3,3]*sω
 		
 		Q[1,1] = -q[1,1]*cθ+Ai1*sθ
-		Q[1,2] = -q[1,1]*sθ-Ai1*cθ
-		Q[1,3] = -q[1,2]*sω+q[1,3]*cω
-		Q[1,4] = d*Q[1,1]+q[1,4]
-		
 		Q[2,1] = -q[2,1]*cθ+Ai2*sθ
-		Q[2,2] = -q[2,1]*sθ-Ai2*cθ
-		Q[2,3] = -q[2,2]*sω+q[2,3]*cω
-		Q[2,4] = d*Q[2,1]+q[2,4]
-		
 		Q[3,1] = -q[3,1]*cθ+Ai3*sθ
+		
+		Q[1,2] = -q[1,1]*sθ-Ai1*cθ
+		Q[2,2] = -q[2,1]*sθ-Ai2*cθ
 		Q[3,2] = -q[3,1]*sθ-Ai3*cθ
+		
+
+		Q[1,3] = -q[1,2]*sω+q[1,3]*cω
+		Q[2,3] = -q[2,2]*sω+q[2,3]*cω
 		Q[3,3] = -q[3,2]*sω+q[3,3]*cω
+		Q[1,4] = d*Q[1,1]+q[1,4]
+		Q[2,4] = d*Q[2,1]+q[2,4]
 		Q[3,4] = d*Q[3,1]+q[3,4]
+
 		#[15,27,0,0]
 	else
 		p1 = 2.0*sω
@@ -615,9 +650,12 @@ function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::A
 		Q[2,3] = Q0[2,3]+p1*q[2,2]
 		Q[3,3] = Q0[3,3]+p1*q[3,2]
 		
-		Q[1,4] = Q0[1,4]-p2q1
-		Q[2,4] = Q0[2,4]-p2q2
-		Q[3,4] = Q0[3,4]-p2q3
+#		Q[1,4] = Q0[1,4]-d*p2q1
+		Q[1,4] = d*Q[1,1]+q[1,4]
+		Q[2,4] = d*Q[2,1]+q[2,4]
+		Q[3,4] = d*Q[3,1]+q[3,4]
+#		Q[2,4] = Q0[2,4]-d*p2q2
+#		Q[3,4] = Q0[3,4]-d*p2q3
 		#[12,12,0,0]
 	end
 	return Q
