@@ -298,6 +298,39 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	return valc,vals
 	#number of operations [10,17,1,2]
 end
+function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
+	#d12=D[i-3,i-2]
+	#d13=D[i-3,i-1]
+	#d14=D[i-3,i]
+	#d23=D[i-2,i-1]
+	#d24=D[i-2,i]
+	#d34=D[i-1,i]
+	a = d12*d12 + d24*d24 - d14*d14
+	a = a/(2.0*d12*d24)
+	b = d24*d24 + d23*d23 - d34*d34        
+	b = b/(2.0*d24*d23)
+	c = d12*d12 + d23*d23 - d13*d13
+	c = c/(2.0*d12*d23)
+	e = 1.0 - b^2;
+	f = 1.0 - c^2;
+	if (e < 0.0 || f < 0.0)  
+		@debug "some problem in torsion angle"
+		return -2
+	end
+	ef = sqrt(e*f)
+	valc = (a - b*c)/(ef)
+	if (valc < -1.0)  
+		valc = -1.0
+	end
+	if (valc >  1.0)  
+		valc =  1.0
+	end
+	vals=sqrt(1.0-valc^2)
+	@debug "value of cω and sω" valc,vals
+	return valc,vals
+	#number of operations [10,20,3,2]
+end
+
 
 """
 ```
@@ -591,6 +624,14 @@ function rot(Q::Quaternion,t::Float64)
 	# number of operations = [5,12,0,0]
 end
 
+function rotopt(Q::Quaternion,t::Float64)
+	sl = 2.0*t
+	p1 = sl*(Q.s^2+Q.v1^2-0.5)
+	p2 = sl*(Q.v2*Q.v1 + Q.v3*Q.s)
+	p3 = sl*(Q.v3*Q.v1 - Q.v2*Q.s)
+	return Quaternion(0.0,p1,p2,p3)
+	# number of operations = [4,10,0,0]
+end
 # to be fair with memory acess in comparations
 function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	C=zeros(4,4)
@@ -603,7 +644,7 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	end
 	return C 
 end
-
+#[48,64,0,0]
 function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::Array{Float64,2},Q0::Array{Float64,2},position::Bool)
 
 	Q = zeros(4,4)
