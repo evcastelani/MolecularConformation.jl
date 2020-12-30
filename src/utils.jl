@@ -70,10 +70,10 @@ function preprocessing(file::String,opt="read")
 			V[i]=NMRInfo(nmrfile[i,5],nmrfile[i,7],nmrfile[i,8])
 		end
 		for i=1:lenI
-               		if I[i]!=J[i]
-                   		push!(I,J[i])
-                        push!(J,I[i])
-                  	 	push!(V,NMRInfo(V[i].dist,V[i].atom2,V[i].atom1))
+			if I[i]!=J[i]
+				push!(I,J[i])
+				push!(J,I[i])
+				push!(V,NMRInfo(V[i].dist,V[i].atom2,V[i].atom1))
 			end
 		end
 		nmrt = NMRType(vpath,vadd,sparse(I,J,V),n)
@@ -90,7 +90,7 @@ generate_virtual_path :: Function
 This function is an auxiliary function used to define a useful vector called in our context as virtual path. This vector allows to handle with re-order approach. 
 """
 function generate_virtual_path(NMRdatavertex1::Vector{Int64},NMRdatavertex2::Vector{Int64})
-#	D = [NMRdata.vertex1 NMRdata.vertex2]
+	#	D = [NMRdata.vertex1 NMRdata.vertex2]
 	virtual_path = [1,2,3,4]
 	k = 5
 	li = 4
@@ -240,7 +240,7 @@ This is an auxiliary function used by ClassicBP solver in order to compute the b
 """
 function bondangle(d23,d24,d34)
 	c = (-d24^2 + d34^2 + d23^2)/(2.0*d34*d23)
-#	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
+	#	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
 	if c<-1.0
 		c=-1.0
 	end
@@ -256,7 +256,7 @@ end
 ```
 torsionangle :: Function
 ```
-This is an auxiliary function used by ClassicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
+This is an auxiliary function used by classicBPOpt solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
 """
 function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	#d12=D[i-3,i-2]
@@ -298,6 +298,13 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	return valc,vals
 	#number of operations [10,17,1,2]
 end
+
+"""
+```
+badtorsionangle :: Function
+```
+This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
+"""
 function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	#d12=D[i-3,i-2]
 	#d13=D[i-3,i-1]
@@ -336,11 +343,11 @@ end
 ```
 torsionmatrix :: Function
 ```
-This is an auxiliary function  used by ClassicBP solver to compute the torsion array.
+This is an auxiliary function  used by classicBPOpt (optimization version of classicBP) solver to compute the torsion array.
 """
 function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 	if sign == true
-	
+
 		B=zeros(4,4)
 		B[1,1] = -cosθ
 		B[1,2] = -sinθ
@@ -355,7 +362,7 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 		B[3,4] = d34*B[3,1] 
 		B[4,4] = 1
 	else
-	
+
 		B[2,3] = -B[2,3]
 		B[3,1] = -B[3,1]
 		B[3,2] = -B[3,2]
@@ -414,12 +421,12 @@ function LDE(v::MoleculeType,D::NMRType)
 		maxε = max(maxε,aux)
 		dij = dij+(aux)/D.info[i,j].dist
 	end
-#	println("max ε = $(maxε)")
-#	if nad>0.0
+	#	println("max ε = $(maxε)")
+	#	if nad>0.0
 	v.lde = dij/(2.0*num_nne)
-#	else
-#		return dij
-#	end
+	#	else
+	#		return dij
+	#	end
 end
 
 """
@@ -433,28 +440,28 @@ julia> a = conformation(data,option)
 julia> outputfilter(a,"lde")
 """
 function outputfilter(a::ConformationOutput, option = "lde")
-            mol = a.molecules
-            num = a.number
-            if option == "lde"
-                    vlde = zeros(num)
-    
-                    for i=1:num
-                            vlde[i]=mol[i].lde
-                    end
-            return minimum(vlde)
-            end
-	    if option == "xyz"
-		    nl = length(a.molecules[1].atoms)
-		    A=Array{Vector{Float64},2}(undef,nl,num)
-		    for j=1:num
-			    for i=1:nl
-				    A[i,j]=[a.molecules[j].atoms[i].x, a.molecules[j].atoms[i].y,
-					     a.molecules[j].atoms[i].z]
-			    end
-		    end
-		    return A
-	    end
-    end
+	mol = a.molecules
+	num = a.number
+	if option == "lde"
+		vlde = zeros(num)
+
+		for i=1:num
+			vlde[i]=mol[i].lde
+		end
+		return minimum(vlde)
+	end
+	if option == "xyz"
+		nl = length(a.molecules[1].atoms)
+		A=Array{Vector{Float64},2}(undef,nl,num)
+		for j=1:num
+			for i=1:nl
+				A[i,j]=[a.molecules[j].atoms[i].x, a.molecules[j].atoms[i].y,
+					a.molecules[j].atoms[i].z]
+			end
+		end
+		return A
+	end
+end
 
 """
 ```
@@ -472,14 +479,14 @@ build_distance_array(v.molecules[1].atoms)
 ```
 """
 function build_distance_matrix(v::Array{AtomType,1})
-       n=length(v)
-       D=zeros(n,n)
-       for i=1:n
-           for j=1:n
-               D[i,j] = sqrt((v[i].x-v[j].x)^2+(v[i].y-v[j].y)^2+(v[i].z-v[j].z)^2)
-           end
-       end
-       return D
+	n=length(v)
+	D=zeros(n,n)
+	for i=1:n
+		for j=1:n
+			D[i,j] = sqrt((v[i].x-v[j].x)^2+(v[i].y-v[j].y)^2+(v[i].z-v[j].z)^2)
+		end
+	end
+	return D
 end
 
 
@@ -512,16 +519,16 @@ function Base.:≈(A::MoleculeType,B::MoleculeType)
 end
 ####################################################################################
 function symsparse(I,J,v)
-           for i=1:length(I)
-               if I[i]!=J[i]
-                   push!(I,J[i])
-                  
-                   push!(J,I[i])
-                   push!(v,v[i])
-               end
-           end
-               return sparse(I,J,v)
-       end
+	for i=1:length(I)
+		if I[i]!=J[i]
+			push!(I,J[i])
+
+			push!(J,I[i])
+			push!(v,v[i])
+		end
+	end
+	return sparse(I,J,v)
+end
 
 # these functions are used by quaternion_bp#########################################
 function qbondangle(d23,d24,d34)
@@ -538,7 +545,7 @@ function qbondangle(d23,d24,d34)
 end
 
 function qtorsionangle(d12,d13,d14,d23,d24,d34)
-############################################
+	############################################
 
 	d12m = d12*d12 
 	d23m = d23*d23
@@ -548,29 +555,29 @@ function qtorsionangle(d12,d13,d14,d23,d24,d34)
 	dtil2 = d24m + d23m - d34m        
 	valc = d23m*(d12m + d24m - d14^2) - 0.5*dtil3*dtil2
 	valc = valc/sqrt((4.0*d12m*d23m - dtil3^2)*(4.0*d23m*d24m - dtil2^2))
-#	if (valc < -1.0)  
-#		valc = -1.0
-#	end
-#	if (valc >  1.0)  
-#		valc =  1.0
-#	end
-#	vals=sqrt(1.0-valc^2)
+	#	if (valc < -1.0)  
+	#		valc = -1.0
+	#	end
+	#	if (valc >  1.0)  
+	#		valc =  1.0
+	#	end
+	#	vals=sqrt(1.0-valc^2)
 
-###########################################
-	
-#	a = d12*d12 + d24*d24 - d14*d14
-#	a = a/(2.0*d12*d24)
-#	b = d24*d24 + d23*d23 - d34*d34        
-#	b = b / (2.0*d24*d23)
-#	c = d12*d12 + d23*d23 - d13*d13
-#	c = c / (2.0*d12*d23)
-#	e = 1.0 - b^2;
-#	f = 1.0 - c^2;
-#	if (e < 0.0 || f < 0.0)  
-#		return -2
-#	end
-#	ef = 2.0*sqrt(e*f)
-#	valc = (a - b*c)/(ef)
+	###########################################
+
+	#	a = d12*d12 + d24*d24 - d14*d14
+	#	a = a/(2.0*d12*d24)
+	#	b = d24*d24 + d23*d23 - d34*d34        
+	#	b = b / (2.0*d24*d23)
+	#	c = d12*d12 + d23*d23 - d13*d13
+	#	c = c / (2.0*d12*d23)
+	#	e = 1.0 - b^2;
+	#	f = 1.0 - c^2;
+	#	if (e < 0.0 || f < 0.0)  
+	#		return -2
+	#	end
+	#	ef = 2.0*sqrt(e*f)
+	#	valc = (a - b*c)/(ef)
 	if (valc < -0.5)  
 		valc = -0.5
 	end
@@ -600,12 +607,12 @@ end
 #function qminus(q::Quaternion,w::Quaternion)
 #	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
 #end
-    
+
 function qprod(q::Quaternion,w::Quaternion)
 	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
-                           q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
-                           q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
-                           q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+			   q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
+			   q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
+			   q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
 	# number of operations = [12,16,0,0]
 end
 
@@ -653,15 +660,15 @@ function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::A
 		Ai1 = q[1,2]*cω+q[1,3]*sω
 		Ai2 = q[2,2]*cω+q[2,3]*sω
 		Ai3 = q[3,2]*cω+q[3,3]*sω
-		
+
 		Q[1,1] = -q[1,1]*cθ+Ai1*sθ
 		Q[2,1] = -q[2,1]*cθ+Ai2*sθ
 		Q[3,1] = -q[3,1]*cθ+Ai3*sθ
-		
+
 		Q[1,2] = -q[1,1]*sθ-Ai1*cθ
 		Q[2,2] = -q[2,1]*sθ-Ai2*cθ
 		Q[3,2] = -q[3,1]*sθ-Ai3*cθ
-		
+
 
 		Q[1,3] = -q[1,2]*sω+q[1,3]*cω
 		Q[2,3] = -q[2,2]*sω+q[2,3]*cω
@@ -682,22 +689,54 @@ function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::A
 		Q[1,1] = Q0[1,1]-p2q1
 		Q[2,1] = Q0[2,1]-p2q2
 		Q[3,1] = Q0[3,1]-p2q3
-		
+
 		Q[1,2] = Q0[1,2]+p3*q[1,3]
 		Q[2,2] = Q0[2,2]+p3*q[2,3]
 		Q[3,2] = Q0[3,2]+p3*q[3,3]
-		
+
 		Q[1,3] = Q0[1,3]+p1*q[1,2]
 		Q[2,3] = Q0[2,3]+p1*q[2,2]
 		Q[3,3] = Q0[3,3]+p1*q[3,2]
-		
-#		Q[1,4] = Q0[1,4]-d*p2q1
+
+		#		Q[1,4] = Q0[1,4]-d*p2q1
 		Q[1,4] = d*Q[1,1]+q[1,4]
 		Q[2,4] = d*Q[2,1]+q[2,4]
 		Q[3,4] = d*Q[3,1]+q[3,4]
-#		Q[2,4] = Q0[2,4]-d*p2q2
-#		Q[3,4] = Q0[3,4]-d*p2q3
+		#		Q[2,4] = Q0[2,4]-d*p2q2
+		#		Q[3,4] = Q0[3,4]-d*p2q3
 		#[12,12,0,0]
 	end
 	return Q
 end
+
+"""
+	convert_to_dataframe
+
+A function used to convert an array of AtomType elements in a dataframe
+
+# Examples
+```
+julia-repl
+julia> sol = conformation(data,options) # assuming all solutions founded
+
+julia> convert_to_dataframe(sol.molecules[1].atoms)
+
+returns a dataframe object. 
+```
+"""
+function convert_to_dataframe(A::Array{AtomType,1})
+	n = length(A)
+	df = DataFrame()
+	df.atom = []
+	df.x = []
+	df.y = []
+	df.z = []
+	for k = 1:n
+		push!(df.atom,A[k].element)
+		push!(df.x,A[k].x)
+		push!(df.y,A[k].y)
+		push!(df.z,A[k].z)
+	end
+	return df
+end
+

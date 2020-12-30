@@ -10,6 +10,7 @@ If you want to setup some especific branch, is necessary just include the term `
 
 ## Basic Usage
 
+
 First of all, we need to load the package. 
 
 ```@repl tutorial
@@ -46,12 +47,12 @@ One of most important fields is `.info`. This field is a symmetric `CSVSparseMat
 	fieldnames(NMRInfo)
 ```
  
-Once the type of data this package handles is well established, let's look at the rest of the settings until the main function is executed. The next step is to define the options to be used for the solver. For this, we need to create a `ConformationSetup`. This kind of element has four fields but one is optional (`virtual_precision`).
+Once the type of data this package handles is well established, let's look at the rest of the settings until the main function is executed. The next step is to define the options to be used for the solver. For this, we need to create a `ConformationSetup`. This kind of element has five fields but two are optional. The field `virtual_precision` is one of optional argument and it is used to validated a step of use of re-order strategy. By default `virtual_precision` is set like `precision` field. 
 
 ```@repl tutorial
 	fieldnames(ConformationSetup)
 ```
-The `precision`  will be used by the pruning test of the solver. The `solver` is the name of the function that was choose and `allsolution` is a bolean parameter for detect all solution if it is set as true.
+The `precision`  will be used by the pruning test of the solver. The `solver` is the name of the function that was choose and `allsolution` is a bolean parameter for detect all solution if it is set as true. The `evalLDE` is another optional argument and 
 
 ```@repl tutorial
 	opt = ConformationSetup(0.000001,MolecularConformation.classicBP,false)
@@ -75,7 +76,7 @@ The `ConformationOutput` type, has the following fields.
 	fieldnames(ConformationOutput)
 ```
 
-The field `number` corresponds to the number of solutions. The field `molecules` is a dictionary of where associated to each key we have a solution of `MoleculeType`.
+The field `solver` is the used solver defined in setup. The field `number` corresponds to the number of solutions. The field `molecules` is a dictionary of where associated to each key we have a solution of `MoleculeType`.
 
 ```@repl tutorial
 	typeof(sol.molecules[1])
@@ -94,8 +95,8 @@ In our example this has the following values
 	sol.molecules[1].lde
 ```
 
-The other fields of `ConformationOutput` are self-explanatory and used to just to analyze the performance of the method.
+The last field of `ConformationOutput` is called `nop` which means `number of operations` and it is self-explanatory and used to just to analyze the performance of the method.
 
 ## About the solvers
 
-Currently, just one solver is available: `ClassicBP` 
+Currently, just three solvers are available: `classicBP`, `classicBPOpt` and `quaternionBP`.

@@ -9,14 +9,14 @@ Liberti, L., Lavor, C., & Maculan, N. (2008). A branch‐and‐prune algorithm f
 The main difference of our implementation is that the input data (`NMRType`) can store informations of preprocessing function and as consequence we can optimize the search tree of this algorithm. 
 """
 function classicBPOpt(NMRdata :: NMRType,
-		   ε :: Float64,
-		   virtual_ε :: Float64,
-		   allmol :: Bool)
+		      ε :: Float64,
+		      virtual_ε :: Float64,
+		     allmol :: Bool)
 	# defining closure
 	function classicBPOpt_closure(l :: Int64,
-				   pos::Int64,
-				   mol :: MoleculeType,
-				   Q :: Array{Float64,2})
+				      pos::Int64,
+				      mol :: MoleculeType,
+				      Q :: Array{Float64,2})
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
@@ -44,23 +44,23 @@ function classicBPOpt(NMRdata :: NMRType,
 			cθ,sθ = bondangle(D12,D13,D23)
 			cω,sω = (1.0,0.0)
 			nop_node += [3,6,1,1]
-                     	
+
 			Q[1,1] = cθ
-                    	Q[2,1] = sθ
-                     	Q[3,1] = 0.0
+			Q[2,1] = sθ
+			Q[3,1] = 0.0
 
 			Q[1,2] = sθ
-                     	Q[2,2] = -cθ
-                     	Q[3,2] = 0.0
-    
-                    	Q[1,3] = q[1,3]
-                     	Q[2,3] = q[2,3]
-                     	Q[3,3] = q[3,3]
-                     	
+			Q[2,2] = -cθ
+			Q[3,2] = 0.0
+
+			Q[1,3] = q[1,3]
+			Q[2,3] = q[2,3]
+			Q[3,3] = q[3,3]
+
 			Q[1,4] = D23*Q[1,1]+q[1,4]
-                     	Q[2,4] = D23*Q[2,1]
-                     	Q[3,4] = 0.0
-			
+			Q[2,4] = D23*Q[2,1]
+			Q[3,4] = 0.0
+
 			nop_node += [1,2,0,0]
 			mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
 			mol.atoms[3].x = Q[1,4] 
@@ -125,7 +125,7 @@ function classicBPOpt(NMRdata :: NMRType,
 				nop_vpath += [15,27,0,0]
 				nop_node += [15,27,0,0]	
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-		#		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
+					#		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
 					q = QxB(cθ,sθ,cω,sω,D34,q,Virtual_Torsion,false)
 					nop_vpath += [12,12,0,0]
 					nop_node += [12,12,0,0]
@@ -205,7 +205,7 @@ function classicBPOpt(NMRdata :: NMRType,
 	nop_ddf = [0,0,0,0]
 	nop_vpath = [0,0,0,0]
 	classicBPOpt_closure(1,1,mol,Q)
-#	println(" *** number of main operations evaluated $(count_op)")
+	#	println(" *** number of main operations evaluated $(count_op)")
 	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 
 end #solver classicBP
@@ -225,7 +225,7 @@ The main difference of our implementation is that the input data (`NMRType`) can
 function classicBP(NMRdata :: NMRType,
 		   ε :: Float64,
 		   virtual_ε :: Float64,
-		   allmol :: Bool)
+		  allmol :: Bool)
 	# defining closure
 	function classicBP_closure(l :: Int64,
 				   pos::Int64,
@@ -330,11 +330,11 @@ function classicBP(NMRdata :: NMRType,
 				nop_node += [0,7,0,0] #torsion matrix
 				nop_node += [3,6,1,1] # bond angle
 				nop_node += [10,20,3,2] # bad torsion angle
-				
+
 				nop_vpath += [0,7,0,0] # torsion matrix
 				nop_vpath += [3,6,1,1] # bond angle
 				nop_vpath += [10,20,3,2] # bad torsion angle
-				
+
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
@@ -443,14 +443,14 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 #qbondangle = [4,5,2,2]
 #qtorsionangle = [11,19]
 function quaternionBP(NMRdata :: NMRType,
-		   ε :: Float64,
-		   virtual_ε :: Float64,
-		   allmol :: Bool)
+		      ε :: Float64,
+		      virtual_ε :: Float64,
+		     allmol :: Bool)
 	# defining closure
 	function quaternionBP_closure(l :: Int64,
-				   pos::Int64,
-				   mol :: MoleculeType,
-				   Q :: Quaternion)
+				      pos::Int64,
+				      mol :: MoleculeType,
+				      Q :: Quaternion)
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1

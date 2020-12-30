@@ -1,6 +1,6 @@
 using Documenter, MolecularConformation
 
-makedocs(sitename= "MolecularConformation.jl Documentation",
+makedocs(sitename= "MolecularConformation.jl",
 				   pages = ["Home"=> "index.md",
 							"Quick Start" => "quick.md",
 							"API" => "api.md",
