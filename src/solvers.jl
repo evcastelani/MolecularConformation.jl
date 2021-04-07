@@ -322,32 +322,32 @@ function classicBP(NMRdata :: NMRType,
 			if l==NMRdata.virtual_path[pos]
 				nop_node += [0,7,0,0] #torsion matrix
 				nop_node += [3,6,1,1] # bond angle
-				nop_node += [10,20,3,2] # bad torsion angle
-				C = C_before*B
-				nop_node += [48,64,0,0] 
+				nop_node += [10,20,4,2] # bad torsion angle
+				C = prodmatrix(C_before,B)
+				nop_node += [24,33,0,0] 
 				keep = false
 			else
 				nop_node += [0,7,0,0] #torsion matrix
 				nop_node += [3,6,1,1] # bond angle
-				nop_node += [10,20,3,2] # bad torsion angle
+				nop_node += [10,20,4,2] # bad torsion angle
 
 				nop_vpath += [0,7,0,0] # torsion matrix
 				nop_vpath += [3,6,1,1] # bond angle
-				nop_vpath += [10,20,3,2] # bad torsion angle
+				nop_vpath += [10,20,4,2] # bad torsion angle
 
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
 
-				Virtual_Torsion = C_before*B
-				nop_vpath += [48,64,0,0]
-				nop_node += [48,64,0,0]
+				Virtual_Torsion = prodmatrix(C_before,B)
+				nop_vpath += [24,33,0,0]
+				nop_node += [23,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
-					C_before = C_before*B
-					nop_vpath += [48,64,0,0]
-					nop_node += [48,64,0,0]
+					C_before = prodmatrix(C_before,B)
+					nop_vpath += [24,33,0,0]
+					nop_node += [24,33,0,0]
 
 				else
 					copyto!(C_before,Virtual_Torsion) 
@@ -387,7 +387,7 @@ function classicBP(NMRdata :: NMRType,
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
 		#nop_node += [0,0,0,0]
 		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
-		nop_node += [48,64,0,0]
+		nop_node += [24,33,0,0]
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
@@ -532,7 +532,7 @@ function quaternionBP(NMRdata :: NMRType,
 			b = sθ*sω
 			c = -cθ*sω
 			d = cθ*cω
-			nop_node += [4,0,0,0]
+			nop_node += [0,4,0,0]
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
 			if l==NMRdata.virtual_path[pos]
 				Q = qprod(Q_before,Quaternion(a,b,c,d))

@@ -651,6 +651,7 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	end
 	return C 
 end
+#[24,33,0,0]
 #[48,64,0,0]
 function QxB(cθ::Float64,sθ::Float64,cω::Float64,sω::Float64,d::Float64,q::Array{Float64,2},Q0::Array{Float64,2},position::Bool)
 

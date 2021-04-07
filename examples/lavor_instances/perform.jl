@@ -1,6 +1,6 @@
 using MolecularConformation,PyPlot,BenchmarkTools
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 10
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
 
 """
@@ -15,16 +15,19 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
 function perform(ndiag,allsolutions=false,LDE=false)
 	#initialization
-	opt_classic = ConformationSetup(0.000001,classicBPOpt,allsolutions,LDE)
+	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,LDE)
+#	opt_classicOpt = ConformationSetup(0.000001,classicBPOpt,allsolutions,LDE)
 	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,LDE)
 	data = preprocessing("toyinstance.nmr")
 	sol = conformation(data,opt_quaternion)
 	sol = conformation(data,opt_classic)
+#	sol = conformation(data,opt_classicOpt)
 	#
 	folders = ["10","100","200","300","400","500","600","700","800","900","1000","2000","3000"]
 	prob = parse.(Int,folders)
 	tquat = zeros(length(folders),4)
 	tclass = zeros(length(folders),4)
+#	tclassopt = zeros(length(folders),4)
 	k = 1
 	c = 10.0^(-9)
 	for foldername in folders
@@ -41,6 +44,13 @@ function perform(ndiag,allsolutions=false,LDE=false)
 		tclass[k,2] = median(bch).time*c
 		tclass[k,3] = mean(bch).time*c
 		tclass[k,4] = maximum(bch).time*c
+		
+#		bch  = @benchmark conformation($(data),$(opt_classicOpt))
+#		tclassopt[k,1] = minimum(bch).time*c
+#		tclassopt[k,2] = median(bch).time*c
+#		tclassopt[k,3] = mean(bch).time*c
+#		tclassopt[k,4] = maximum(bch).time*c
+
 
 		bch = @benchmark conformation($(data),$(opt_quaternion))
 		tquat[k,1] = minimum(bch).time*c
@@ -53,15 +63,36 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	end
 	j=1
 	for information in ["minimum","median","mean","maximum"]
-		figure()
+		ioff()
+		fig = figure()
 	    	xlabel("size of problems")
 		ylabel("Average of $(information) processing time (s)")
     	#grid("on")
     	#title("")
 		plot(prob,tquat[:,j],"--k",label="QuaternionBP");
+#		plot(prob,tclassopt[:,j],"-.k",label="ClassicBPOpt");
 		plot(prob,tclass[:,j],"-k",label="ClassicBP");
 	    	legend(loc="upper right",fancybox="false");
 		savefig("perf_$(information)_$(ndiag).png");
+		close(fig)
 		j+=1
 	end	 
+end
+"""
+	runperf
+
+This function is used to run several tests
+
+# Example
+```
+julia-repl
+julia> runperf()
+
+```
+some graphs will be saved in current folder. 
+"""
+function runperf()
+	for ndiag in [3,10,100,200,400,800,1000] 
+		perform(ndiag)
+	end
 end
