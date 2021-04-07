@@ -1,7 +1,7 @@
 name = "MolecularConformation"
 uuid = "727cb4de-92cd-11e9-02b2-7deda15fe764"
 authors = ["evcastelani <emersonvitor@gmail.com>", "Guilherme Philippi <guilherme.philippi@hotmail.com>", "Felipe Fidalgo <felipaomat@gmail.com>"]
-version = "0.1.7"
+version = "0.1.8"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
