@@ -16,7 +16,6 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 function perform(ndiag,allsolutions=false,LDE=false)
 	#initialization
 	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,LDE)
-#	opt_classicOpt = ConformationSetup(0.000001,classicBPOpt,allsolutions,LDE)
 	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,LDE)
 	data = preprocessing("toyinstance.nmr")
 	sol = conformation(data,opt_quaternion)
@@ -61,6 +60,23 @@ function perform(ndiag,allsolutions=false,LDE=false)
 		k += 1
 		cd("..")
 	end
+	#####
+	improv(q,c) = (c/q -1.0)*100
+	# average improvement in minimal time
+	improv_min = sum(improv.(tquat[:,1],tclass[:,1]))/length(tquat[:,1])
+	# average improvement in median time
+	improv_med = sum(improv.(tquat[:,2],tclass[:,2]))/length(tquat[:,2])
+	# average improvement in mean time
+	improv_mean = sum(improv.(tquat[:,3],tclass[:,3]))/length(tquat[:,3])
+	# average improvement in maximal time
+	improv_max = sum(improv.(tquat[:,4],tclass[:,4]))/length(tquat[:,4])
+	io = open("improvs_$(ndiag).txt", "w");
+	write(io, "minimum -> $(improv_min) \n");
+	write(io, "median -> $(improv_med) \n");
+	write(io, "mean -> $(improv_mean) \n");
+	write(io, "maximum -> $(improv_max) \n");
+	close(io);
+	#####
 	j=1
 	for information in ["minimum","median","mean","maximum"]
 		ioff()
