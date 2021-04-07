@@ -26,10 +26,10 @@ NMRType</code></pre><p>which means that <code>data_example</code> is has four fi
 (:precision, :virtual_precision, :solver, :evalLDE, :allsolutions)</code></pre><p>The <code>precision</code>  will be used by the pruning test of the solver. The <code>solver</code> is the name of the function that was choose and <code>allsolution</code> is a bolean parameter for detect all solution if it is set as true. The <code>evalLDE</code> is another optional argument and </p><pre><code class="language-julia-repl">julia&gt; 	opt = ConformationSetup(0.000001,MolecularConformation.classicBP,false)
 ConformationSetup(1.0e-6, 1.0e-6, MolecularConformation.classicBP, true, false)</code></pre><p>Now all that is required to execute the algorithm is ready and therefore, let us run the <code>conformation</code> function. </p><pre><code class="language-julia-repl">julia&gt; 	sol = conformation(data_example,opt)
 
- * Solver = MolecularConformation.classicBP
- * Number of solutions = 1
- * Solutions
-   Molecule 1 with LDE = 8.265294660788058e-28
+ ✔ Solver = MolecularConformation.classicBP
+ ✔ Number of solutions = 1
+ ✔ Solutions
+   ↳ Molecule 1 with LDE = 8.265294660788058e-28
     ( 0.0 , 0.0 ,  0.0 )
     ( -1.526 , 0.0 ,  0.0 )
     ( -2.034999999999995 , 1.4379999999999997 ,  0.0 )
@@ -39,12 +39,12 @@ ConformationSetup(1.0e-6, 1.0e-6, MolecularConformation.classicBP, true, false)<
     ( -4.863999999999999 , 7.281000000000018 ,  -1.6600000000001356 )
     ( -5.922122878027752 , 7.841170383964168 ,  -0.7130897001703499 )
     ( -6.0663693289671485 , 9.342642843087827 ,  -0.943077560468564 )
- * Number of main operations [+-,*,/,√]
-    In nodes           =  [1569, 2650, 156, 94]
-    In virtual path    =  [662, 1122, 70, 42]
-    In DDF             =  [91, 59, 0, 0]
-    Number of branches =  16
-    Number of pruning  =  11</code></pre><p>In our example, the solution is storage in <code>sol</code> whose type is <code>ConformationOutput</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol)
+ ✔ Number of main operations [+-,*,/,√]
+    ↳ In nodes           =  [1569, 2650, 156, 94]
+    ↳ In virtual path    =  [662, 1122, 70, 42]
+    ↳ In DDF             =  [91, 59, 0, 0]
+    ↳ Number of branches =  16
+    ↳ Number of pruning  =  11</code></pre><p>In our example, the solution is storage in <code>sol</code> whose type is <code>ConformationOutput</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol)
 ConformationOutput</code></pre><p>The <code>ConformationOutput</code> type, has the following fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(ConformationOutput)
 (:solver, :number, :molecules, :nop)</code></pre><p>The field <code>solver</code> is the used solver defined in setup. The field <code>number</code> corresponds to the number of solutions. The field <code>molecules</code> is a dictionary of where associated to each key we have a solution of <code>MoleculeType</code>.</p><pre><code class="language-julia-repl">julia&gt; 	typeof(sol.molecules[1])
 MoleculeType</code></pre><p>A <code>MoleculeType</code> has two fields.</p><pre><code class="language-julia-repl">julia&gt; 	fieldnames(MoleculeType)
@@ -67,4 +67,4 @@ MoleculeType</code></pre><p>A <code>MoleculeType</code> has two fields.</p><pre>
  AtomType(-6.0663693289671485, 9.342642843087827, -0.943077560468564, &quot;O&quot;)
 
 julia&gt; 	sol.molecules[1].lde
-8.265294660788058e-28</code></pre><p>The last field of <code>ConformationOutput</code> is called <code>nop</code> which means <code>number of operations</code> and it is self-explanatory and used to just to analyze the performance of the method.</p><h2 id="About-the-solvers-1"><a class="docs-heading-anchor" href="#About-the-solvers-1">About the solvers</a><a class="docs-heading-anchor-permalink" href="#About-the-solvers-1" title="Permalink"></a></h2><p>Currently, just three solvers are available: <code>classicBP</code>, <code>classicBPOpt</code> and <code>quaternionBP</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="index.html">« Home</a><a class="docs-footer-nextpage" href="api.html">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 7 April 2021 14:20">Wednesday 7 April 2021</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+8.265294660788058e-28</code></pre><p>The last field of <code>ConformationOutput</code> is called <code>nop</code> which means <code>number of operations</code> and it is self-explanatory and used to just to analyze the performance of the method.</p><h2 id="About-the-solvers-1"><a class="docs-heading-anchor" href="#About-the-solvers-1">About the solvers</a><a class="docs-heading-anchor-permalink" href="#About-the-solvers-1" title="Permalink"></a></h2><p>Currently, just three solvers are available: <code>classicBP</code>, <code>classicBPOpt</code> and <code>quaternionBP</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="index.html">« Home</a><a class="docs-footer-nextpage" href="api.html">API »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 7 April 2021 19:00">Wednesday 7 April 2021</span>. Using Julia version 1.0.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
