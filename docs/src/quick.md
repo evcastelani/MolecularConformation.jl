@@ -99,4 +99,4 @@ The last field of `ConformationOutput` is called `nop` which means `number of op
 
 ## About the solvers
 
-Currently, just three solvers are available: `classicBP`, `classicBPOpt` and `quaternionBP`.
+Currently, just two solvers are available: `classicBP` and `quaternionBP`.
