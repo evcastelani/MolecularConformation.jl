@@ -1,6 +1,6 @@
 using MolecularConformation, PrettyTables, DelimitedFiles, BenchmarkTools
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 15
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
 include("rmsd.jl")
 
@@ -43,10 +43,10 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 #	list_of_problems = ["pdb1a03","pdb1a57","pdb1a7f","pdb1acz","pdb2l2g","pdb2l2i","pdb2l3b","pdb2l3d","pdb2l32","pdb2l33","pdb1bct","pdb2jmy","pdb2kxa"]
 #	list_of_problems = ["pdb1a03"]
 	table_header = ["problem", "method", "LDE", "PT ", "Num. sol","rmsd","Improv"]
-	table_header2 = ["problem", "method", " [ +- , / , √ ] node", " [+- , / , √ ] virtual path"," [ +- , / , √ ] ddf ", " Num. Branch ", " Num. Pru ", "Improv. nop"]
+	table_header2 = ["problem", "method", " [ +- , / , √ ] node", " [+- , / , √ ] virtual path"," [ +- , / , √ ] ddf ", " Num. Branch ", " Num. Pru ", "Improv. nop", "Improv. tot"]
 	# defing array to storage table 
 	content = Array{Any,2}(undef,2*length(list_of_problems),7)
-	content2 = Array{Any,2}(undef,2*length(list_of_problems),8)
+	content2 = Array{Any,2}(undef,2*length(list_of_problems),9)
 	k=1
 	c = 10.0^(-9)
 	for prob in list_of_problems
@@ -88,8 +88,10 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 		content2[k,5] = solc.nop.ddf
 		content2[k,6] = solc.nop.branch
 		content2[k,7] = solc.nop.prune
-		content2[k-1,8] = (-1.0+sum(content2[k,3])/sum(content2[k-1,3]))*100
+		content2[k-1,8] = (-1.0.+content2[k,3]./content2[k-1,3]).*100
 		content2[k,8] = " - "
+		content2[k-1,9] = (-1.0+sum(content2[k,3])/sum(content2[k-1,3]))*100
+		content2[k,9] = " - "
 		k = k+1
 		
 	#sol = conformation(data,opt_classic)
