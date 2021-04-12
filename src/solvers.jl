@@ -28,12 +28,6 @@ function classicBP(NMRdata :: NMRType,
 			mol.atoms[2].x = -NMRdata.info[1,2].dist
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
-			C = zeros(4,4)
-			C[1,1] = -1.0
-			C[2,2] = 1.0
-			C[3,3] = -1.0
-			C[4,4] = 1.0
-			C[1,4] = -NMRdata.info[1,2].dist
 			# tird atom
 			D12 = NMRdata.info[1,2].dist
 			D13 = NMRdata.info[1,3].dist
@@ -49,18 +43,16 @@ function classicBP(NMRdata :: NMRType,
 			mol.atoms[3].y = D23*sθ
 			mol.atoms[3].z = 0.0
 			nop_node += [1,2,0,0]
-			B = zeros(4,4)
-			B[1,1] = -cθ
-			B[1,2] = -sθ
-			B[1,4] = -D23*cθ
-			B[2,1] = sθ
-			B[2,2] = -cθ
-			B[2,4] = D23*sθ
-			B[3,3] = 1.0
-			B[4,4] = 1.0
-			nop_node += [0,2,0,0] 
-			C = prodmatrix(C,B)
-			nop_node += [24,33,0,0]
+			C = zeros(4,4)
+			C[1,4] = mol.atoms[3].x
+			C[2,4] = mol.atoms[3].y 
+			C[3,4] = mol.atoms[3].z
+			C[1,1] = cθ
+			C[1,2] = sθ
+			C[2,1] = sθ
+			C[2,2] = -cθ
+			C[3,3] = -1.0
+			C[4,4] = 1.0
 			l = 4 # branching starts at atom 4
 			pos = 4 # position in virtual path
 		end
@@ -248,7 +240,7 @@ function quaternionBP(NMRdata :: NMRType,
 			mol.atoms[2].x = -NMRdata.info[1,2].dist
 			mol.atoms[2].y = 0.0
 			mol.atoms[2].z = 0.0
-			Q_before = Quaternion(0.0,0.0,-1.0,0.0)
+			#Q_before = Quaternion(0.0,0.0,-1.0,0.0)
 			# tird atom
 			D12 = NMRdata.info[1,2].dist
 			D13 = NMRdata.info[1,3].dist
@@ -258,10 +250,14 @@ function quaternionBP(NMRdata :: NMRType,
 			D34 = 0.0
 			cθ,sθ = qbondangle(D12,D13,D23)
 			nop_node += [4,5,1,2]
-			Q = qprod(Q_before,Quaternion(sθ,0.0,0.0,cθ))
-			nop_node += [4,8,0,0]
-			qmol = rotopt(Q,D23)
-			nop_node += [4,10,0,0]
+			#Q = qprod(Q_before,Quaternion(sθ,0.0,0.0,cθ)) 
+			#nop_node += [4,8,0,0]
+			#qmol = rotopt(Q,D23)
+			#nop_node += [4,10,0,0]
+			Q = Quaternion(0.0,-cθ,-sθ,0.0)
+			d = 2.0*D23
+			qmol = Quaternion(0.0,d*(cθ^2-0.5),d*(cθ*sθ),0.0)
+			nop_node = [1,4,0,0]
 			mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
 			mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
 			mol.atoms[3].y = qmol.v2 + mol.atoms[2].y
