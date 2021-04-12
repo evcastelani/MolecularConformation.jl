@@ -1,10 +1,24 @@
-\begin{tabular}{rrrrrrrrrr}
-\hline\hline
-\textbf{problem} & \textbf{method} & \textbf{LDE} & \textbf{PT } & \textbf{Num. sol} & \textbf{Num. Op.} & \textbf{rmsd} & \textbf{Improv} & \textbf{Num. Branch} & \textbf{Num. Pru} \\\hline
-pdb1a03 & quaternionBP & 4.198055855402113e-14 & 1.7690368470000002 & 1 & 940406 & 0.5361354965650007 & 45.49530621601085 & 2821 & 2526 \\
-pdb1a03 & classicBP & 4.1902555981371584e-14 & 1.7839794883333333 & 1 & 1725367 & 0.5361354967579927 &  -  & 2821 & 2526 \\
-pdb1a57 & quaternionBP & 3.6630780160410835e-14 & 2.992120481 & 1 & 3823838 & 0.2251520937780057 & 46.48732630735153 & 10123 & 9819 \\
-pdb1a57 & classicBP & 3.669202510643025e-14 & 3.0682842745000003 & 1 & 7145668 & 0.22515209375730444 &  -  & 10123 & 9819 \\
-pdb1a7f & quaternionBP & 8.850263631829723e-15 & 0.1463390052 & 1 & 211438 & 0.7866401630076812 & 45.73615160349854 & 625 & 517 \\
-pdb1a7f & classicBP & 8.474903237995467e-15 & 0.1454100582 & 1 & 389648 & 0.7866401639625699 &  -  & 625 & 517 \\\hline\hline
-\end{tabular}
+\begin{table}
+  \begin{tabular}{rrrrrrr}
+    \hline\hline
+    \textbf{problem} & \textbf{method} & \textbf{LDE} & \textbf{PT } & \textbf{Num. sol} & \textbf{rmsd} & \textbf{Improv} \\\hline
+    pdb1a03 & quaternionBP & 4.29834e-21 & 1.41565 & 1 &  -  & -5.01045 \\
+    pdb1a03 & classicBP & 5.04102e-21 & 1.34472 & 1 & 1.62196e-12 &  -  \\
+    pdb1a57 & quaternionBP & 3.13912e-18 & 2.27928 & 1 &  -  & -1.07786 \\
+    pdb1a57 & classicBP & 1.7968e-18 & 2.25472 & 1 & 2.07808e-11 &  -  \\
+    pdb1a7f & quaternionBP & 1.7492e-20 & 0.107439 & 1 &  -  & 1.08775 \\
+    pdb1a7f & classicBP & 1.71837e-20 & 0.108608 & 1 & 2.08112e-12 &  -  \\\hline\hline
+  \end{tabular}
+\end{table}
+\begin{table}
+  \begin{tabular}{rrrrrrrrr}
+    \hline\hline
+    \textbf{problem} & \textbf{method} & \textbf{ [ +- , / , √ ] node} & \textbf{ [+- , / , √ ] virtual path} & \textbf{ [ +- , / , √ ] ddf } & \textbf{ Num. Branch } & \textbf{ Num. Pru } & \textbf{Improv. nop} & \textbf{Improv. tot} \\\hline
+    pdb1a03 & quaternionBP & [265769, 389989, 11981, 29952] & [134484, 167696, 6336, 15840] & [21326, 13806, 0, 0] & 2821 & 2526 & [15.632, 32.7002, 149.987, -40.0007] & 25.0915 \\
+    pdb1a03 & classicBP & [307314, 517516, 29951, 17971] & [145416, 247863, 15840, 9504] & [21326, 13806, 0, 0] & 2821 & 2526 &  -  &  -  \\
+    pdb1a57 & quaternionBP & [1075516, 1578803, 48789, 121972] & [601804, 750082, 28540, 71350] & [70094, 45984, 0, 0] & 10123 & 9819 & [15.5799, 32.8741, 149.997, -40.0002] & 25.1665 \\
+    pdb1a57 & classicBP & [1243080, 2097820, 121971, 73183] & [647078, 1105566, 71350, 42810] & [70094, 45984, 0, 0] & 10123 & 9819 &  -  &  -  \\
+    pdb1a7f & quaternionBP & [59576, 87540, 2739, 6847] & [31426, 39177, 1486, 3715] & [4437, 2869, 0, 0] & 625 & 517 & [15.3652, 32.7804, 149.945, -40.0029] & 25.0271 \\
+    pdb1a7f & classicBP & [68730, 116236, 6846, 4108] & [33875, 57816, 3715, 2229] & [4437, 2869, 0, 0] & 625 & 517 &  -  &  -  \\\hline\hline
+  \end{tabular}
+\end{table}
