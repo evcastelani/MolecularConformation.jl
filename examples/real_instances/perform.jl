@@ -39,9 +39,10 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 	#sol = conformation(data,opt_classicOpt);
 	solq = conformation(data,opt_quaternion);
 	# run to all
-	list_of_problems = ["pdb1a03","pdb1a57","pdb1a7f"]
+#	list_of_problems = ["pdb1a03","pdb1a57","pdb1a7f"]
 #	list_of_problems = ["pdb1a03","pdb1a57","pdb1a7f","pdb1acz","pdb2l2g","pdb2l2i","pdb2l3b","pdb2l3d","pdb2l32","pdb2l33","pdb1bct","pdb2jmy","pdb2kxa"]
 #	list_of_problems = ["pdb1a03"]
+	list_of_problems = ["pdb2kxa","pdb2jmy","pdb1a57"] # Prolina free list
 	table_header = ["problem", "method", "LDE", "PT ", "Num. sol","rmsd","Improv"]
 	table_header2 = ["problem", "method", " [ +- , / , √ ] node", " [+- , / , √ ] virtual path"," [ +- , / , √ ] ddf ", " Num. Branch ", " Num. Pru ", "Improv. nop", "Improv. tot"]
 	# defing array to storage table 
