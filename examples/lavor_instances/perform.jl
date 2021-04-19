@@ -26,6 +26,7 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	prob = parse.(Int,folders)
 	tquat = zeros(length(folders),4)
 	tclass = zeros(length(folders),4)
+	nop  = Vector{String}(undef,length(folders))
 #	tclassopt = zeros(length(folders),4)
 	k = 1
 	c = 10.0^(-9)
@@ -39,11 +40,12 @@ function perform(ndiag,allsolutions=false,LDE=false)
 			data = preprocessing(string(foldername,"-$(ndiag).nmr"))
 		end
 		bch  = @benchmark conformation($(data),$(opt_classic))
+		solc =  conformation(data,opt_classic)
 		tclass[k,1] = minimum(bch).time*c
 		tclass[k,2] = median(bch).time*c
 		tclass[k,3] = mean(bch).time*c
 		tclass[k,4] = maximum(bch).time*c
-		
+	
 #		bch  = @benchmark conformation($(data),$(opt_classicOpt))
 #		tclassopt[k,1] = minimum(bch).time*c
 #		tclassopt[k,2] = median(bch).time*c
@@ -52,6 +54,8 @@ function perform(ndiag,allsolutions=false,LDE=false)
 
 
 		bch = @benchmark conformation($(data),$(opt_quaternion))
+		solq = conformation(data,opt_quaternion)
+		nop[k] = "In $(foldername) gain was $((-1.0+sum(solc.nop.node)/sum(solq.nop.node))*100) %"
 		tquat[k,1] = minimum(bch).time*c
 		tquat[k,2] = median(bch).time*c
 		tquat[k,3] = mean(bch).time*c
@@ -75,6 +79,9 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	write(io, "median -> $(improv_med) \n");
 	write(io, "mean -> $(improv_mean) \n");
 	write(io, "maximum -> $(improv_max) \n");
+	for k = 1: length(folders)
+		write(io," $(nop[k]) \n")
+	end
 	close(io);
 	#####
 	j=1
