@@ -115,7 +115,7 @@ julia> runperf()
 some graphs will be saved in current folder. 
 """
 function runperf()
-	for ndiag in [3,10,100,200,400,800,1000] 
+	for ndiag in [3,4,5,10,100,200,300,400,500,600,700,800,900,1000] # [3,10,100,200,400,800,1000] 
 		perform(ndiag)
 	end
 end
