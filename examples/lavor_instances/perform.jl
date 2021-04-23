@@ -1,4 +1,6 @@
-using MolecularConformation,PyPlot,BenchmarkTools
+using MolecularConformation,BenchmarkTools, Plots
+
+gr()
 
 BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
@@ -86,18 +88,9 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	#####
 	j=1
 	for information in ["minimum","median","mean","maximum"]
-		ioff()
-		fig = figure()
-	    	xlabel("size of problems")
-		ylabel("Average of $(information) processing time (s)")
-    	#grid("on")
-    	#title("")
-		plot(prob,tquat[:,j],"--k",label="QuaternionBP");
-#		plot(prob,tclassopt[:,j],"-.k",label="ClassicBPOpt");
-		plot(prob,tclass[:,j],"-k",label="ClassicBP");
-	    	legend(loc="upper right",fancybox="false");
-		savefig("perf_$(information)_$(ndiag).png");
-		close(fig)
+		plot(prob,tquat[:,j],color = [:black],line = (:dot,2),xaxis = ("Size of problems"),yaxis =("Average of $(information) processing time (s)"), label = "QuaternionBP")
+		plot!(prob,tclass[:,j],color = [:black],label =  "ClassicBP")
+		png("perf_$(information)_$(ndiag)");
 		j+=1
 	end	 
 end
