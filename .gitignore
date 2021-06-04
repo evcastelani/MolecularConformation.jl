@@ -41,3 +41,5 @@ examples/lavor_instances/perfomance.aux
 examples/lavor_instances/perfomance.log
 examples/lavor_instances/perfomance.pdf
  
+# list of real instances
+examples/real_instances/list.txt
