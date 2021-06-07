@@ -2,7 +2,7 @@ using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV
 
 gr()
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 5
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
 function plot_results(df::DataFrame)
 	gdf = groupby(df,:method)
@@ -122,7 +122,7 @@ julia> runperf()
 some graphs will be saved in current folder. 
 """
 function runperf()
-	for ndiag in [3] #[3,4,5,10,100,200,300,400,500,600,700,800,900,1000] # [3,10,100,400,800] 
+	for ndiag in [3,4,5,10,100,200,300,400,500,600,700,800,900,1000] # [3,10,100,400,800] 
 		perform(ndiag)
 	end
 end
