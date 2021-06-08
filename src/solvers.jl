@@ -11,12 +11,20 @@ The main difference of our implementation is that the input data (`NMRType`) can
 function classicBP(NMRdata :: NMRType,
 		   ε :: Float64,
 		   virtual_ε :: Float64,
-		  allmol :: Bool)
+		   allmol :: Bool,time_limit)
+	start =  Dates.now()
+	time_elapsed = Second(0.0)
 	# defining closure
 	function classicBP_closure(l :: Int64,
 				   pos::Int64,
 				   mol :: MoleculeType,
 				   C :: Array{Float64,2})
+
+		time_elapsed = Dates.now()-start
+		if time_elapsed>time_limit && l<n
+			error("time_limit reached without found a solution!")
+		end
+
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
@@ -223,12 +231,18 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 function quaternionBP(NMRdata :: NMRType,
 		      ε :: Float64,
 		      virtual_ε :: Float64,
-		     allmol :: Bool)
+		     allmol :: Bool,time_limit)
+	start =  Dates.now()
+	time_elapsed = Second(0.0)
 	# defining closure
 	function quaternionBP_closure(l :: Int64,
 				      pos::Int64,
 				      mol :: MoleculeType,
 				      Q :: Quaternion)
+		time_elapsed = Dates.now()-start
+		if time_elapsed>time_limit && l<n
+			error("time_limit reached without found a solution!")
+		end
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
