@@ -45,7 +45,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 	iogen = open("table_general.tex",opwrite)
 	ioop  = open("table_operations.tex",opwrite)
 
-	println(iogen,"Problem & Method & LDE & PT & Num. Sol & rmsd,Improv \\\\")
+	println(iogen,"Problem & Method & LDE & PT & Num. Sol & rmsd & Improv \\\\")
 	println(ioop, "Problem & Method & op. nodes & op. virtual path & op. ddf & Num. Branch & Num. Prune & Improv. nop & Improv. total \\\\")
 
 	c = 1e-9
