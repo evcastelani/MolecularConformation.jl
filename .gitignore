@@ -46,3 +46,9 @@ examples/real_instances/list.txt
 
 # config file of windows exe
 *.exe.config
+
+# tex processing files
+**/tex/*.synctex.gz
+**/tex/*.log
+**/tex/*.aux
+
