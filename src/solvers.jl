@@ -22,7 +22,7 @@ function classicBP(NMRdata :: NMRType,
 
 		time_elapsed = Dates.now()-start
 		if time_elapsed>time_limit && l<n
-			error("time_limit reached without found a solution!")
+			error("Time limit reached without found a solution!")
 		end
 
 		if l == 1
@@ -241,7 +241,7 @@ function quaternionBP(NMRdata :: NMRType,
 				      Q :: Quaternion)
 		time_elapsed = Dates.now()-start
 		if time_elapsed>time_limit && l<n
-			error("time_limit reached without found a solution!")
+			error("Time limit reached without found a solution!")
 		end
 		if l == 1
 			# first atom
