@@ -1,6 +1,6 @@
 using MolecularConformation, DelimitedFiles,BenchmarkTools, Dates
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 10
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 10000
 
 include("rmsd.jl")
 """
@@ -53,53 +53,45 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 		# before make the benchmark we need to verify if is possible solve the problem
 		# considering the limit_time
 		data = preprocessing(string(prob,".nmr"))
-		bench = true
 		try 
 			solq = conformation(data,optq,limit_time)
-		catch
-			bench = false
-		end
-		if bench == true
-			print(" 🔔 The problem $(prob) can be solved within the timeout. \n") 
-			print(" 👏 The benchmark will be performed for both methods! \n")
-			print(" 🕐 Running benchmark using QuaternionBP... \n")
-			bchq = @benchmark conformation($(data),$(optq),$(limit_time)+Second(10.0))
-			print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
-			LDEq = outputfilter(solq,"lde")
-			PTq = f(bchq).time*c
-
-			print(" 🕞 Running benchmark using ClassicBP... \n")
-			bchc = @benchmark conformation($(data),$(optc),$(limit_time)+Second(10.0))
-			print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
-			print(" \n")
-
-			solq = conformation(data,optq,limit_time+Second(10.0))
-			solc = conformation(data,optc,limit_time+Second(10.0))	
-			LDEc = outputfilter(solc,"lde")
-			PTc = f(bchc).time*c
-			improv = (-1.0+PTc/PTq)*100
-			rmsd = evalrmsd(solc,solq)[2]
-		
-			println(iogen,"$(prob) & quaternionBP & $(LDEq) & $(PTq) & $(solq.number) & $(rmsd) & $(improv)\\\\")
-			println(iogen,"$(prob) & classicBP & $(LDEc) & $(PTc) & $(solc.number) & - & - \\\\")
-
-			improv_nop = (-1.0 .+ solc.nop.node./solq.nop.node).*100
-			improv_total = (-1.0 + sum(solc.nop.node)/sum(solq.nop.node))*100
-			println(ioop,"$(prob) & quaternionBP & $(solq.nop.node) & $(solq.nop.virtual_path) & $(solq.nop.ddf) & $(solq.nop.branch) & $(solq.nop.prune) & $(improv_nop) & $(improv_total) \\\\")
-			println(ioop,"$(prob) & classicBP & $(solc.nop.node) & $(solc.nop.virtual_path) & $(solc.nop.ddf) & $(solc.nop.branch) & $(solc.nop.prune) & - & - \\\\")
-			
-		else
+			solc = conformation(data,optc,limit_time)
+		catch 
 			print(" 💥 The problem $(prob) cannot be solved within the timeout.\n")
 			print(" \n")
 			println(io, prob )
+			continue
 		end
+		print(" 🔔 The problem $(prob) can be solved within the timeout. \n") 
+		print(" 👏 The benchmark will be performed for both methods! \n")
+		print(" 🕐 Running benchmark using QuaternionBP... \n")
+		bchq = @benchmark conformation($(data),$(optq),$(limit_time)+Second(10.0))
+		print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
+		LDEq = outputfilter(solq,"lde")
+		PTq = f(bchq).time*c
+ 
+		print(" 🕞 Running benchmark using ClassicBP... \n")
+		bchc = @benchmark conformation($(data),$(optc),$(limit_time)+Second(10.0))
+		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
+		print(" \n")
+		LDEc = outputfilter(solc,"lde")
+		PTc = f(bchc).time*c
+		
+		improv = (-1.0+PTc/PTq)*100
+		rmsd = evalrmsd(solc,solq)[2]
+	
+		println(iogen,"$(prob) & quaternionBP & $(LDEq) & $(PTq) & $(solq.number) & $(rmsd) & $(improv)\\\\")
+		println(iogen,"$(prob) & classicBP & $(LDEc) & $(PTc) & $(solc.number) & - & - \\\\")
 
+		improv_nop = (-1.0 .+ solc.nop.node./solq.nop.node).*100
+		#improv_total = (-1.0 + sum(solc.nop.node)/sum(solq.nop.node))*100
+		improv_total = (-1.0 + (solc.nop.node[1]*3+solc.nop.node[2]*5+solc.nop.node[3]*16+solc.nop.node[1]*21)/(solq.nop.node[1]*3+solq.nop.node[2]*5+solq.nop.node[3]*16+solq.nop.node[1]*21))*100
+		println(ioop,"$(prob) & quaternionBP & $(solq.nop.node) & $(solq.nop.virtual_path) & $(solq.nop.ddf) & $(solq.nop.branch) & $(solq.nop.prune) & $(improv_nop) & $(improv_total) \\\\")
+		println(ioop,"$(prob) & classicBP & $(solc.nop.node) & $(solc.nop.virtual_path) & $(solc.nop.ddf) & $(solc.nop.branch) & $(solc.nop.prune) & - & - \\\\")
 	end
 	close(io)
 	close(iogen)
 	close(ioop)
-
-
 end
 
 function vec2array(vec)
