@@ -85,7 +85,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 
 		improv_nop = (-1.0 .+ solc.nop.node./solq.nop.node).*100
 		#improv_total = (-1.0 + sum(solc.nop.node)/sum(solq.nop.node))*100
-		improv_total = (-1.0 + (solc.nop.node[1]*3+solc.nop.node[2]*5+solc.nop.node[3]*16+solc.nop.node[1]*21)/(solq.nop.node[1]*3+solq.nop.node[2]*5+solq.nop.node[3]*16+solq.nop.node[1]*21))*100
+		improv_total = (-1.0 + (solc.nop.node[1]+solc.nop.node[2]*5+solc.nop.node[3]*16+solc.nop.node[1]*21)/(solq.nop.node[1]+solq.nop.node[2]*5+solq.nop.node[3]*16+solq.nop.node[1]*21))*100
 		println(ioop,"$(prob) & quaternionBP & $(solq.nop.node) & $(solq.nop.virtual_path) & $(solq.nop.ddf) & $(solq.nop.branch) & $(solq.nop.prune) & $(improv_nop) & $(improv_total) \\\\")
 		println(ioop,"$(prob) & classicBP & $(solc.nop.node) & $(solc.nop.virtual_path) & $(solc.nop.ddf) & $(solc.nop.branch) & $(solc.nop.prune) & - & - \\\\")
 	end
