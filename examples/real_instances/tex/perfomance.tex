@@ -1,23 +1,20 @@
-\documentclass[landscape, a4paper,11pt]{article}
-\usepackage[landscape]{geometry}
-\usepackage{longtable}
+\documentclass[a4paper,11pt]{article}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{makecell}
+\usepackage{xltabular}
+\usepackage{amsmath}
+\usepackage{booktabs}
 
 \begin{document}
 	
-	\bf{General results:}\\
-	\begin{tiny}
-		\begin{longtable}{ccccccc}
-			\input{../table_general.tex}
-		\end{longtable}
-	\end{tiny}
-	\newpage
-	
-	\bf{Operation results:}\\
-	\begin{tiny}
-		\setlength\LTleft{-14mm}
-		\begin{longtable}{ccccccccc}
-			\input{../table_operations.tex}
-		\end{longtable}
-	\end{tiny}
+	\begin{scriptsize}
+		\input{../table_general.tex}
+		\newpage
+		
+		\input{../table_operations.tex}
+		\newpage
+	\end{scriptsize}
 	
 \end{document}	
