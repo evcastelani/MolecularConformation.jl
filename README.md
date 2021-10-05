@@ -45,6 +45,8 @@ julia> conformation(data,options)
 ```
 As return a `ConformationOutput` type is provided with all required information.
 
+## Note
+
 ## TO DO
 
 
