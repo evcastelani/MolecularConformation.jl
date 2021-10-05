@@ -47,6 +47,9 @@ As return a `ConformationOutput` type is provided with all required information.
 
 ## Note
 
+Massive tests were carried out to prove the potential of the implementations. If you are interested in reproducing the tests, it is highly recommended that you use the `performance` branch. In addition, for pre-processing of instances, it was used [HCProtCLI](https://github.com/caomem/HCProtCLI).
+
+
 ## TO DO
 
 
