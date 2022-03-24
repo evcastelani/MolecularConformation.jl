@@ -1,3 +1,209 @@
+function classicBPseq(NMRdata::NMRType,
+		ε :: Float64,
+		virtual_ε :: Float64,
+		allmol :: Bool)
+	n = NMRdata.dim
+	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
+	for i=1:n
+		mol.atoms[i] = AtomType(0.0,0.0,0.0)
+	end
+	C = zeros(4,4)
+	nsol = 0
+	storage_mol = Dict{Int64,MoleculeType}()
+	n_prune = 0
+	n_branch = 0
+	#count_nop = [+-,*,/,√]
+	nop_node = [0,0,0,0]
+	nop_ddf = [0,0,0,0]
+	nop_vpath = [0,0,0,0]
+	#l = 1 first atom	# first atom
+	mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
+	mol.atoms[1].x = 0.0
+	mol.atoms[1].y = 0.0
+	mol.atoms[1].z = 0.0
+	#second atom
+	mol.atoms[2].element = NMRdata.info[2,:].nzval[1].atom1
+	mol.atoms[2].x = -NMRdata.info[1,2].dist
+	mol.atoms[2].y = 0.0
+	mol.atoms[2].z = 0.0
+	# tird atom
+	D12 = NMRdata.info[1,2].dist
+	D13 = NMRdata.info[1,3].dist
+	D23 = NMRdata.info[2,3].dist
+	D14 = 0.0
+	D24 = 0.0
+	D34 = 0.0
+	cθ,sθ = bondangle(D12,D13,D23)
+	nop_node += [3,6,1,1]
+	cω,sω = (0.0,0.0)
+	mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
+	mol.atoms[3].x = -D12+D23*cθ
+	mol.atoms[3].y = D23*sθ
+	mol.atoms[3].z = 0.0
+	nop_node += [1,2,0,0]
+	C = zeros(4,4)
+	C[1,4] = mol.atoms[3].x
+	C[2,4] = mol.atoms[3].y 
+	C[3,4] = mol.atoms[3].z
+	C[1,1] = cθ
+	C[1,2] = sθ
+	C[2,1] = sθ
+	C[2,2] = -cθ
+	C[3,3] = -1.0
+	C[4,4] = 1.0
+	l = 4 # branching starts at atom 4
+	pos = 4 # position in virtual path
+	explore_right_side = zeros(Bool,n)
+	B = zeros(4,4) # torsion matrix
+	C_list = Array{Array{Float64,2}}(undef,n-3) # to acess level l it is need to put l-3
+	C_list[1] = C
+	while l<=n
+		keep = true
+		while keep
+			try
+				D14 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos]].dist
+			catch
+				D14 = sqrt((mol.atoms[NMRdata.virtual_path[pos-3]].x - mol.atoms[NMRdata.virtual_path[pos]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-3]].y - mol.atoms[NMRdata.virtual_path[pos]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-3]].z - mol.atoms[NMRdata.virtual_path[pos]].z)^2)  
+			end			
+			try 
+				D24 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos]].dist
+			catch		
+				D24 = sqrt((mol.atoms[NMRdata.virtual_path[pos-2]].x - mol.atoms[NMRdata.virtual_path[pos]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-2]].y - mol.atoms[NMRdata.virtual_path[pos]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-2]].z - mol.atoms[NMRdata.virtual_path[pos]].z)^2)   
+			end			
+			try
+				D34 = NMRdata.info[NMRdata.virtual_path[pos-1],NMRdata.virtual_path[pos]].dist
+			catch
+				D34 = sqrt((mol.atoms[NMRdata.virtual_path[pos-1]].x - mol.atoms[NMRdata.virtual_path[pos]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-1]].y - mol.atoms[NMRdata.virtual_path[pos]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-1]].z - mol.atoms[NMRdata.virtual_path[pos]].z)^2)   
+			end	
+			try 
+				D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
+			catch
+				D12 = sqrt((mol.atoms[NMRdata.virtual_path[pos-3]].x - mol.atoms[NMRdata.virtual_path[pos-2]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-3]].y - mol.atoms[NMRdata.virtual_path[pos-2]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-3]].z - mol.atoms[NMRdata.virtual_path[pos-2]].z)^2)   
+			end	
+			try
+				D13 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-1]].dist
+			catch
+				D13 = sqrt((mol.atoms[NMRdata.virtual_path[pos-3]].x - mol.atoms[NMRdata.virtual_path[pos-1]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-3]].y - mol.atoms[NMRdata.virtual_path[pos-1]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-3]].z - mol.atoms[NMRdata.virtual_path[pos-1]].z)^2)   
+			end	
+			try 
+				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos-1]].dist
+			catch
+				D23 = sqrt((mol.atoms[NMRdata.virtual_path[pos-2]].x - mol.atoms[NMRdata.virtual_path[pos-1]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-2]].y - mol.atoms[NMRdata.virtual_path[pos-1]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-2]].z - mol.atoms[NMRdata.virtual_path[pos-1]].z)^2)   
+			end	
+			cθ,sθ = bondangle(D23,D24,D34)
+			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
+			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
+			B = torsionmatrix(cθ,sθ,cω,sω,D34)
+			if l==NMRdata.virtual_path[pos]
+				nop_node += [0,7,0,0] #torsion matrix
+				nop_node += [3,6,1,1] # bond angle
+				nop_node += [10,20,4,2] # bad torsion angle
+				C_list[l-2] = prodmatrix(C_list[l-3],B) 
+				nop_node += [24,33,0,0] 
+				keep = false
+			else
+				nop_node += [0,7,0,0] #torsion matrix
+				nop_node += [3,6,1,1] # bond angle
+				nop_node += [10,20,4,2] # bad torsion angle
+
+				nop_vpath += [0,7,0,0] # torsion matrix
+				nop_vpath += [3,6,1,1] # bond angle
+				nop_vpath += [10,20,4,2] # bad torsion angle
+
+				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
+				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
+				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
+
+				Virtual_Torsion = prodmatrix(C_list[l-3],B)
+				nop_vpath += [24,33,0,0]
+				nop_node += [23,33,0,0]
+
+				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
+					B = torsionmatrix(B)
+					C_list[l-3] = prodmatrix(C_list[l-3],B)
+					nop_vpath += [24,33,0,0]
+					nop_node += [24,33,0,0]
+
+				else
+					#copyto!(C_before,Virtual_Torsion) 
+					C_list[l-3] = Virtual_Torsion
+				end
+				#@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
+				pos = pos+1		
+			end
+		end
+
+	
+	end
+	if explore_right_side[l] == false
+		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
+		mol.atoms[l].x = C_list[l-2][1,4]
+		mol.atoms[l].y = C_list[l-2][2,4]
+		mol.atoms[l].z = C_list[l-2][3,4]
+		count = [0,0,0,0]
+		λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
+		nop_ddf += count
+		@debug "C at level $(l) right side " C
+		if λ == 1 
+			if l<n
+				@debug "Partial solution by right side at level $(l)"  mol
+				n_branch +=1
+				#classicBP_closure(l+1,pos+1,mol,C)
+				l += 1
+			else
+				nsol=nsol+1
+				storage_mol[nsol] = copy(mol)
+				@debug "Rank n was reached, a solution was found " 
+				return 0
+			end
+		else
+			n_prune += 1
+			explore_right_side[l] = true
+			B = torsionmatrix(B)
+			#nop_node += [0,0,0,0]
+			C_list[l-2] = prodmatrix(C_list[l-3],B)# tenho que otimizar este calculo
+			nop_node += [24,33,0,0]
+		end
+	end
+	if explore_right_side[l] == true 
+		mol.atoms[l].x = C_list[l-2][1,4]
+		mol.atoms[l].y = C_list[l-2][2,4]
+		mol.atoms[l].z = C_list[l-2][3,4]
+		count = [0,0,0,0]
+		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
+		nop_ddf += count 
+		@debug "C at level $(l) left side " C
+		if ρ == 1 
+			if l<n
+				@debug "Partial solution by left side at level $(l)" mol
+				n_branch += 1
+				l += 1
+				#classicBP_closure(l+1,pos+1,mol,C)
+			else
+				nsol = nsol+1
+				storage_mol[nsol] = copy(mol)				
+				@debug "Rank n was reached, a solution was found " 
+				explored_right_side = zeros(Bool,n)
+			end
+		else
+			k = l-1
+			while explored_right_side[k] == true
+				k -= 1
+			end
+			n_prune += 1
+		end
+
+
+	end
+	if allmol==false && nsol>0
+		@debug "number of solutions"  nsol
+		#@info "LDE = " LDE(mol,D,n,nad)
+		@goto exit
+	end
+
+
+
+end
 """
 ```
 classicBP :: Function
@@ -9,14 +215,14 @@ Liberti, L., Lavor, C., & Maculan, N. (2008). A branch‐and‐prune algorithm f
 The main difference of our implementation is that the input data (`NMRType`) can store informations of preprocessing function and as consequence we can optimize the search tree of this algorithm. 
 """
 function classicBP(NMRdata :: NMRType,
-		   ε :: Float64,
-		   virtual_ε :: Float64,
-		  allmol :: Bool)
+		ε :: Float64,
+		virtual_ε :: Float64,
+		allmol :: Bool)
 	# defining closure
 	function classicBP_closure(l :: Int64,
-				   pos::Int64,
-				   mol :: MoleculeType,
-				   C :: Array{Float64,2})
+			pos::Int64,
+			mol :: MoleculeType,
+			C :: Array{Float64,2})
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
@@ -221,14 +427,14 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 #qbondangle = [4,5,2,2]
 #qtorsionangle = [11,19]
 function quaternionBP(NMRdata :: NMRType,
-		      ε :: Float64,
-		      virtual_ε :: Float64,
-		     allmol :: Bool)
+		ε :: Float64,
+		virtual_ε :: Float64,
+		allmol :: Bool)
 	# defining closure
 	function quaternionBP_closure(l :: Int64,
-				      pos::Int64,
-				      mol :: MoleculeType,
-				      Q :: Quaternion)
+			pos::Int64,
+			mol :: MoleculeType,
+			Q :: Quaternion)
 		if l == 1
 			# first atom
 			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1

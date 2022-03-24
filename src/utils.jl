@@ -324,6 +324,31 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 	return B
 end
 
+function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
+
+	B=zeros(4,4)
+	B[1,1] = -cosθ
+	B[1,2] = -sinθ
+	B[1,4] = -d34*cosθ
+	B[2,1] = sinθ*cosω
+	B[2,2] = -cosθ
+	B[2,3] = -sinω
+	B[2,4] = d34*B[2,1]
+	B[3,1] = sinθ*sinω
+	B[3,2] = -cosθ*sinω
+	B[3,3] = cosω
+	B[3,4] = d34*B[3,1] 
+	B[4,4] = 1
+	return B
+end
+function torsionmatrix(B)
+
+	B[2,3] = -B[2,3]
+	B[3,1] = -B[3,1]
+	B[3,2] = -B[3,2]
+	B[3,4] = -B[3,4]	
+	return B
+end
 """
 ```
 pruningtest :: Function
@@ -409,7 +434,7 @@ function outputfilter(a::ConformationOutput, option = "lde")
 		for j=1:num
 			for i=1:nl
 				A[i,j]=[a.molecules[j].atoms[i].x, a.molecules[j].atoms[i].y,
-					a.molecules[j].atoms[i].z]
+						a.molecules[j].atoms[i].z]
 			end
 		end
 		return A
@@ -563,9 +588,9 @@ end
 
 function qprod(q::Quaternion,w::Quaternion)
 	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
-			   q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
-			   q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
-			   q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+					   q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
+					   q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
+					   q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
 	# number of operations = [12,16,0,0]
 end
 
