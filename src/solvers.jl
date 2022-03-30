@@ -2,6 +2,9 @@ function classicBPseq(NMRdata::NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
 		allmol :: Bool)
+	if allmol == true
+		error("This solver is not prepared to find all solutions yet")
+	end
 	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
 	for i=1:n
@@ -54,9 +57,10 @@ function classicBPseq(NMRdata::NMRType,
 	l = 4 # branching starts at atom 4
 	pos = 4 # position in virtual path
 	explore_right_side = zeros(Bool,n)
-	B = zeros(4,4) # torsion matrix
-	C_list = Array{Array{Float64,2}}(undef,n-3) # to acess level l it is need to put l-3
-	C_list[1] = C
+	C_list = Array{Array{Float64,2}}(undef,n) # to acess level l it is need to put l-3
+	C_list[3] = C
+	B_list = Array{Array{Float64,2}}(undef,n) # to acess level l it is need to put l-3
+	B_list[3] = zeros(4,4)
 	while l<=n
 		keep = true
 		while keep
@@ -93,12 +97,12 @@ function classicBPseq(NMRdata::NMRType,
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
 			@debug "l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)"
-			B = torsionmatrix(cθ,sθ,cω,sω,D34)
+			B[l] = torsionmatrix(cθ,sθ,cω,sω,D34)
 			if l==NMRdata.virtual_path[pos]
 				nop_node += [0,7,0,0] #torsion matrix
 				nop_node += [3,6,1,1] # bond angle
 				nop_node += [10,20,4,2] # bad torsion angle
-				C_list[l-2] = prodmatrix(C_list[l-3],B) 
+				C_list[l] = prodmatrix(C_list[l-1],B[l]) 
 				nop_node += [24,33,0,0] 
 				keep = false
 			else
@@ -114,95 +118,90 @@ function classicBPseq(NMRdata::NMRType,
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
 
-				Virtual_Torsion = prodmatrix(C_list[l-3],B)
+				Virtual_Torsion = prodmatrix(C_list[l-1],B[l])
 				nop_vpath += [24,33,0,0]
 				nop_node += [23,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-					B = torsionmatrix(B)
-					C_list[l-3] = prodmatrix(C_list[l-3],B)
+					B[l] = torsionmatrix(B[l])
+					C_list[l-1] = prodmatrix(C_list[l-1],B[l])
 					nop_vpath += [24,33,0,0]
 					nop_node += [24,33,0,0]
 
 				else
 					#copyto!(C_before,Virtual_Torsion) 
-					C_list[l-3] = Virtual_Torsion
+					C_list[l-1] = Virtual_Torsion
 				end
 				#@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
 				pos = pos+1		
 			end
 		end
 
-	
-	end
-	if explore_right_side[l] == false
-		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
-		mol.atoms[l].x = C_list[l-2][1,4]
-		mol.atoms[l].y = C_list[l-2][2,4]
-		mol.atoms[l].z = C_list[l-2][3,4]
-		count = [0,0,0,0]
-		λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
-		nop_ddf += count
-		@debug "C at level $(l) right side " C
-		if λ == 1 
-			if l<n
-				@debug "Partial solution by right side at level $(l)"  mol
-				n_branch +=1
-				#classicBP_closure(l+1,pos+1,mol,C)
-				l += 1
+
+		if explore_right_side[l] == false
+			mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
+			mol.atoms[l].x = C_list[l][1,4]
+			mol.atoms[l].y = C_list[l][2,4]
+			mol.atoms[l].z = C_list[l][3,4]
+			count = [0,0,0,0]
+			λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
+			nop_ddf += count
+			@debug "C at level $(l) right side " C[l]
+			if λ == 1 
+				if l<n
+					@debug "Partial solution by right side at level $(l)"  mol
+					n_branch +=1
+					#classicBP_closure(l+1,pos+1,mol,C)
+					l += 1
+				else
+					nsol=nsol+1
+					storage_mol[nsol] = copy(mol)
+					@debug "Rank n was reached, a solution was found " 
+					return 0
+				end
 			else
-				nsol=nsol+1
-				storage_mol[nsol] = copy(mol)
-				@debug "Rank n was reached, a solution was found " 
-				return 0
+				n_prune += 1
+				explore_right_side[l] = true
 			end
-		else
-			n_prune += 1
-			explore_right_side[l] = true
-			B = torsionmatrix(B)
+		end
+		if explore_right_side[l] == true 
+			B[l] = torsionmatrix(B[l])
 			#nop_node += [0,0,0,0]
-			C_list[l-2] = prodmatrix(C_list[l-3],B)# tenho que otimizar este calculo
+			C_list[l] = prodmatrix(C_list[l-1],B[l])# tenho que otimizar este calculo
 			nop_node += [24,33,0,0]
-		end
-	end
-	if explore_right_side[l] == true 
-		mol.atoms[l].x = C_list[l-2][1,4]
-		mol.atoms[l].y = C_list[l-2][2,4]
-		mol.atoms[l].z = C_list[l-2][3,4]
-		count = [0,0,0,0]
-		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
-		nop_ddf += count 
-		@debug "C at level $(l) left side " C
-		if ρ == 1 
-			if l<n
-				@debug "Partial solution by left side at level $(l)" mol
-				n_branch += 1
-				l += 1
-				#classicBP_closure(l+1,pos+1,mol,C)
+			mol.atoms[l].x = C_list[l][1,4]
+			mol.atoms[l].y = C_list[l][2,4]
+			mol.atoms[l].z = C_list[l][3,4]
+			count = [0,0,0,0]
+			ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
+			nop_ddf += count 
+			@debug "C at level $(l) left side " C
+			if ρ == 1 
+				if l<n
+					@debug "Partial solution by left side at level $(l)" mol
+					n_branch += 1
+					l += 1
+					#classicBP_closure(l+1,pos+1,mol,C)
+				else
+					nsol = nsol+1
+					storage_mol[nsol] = copy(mol)				
+					@debug "Rank n was reached, a solution was found " 
+					explore_right_side = zeros(Bool,n)
+				end
 			else
-				nsol = nsol+1
-				storage_mol[nsol] = copy(mol)				
-				@debug "Rank n was reached, a solution was found " 
-				explored_right_side = zeros(Bool,n)
+				k = l-1
+				while explore_right_side[k] == true
+					k -= 1
+				end
+				explore_right_side[k] = true
+				n_prune += 1
 			end
-		else
-			k = l-1
-			while explored_right_side[k] == true
-				k -= 1
-			end
-			n_prune += 1
+
+
 		end
 
-
 	end
-	if allmol==false && nsol>0
-		@debug "number of solutions"  nsol
-		#@info "LDE = " LDE(mol,D,n,nad)
-		@goto exit
-	end
-
-
-
+	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 end
 """
 ```
