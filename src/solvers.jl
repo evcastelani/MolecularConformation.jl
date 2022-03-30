@@ -59,8 +59,8 @@ function classicBPseq(NMRdata::NMRType,
 	explore_right_side = zeros(Bool,n)
 	C_list = Array{Array{Float64,2}}(undef,n) # to acess level l it is need to put l-3
 	C_list[3] = C
-	B_list = Array{Array{Float64,2}}(undef,n) # to acess level l it is need to put l-3
-	B_list[3] = zeros(4,4)
+	B = Array{Array{Float64,2}}(undef,n) # to acess level l it is need to put l-3
+	B[3] = zeros(4,4)
 	while l<=n
 		keep = true
 		while keep
