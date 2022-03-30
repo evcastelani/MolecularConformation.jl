@@ -153,6 +153,7 @@ function classicBPseq(NMRdata::NMRType,
 					n_branch +=1
 					#classicBP_closure(l+1,pos+1,mol,C)
 					l += 1
+					explore_right_side[l]=false
 				else
 					nsol=nsol+1
 					storage_mol[nsol] = copy(mol)
@@ -181,6 +182,7 @@ function classicBPseq(NMRdata::NMRType,
 					@debug "Partial solution by left side at level $(l)" mol
 					n_branch += 1
 					l += 1
+					explore_right_side[l]=false
 					#classicBP_closure(l+1,pos+1,mol,C)
 				else
 					nsol = nsol+1
