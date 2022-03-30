@@ -5,6 +5,8 @@ function classicBPseq(NMRdata::NMRType,
 	if allmol == true
 		error("This solver is not prepared to find all solutions yet")
 	end
+
+	println("qualquetr c")
 	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
 	for i=1:n
