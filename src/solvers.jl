@@ -158,19 +158,17 @@ function classicBPseq(NMRdata::NMRType,
 			count = [0,0,0,0]
 			λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
 			nop_ddf += count
-			println("C = C_before*B at level $(l) left side  $(C_list[l])) = $(C_list[l-1]) * $(B[l])")
+			#println("C = C_before*B at level $(l) left side  $(C_list[l])) = $(C_list[l-1]) * $(B[l])")
 			if λ == 1 
 				if l<n
-					println("Partial solution by left side at level $(l) " , mol)
+			#		println("Partial solution by left side at level $(l) " , mol)
 					n_branch +=1
 					#classicBP_closure(l+1,pos+1,mol,C)
-					l += 1
-					explore_right_side[l]=false
+					explore_right_side[l+1]=false
 				else
 					nsol=nsol+1
 					storage_mol[nsol] = copy(mol)
 					@debug "Rank n was reached, a solution was found " 
-					return 0
 				end
 			else
 				n_prune += 1
@@ -188,13 +186,12 @@ function classicBPseq(NMRdata::NMRType,
 			count = [0,0,0,0]
 			ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
 			nop_ddf += count 
-			println("C = C_before*B at level $(l) right side  $(C_list[l])) = $(C_list[l-1]) * $(B[l])")
+			#println("C = C_before*B at level $(l) right side  $(C_list[l])) = $(C_list[l-1]) * $(B[l])")
 			if ρ == 1 
 				if l<n
-					println("Partial solution by right side at level $(l) ", mol)
+			#		println("Partial solution by right side at level $(l) ", mol)
 					n_branch += 1
-					l += 1
-					explore_right_side[l]=false
+					explore_right_side[l+1]=false
 					#classicBP_closure(l+1,pos+1,mol,C)
 				else
 					nsol = nsol+1
@@ -207,12 +204,13 @@ function classicBPseq(NMRdata::NMRType,
 					k -= 1
 				end
 				explore_right_side[k] = true
-				l = k
+				l = k-1
 				n_prune += 1
 			end
 
 
 		end
+		l += 1
 	end
 	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 end
@@ -367,10 +365,10 @@ function classicBP(NMRdata :: NMRType,
 		nop_ddf += count
 #		println("C at level $(l)left side  $C ")
 #		println("C at level $(l) left side  $(C_list[l])")
-		println("C = C_before*B at level $(l) left side  $(C) = $(C_before) * $(B)")
+		#println("C = C_before*B at level $(l) left side  $(C) = $(C_before) * $(B)")
 		if λ == 1 
 			if l<n
-				println("Partial solution by left side at level $(l)",  mol)
+		#		println("Partial solution by left side at level $(l)",  mol)
 				n_branch +=1
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
@@ -390,7 +388,7 @@ function classicBP(NMRdata :: NMRType,
 		B = torsionmatrix(cθ,sθ,cω,sω,D34,B,false)
 		#nop_node += [0,0,0,0]
 		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
-		println("C = C_before*B at level $(l) right side  $(C) = $(C_before) * $(B)")
+		#println("C = C_before*B at level $(l) right side  $(C) = $(C_before) * $(B)")
 		nop_node += [24,33,0,0]
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
@@ -401,7 +399,7 @@ function classicBP(NMRdata :: NMRType,
 	#	println("C at level $(l) right side  $C ")
 		if ρ == 1 
 			if l<n
-				println("Partial solution by right side at level $(l)", mol)
+		#		println("Partial solution by right side at level $(l)", mol)
 				n_branch += 1
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
