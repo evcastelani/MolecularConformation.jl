@@ -331,7 +331,7 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[1,2] = -sinθ
 	B[1,4] = -d34*cosθ
 	B[2,1] = sinθ*cosω
-	B[2,2] = -cosθ
+	B[2,2] = -cosθ*cosω
 	B[2,3] = -sinω
 	B[2,4] = d34*B[2,1]
 	B[3,1] = sinθ*sinω
