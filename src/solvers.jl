@@ -104,11 +104,14 @@ function classicBPseq(NMRdata::NMRType,
 			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
 			println("l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)")
 			B[l] = torsionmatrix(cθ,sθ,cω,sω,D34)
+			# if explore_right_side[l] == true 
+			# 	B[l] = torsionmatrix(B[l])
+			# end
 			if l==NMRdata.virtual_path[pos]
 				nop_node += [0,7,0,0] #torsion matrix
 				nop_node += [3,6,1,1] # bond angle
 				nop_node += [10,20,4,2] # bad torsion angle
-				C_list[l] = prodmatrix(C_before,B[l]) 
+				C_list[l] = prodmatrix(C_list[l-1],B[l]) 
 				nop_node += [24,33,0,0] 
 				keep = false
 			else
@@ -123,24 +126,24 @@ function classicBPseq(NMRdata::NMRType,
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
 				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
-				Virtual_Torsion = prodmatrix(C_before,B[l])
+				Virtual_Torsion = prodmatrix(C_list[l-1],B[l])
 				# println("Virtual Torsion = $(C_before) * $(B[l])$(Virtual_Torsion)")
 				nop_vpath += [24,33,0,0]
 				nop_node += [23,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B[l] = torsionmatrix(B[l])
-					C_before = prodmatrix(C_before,B[l])
+					C_list[l-1] = prodmatrix(C_list[l-1],B[l])
 					nop_vpath += [24,33,0,0]
 					nop_node += [24,33,0,0]
 					#println("passou 1")
 				else
 					#println("passou 2")
-					copyto!(C_before,Virtual_Torsion) 
+					copyto!(C_list[l-1],Virtual_Torsion) 
 					#C_before = Virtual_Torsion
 				end
-#				println("Torsion matrix $(B[l])")
-#				println("C_before matrix $(C_before)")
+				#println("Torsion matrix $(B[l])")
+				#println("C_before matrix $(C_before)")
 				#@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
 				pos = pos+1		
 			end
