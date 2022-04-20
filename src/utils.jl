@@ -347,7 +347,7 @@ function torsionmatrix(C)
 	B[3,1] = -B[3,1]
 	B[3,2] = -B[3,2]
 	B[3,4] = -B[3,4]	
-	println("qualquer coisa!")
+	#println("qualquer coisa!")
 	return B
 end
 """

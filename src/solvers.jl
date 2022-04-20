@@ -63,6 +63,8 @@ function classicBPseq(NMRdata::NMRType,
 	#	C_before = zeros(4,4)
 	B = Array{Array{Float64,2}}(undef,n) # to acess level l it is need to put l-3
 	B[4] = zeros(4,4)
+	first_ocor = -1*ones(Int,n)
+	virtual_count = 0
 	while l<=n && l>3
 		#if 4<l <= maxl
 		#   println("B matrix in level $(l-1) ")
@@ -71,12 +73,16 @@ function classicBPseq(NMRdata::NMRType,
 		#   display(C_list[l-1])
 		#end
 
-		display(l)
-
+		#display(l)
+		
 		if l==maxl+1
 			error("bla")
 		end
-		pos = findall(NMRdata.virtual_path.==l-1)[1] +1
+#		if first_ocor[l-1] == -1 && first_ocor[NMRdata.virtual_path[l-1]] == -1 
+#			first_ocor[l-1] = NMRdata.virtual_path[l-1]
+#		end
+		# TODO: otimizar!
+		pos = findfirst(x->x==l-1,NMRdata.virtual_path) +1
 		#C_before = zeros(4,4)
 		C_before = copy(C_list[l-1])
 		keep = true
@@ -114,10 +120,10 @@ function classicBPseq(NMRdata::NMRType,
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
 			#			println("l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)")
-			@show cθ, sθ,cω,sω, D34
+		#	@show cθ, sθ,cω,sω, D34
 
 						
-			@show B[l] = torsionmatrix(cθ,sθ,cω,sω,D34)
+			B[l] = torsionmatrix(cθ,sθ,cω,sω,D34)
 			# if explore_right_side[l] == true 
 			# 	B[l] = torsionmatrix(B[l])
 			# end
@@ -151,7 +157,7 @@ function classicBPseq(NMRdata::NMRType,
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
 					B[l] = torsionmatrix(B[l])
-					C_before = prodmatrix(C_list[l-1],B[l])
+					C_before = prodmatrix(C_before,B[l])
 					nop_vpath += [24,33,0,0]
 					nop_node += [24,33,0,0]
 					#	println("passou 1")
@@ -174,9 +180,9 @@ function classicBPseq(NMRdata::NMRType,
 
 		if explore_right_side[l] == false
 			if bug && (3<l<= maxl) 
-				println("B matrix in level $(l) ")
+				println("B matrix in level $(l) in left side")
 				display(B[l])
-				println("C matrix")
+				println("C matrix ")
 				display(C_list[l])
 			end
 			mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
@@ -204,12 +210,12 @@ function classicBPseq(NMRdata::NMRType,
 			end
 		end
 		if explore_right_side[l] == true 
-			display(l)
+			#display(l)
 			B[l] = torsionmatrix(B[l])
 			#nop_node += [0,0,0,0]
 			C_list[l] = prodmatrix(C_before,B[l])# tenho que otimizar este calculo
 			if bug && (3<l<=maxl)
-				println("B matrix in level $(l) ")
+				println("B matrix in level $(l) in right side")
 				display(B[l])
 				println("C matrix")
 				display(C_list[l])
@@ -252,6 +258,7 @@ function classicBPseq(NMRdata::NMRType,
 	if l == 3 
 		error("Solution not found, problem possible infeasible")
 	end
+	display(first_ocor)
 	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 end
 
@@ -518,7 +525,7 @@ function classicBP(NMRdata :: NMRType,
 		ρ = 1
 		C_before = zeros(4,4)
 		C_before = copy(C)
-		display(l)
+		#display(l)
 		if l==maxl+1
 			error("bla")
 		end
@@ -556,9 +563,9 @@ function classicBP(NMRdata :: NMRType,
 			end	
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
-			@show cθ, sθ,cω,sω, D34
+			#@show cθ, sθ,cω,sω, D34
 			#			println("l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)")
-			@show B = torsionmatrix(cθ,sθ,cω,sω,D34)
+			B = torsionmatrix(cθ,sθ,cω,sω,D34)
 			if l==NMRdata.virtual_path[pos]
 				nop_node += [0,7,0,0] #torsion matrix
 				nop_node += [3,6,1,1] # bond angle
@@ -659,9 +666,11 @@ function classicBP(NMRdata :: NMRType,
 			println("C matrix")
 			display(C)
 		end
+		#display(l)
 		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
 		nop_ddf += count 
 		#	println("C at level $(l) right side  $C ")
+		
 		if ρ == 1 
 			if l<n
 				#		println("Partial solution by right side at level $(l)", mol)
