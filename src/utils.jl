@@ -341,12 +341,13 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[4,4] = 1
 	return B
 end
-function torsionmatrix(B)
-
+function torsionmatrix(C)
+	B = copy(C)
 	B[2,3] = -B[2,3]
 	B[3,1] = -B[3,1]
 	B[3,2] = -B[3,2]
 	B[3,4] = -B[3,4]	
+	println("qualquer coisa!")
 	return B
 end
 """
