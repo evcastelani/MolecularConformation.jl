@@ -546,7 +546,7 @@ function classicBP(NMRdata :: NMRType,
 			if NMRdata.virtual_path[pos-1] == NMRdata.virtual_path[pos]
 				D34 = 0.0
 			else
-				D34 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos]].dist
+				D34 = NMRdata.info[NMRdata.virtual_path[pos-1],NMRdata.virtual_path[pos]].dist
 			end
 
 			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-2]
@@ -566,151 +566,150 @@ function classicBP(NMRdata :: NMRType,
 			end
 
 
-		end	
-		cθ,sθ = bondangle(D23,D24,D34)
-		cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
-		#@show cθ, sθ,cω,sω, D34
-		#			println("l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)")
-		B = torsionmatrix(cθ,sθ,cω,sω,D34)
-		if l==NMRdata.virtual_path[pos]
-			nop_node += [0,7,0,0] #torsion matrix
-			nop_node += [3,6,1,1] # bond angle
-			nop_node += [10,20,4,2] # bad torsion angle
-			C = prodmatrix(C_before,B)
-			nop_node += [24,33,0,0] 
-			keep = false
-		else
-			nop_node += [0,7,0,0] #torsion matrix
-			nop_node += [3,6,1,1] # bond angle
-			nop_node += [10,20,4,2] # bad torsion angle
-
-			nop_vpath += [0,7,0,0] # torsion matrix
-			nop_vpath += [3,6,1,1] # bond angle
-			nop_vpath += [10,20,4,2] # bad torsion angle
-
-			cpx = mol.atoms[NMRdata.virtual_path[pos]].x
-			cpy = mol.atoms[NMRdata.virtual_path[pos]].y
-			cpz = mol.atoms[NMRdata.virtual_path[pos]].z
-
-			if bug
-				println("($cpx , $cpy ,$cpz )")
-			end
-			Virtual_Torsion = prodmatrix(C_before,B)
-			#				println("Virtual Torsion = $(C_before) * $(B)$(Virtual_Torsion)")
-			nop_vpath += [24,33,0,0]
-			nop_node += [23,33,0,0]
-
-			if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-				B = torsionmatrix(B)
-				C_before = prodmatrix(C_before,B)
-				nop_vpath += [24,33,0,0]
-				nop_node += [24,33,0,0]
-				#println("passou 1")
+			cθ,sθ = bondangle(D23,D24,D34)
+			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
+			#@show cθ, sθ,cω,sω, D34
+			#			println("l value = $(l) and NMRdatavalue = $(NMRdata.virtual_path[pos]) in position $(pos)")
+			B = torsionmatrix(cθ,sθ,cω,sω,D34)
+			if l==NMRdata.virtual_path[pos]
+				nop_node += [0,7,0,0] #torsion matrix
+				nop_node += [3,6,1,1] # bond angle
+				nop_node += [10,20,4,2] # bad torsion angle
+				C = prodmatrix(C_before,B)
+				nop_node += [24,33,0,0] 
+				keep = false
 			else
-				C_before = copy(Virtual_Torsion) 
-				#					println("passou 2")
+				nop_node += [0,7,0,0] #torsion matrix
+				nop_node += [3,6,1,1] # bond angle
+				nop_node += [10,20,4,2] # bad torsion angle
+
+				nop_vpath += [0,7,0,0] # torsion matrix
+				nop_vpath += [3,6,1,1] # bond angle
+				nop_vpath += [10,20,4,2] # bad torsion angle
+
+				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
+				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
+				cpz = mol.atoms[NMRdata.virtual_path[pos]].z
+
+				if bug
+					println("($cpx , $cpy ,$cpz )")
+				end
+				Virtual_Torsion = prodmatrix(C_before,B)
+				#				println("Virtual Torsion = $(C_before) * $(B)$(Virtual_Torsion)")
+				nop_vpath += [24,33,0,0]
+				nop_node += [23,33,0,0]
+
+				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
+					B = torsionmatrix(B)
+					C_before = prodmatrix(C_before,B)
+					nop_vpath += [24,33,0,0]
+					nop_node += [24,33,0,0]
+					#println("passou 1")
+				else
+					C_before = copy(Virtual_Torsion) 
+					#					println("passou 2")
+				end
+				if bug
+					println("Virtual Torsion")
+					display(Virtual_Torsion)
+				end
+				# println("Torsion matrix $(B)")
+				# println("C_before matrix $(C_before)")
+				@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
+				pos = pos+1		
 			end
-			if bug
-				println("Virtual Torsion")
-				display(Virtual_Torsion)
+		end
+
+		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
+		mol.atoms[l].x = C[1,4]
+		mol.atoms[l].y = C[2,4]
+		mol.atoms[l].z = C[3,4]
+		count = [0,0,0,0]
+		if bug && (l<=maxl)
+			println("B matrix in level $l left side ")
+			display(B)
+			println("C matrix")
+			display(C)
+		end
+		λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
+		nop_ddf += count
+		#		println("C at level $(l)left side  $C ")
+		#		println("C at level $(l) left side  $(C_list[l])")
+		#println("C = C_before*B at level $(l) left side  $(C) = $(C_before) * $(B)")
+
+		if λ == 1 
+			if l<n
+				#		println("Partial solution by left side at level $(l)",  mol)
+				n_branch +=1
+				classicBP_closure(l+1,pos+1,mol,C)
+			else
+				nsol=nsol+1
+				storage_mol[nsol] = copy(mol)
+				@debug "Rank n was reached, a solution was found " 
+				return 0
 			end
-			# println("Torsion matrix $(B)")
-			# println("C_before matrix $(C_before)")
-			@debug "virtual atom position  " C_before[1,4],C_before[2,4],C_before[3,4]
-			pos = pos+1		
-		end
-	end
-
-	mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
-	mol.atoms[l].x = C[1,4]
-	mol.atoms[l].y = C[2,4]
-	mol.atoms[l].z = C[3,4]
-	count = [0,0,0,0]
-	if bug && (l<=maxl)
-		println("B matrix in level $l left side ")
-		display(B)
-		println("C matrix")
-		display(C)
-	end
-	λ , count  = pruningtest(mol,l,NMRdata,ε,count) 
-	nop_ddf += count
-	#		println("C at level $(l)left side  $C ")
-	#		println("C at level $(l) left side  $(C_list[l])")
-	#println("C = C_before*B at level $(l) left side  $(C) = $(C_before) * $(B)")
-
-	if λ == 1 
-		if l<n
-			#		println("Partial solution by left side at level $(l)",  mol)
-			n_branch +=1
-			classicBP_closure(l+1,pos+1,mol,C)
 		else
-			nsol=nsol+1
-			storage_mol[nsol] = copy(mol)
-			@debug "Rank n was reached, a solution was found " 
-			return 0
+			n_prune += 1
 		end
-	else
-		n_prune += 1
-	end
-	if allmol==false && nsol>0
-		@debug "number of solutions"  nsol
-		#@info "LDE = " LDE(mol,D,n,nad)
-		@goto exit
-	end
-	B = torsionmatrix(B)
-	#nop_node += [0,0,0,0]
-	C = prodmatrix(C_before,B)# tenho que otimizar este calculo
-	#println("C = C_before*B at level $(l) right side  $(C) = $(C_before) * $(B)")
-	nop_node += [24,33,0,0]
-	mol.atoms[l].x = C[1,4]
-	mol.atoms[l].y = C[2,4]
-	mol.atoms[l].z = C[3,4]
-	count = [0,0,0,0]
-	if bug && (l<=maxl)
-		println("B matrix in level $l, right side ")
-		display(B)
-		println("C matrix")
-		display(C)
-	end
-	#display(l)
-	ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
-	nop_ddf += count 
-	#	println("C at level $(l) right side  $C ")
+		if allmol==false && nsol>0
+			@debug "number of solutions"  nsol
+			#@info "LDE = " LDE(mol,D,n,nad)
+			@goto exit
+		end
+		B = torsionmatrix(B)
+		#nop_node += [0,0,0,0]
+		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
+		#println("C = C_before*B at level $(l) right side  $(C) = $(C_before) * $(B)")
+		nop_node += [24,33,0,0]
+		mol.atoms[l].x = C[1,4]
+		mol.atoms[l].y = C[2,4]
+		mol.atoms[l].z = C[3,4]
+		count = [0,0,0,0]
+		if bug && (l<=maxl)
+			println("B matrix in level $l, right side ")
+			display(B)
+			println("C matrix")
+			display(C)
+		end
+		#display(l)
+		ρ ,count = pruningtest(mol,l,NMRdata,ε,count) #preciso modificar
+		nop_ddf += count 
+		#	println("C at level $(l) right side  $C ")
 
-	if ρ == 1 
-		if l<n
-			#		println("Partial solution by right side at level $(l)", mol)
-			n_branch += 1
-			classicBP_closure(l+1,pos+1,mol,C)
+		if ρ == 1 
+			if l<n
+				#		println("Partial solution by right side at level $(l)", mol)
+				n_branch += 1
+				classicBP_closure(l+1,pos+1,mol,C)
+			else
+				nsol = nsol+1
+				storage_mol[nsol] = copy(mol)				
+				@debug "Rank n was reached, a solution was found " 
+				return 0
+			end
 		else
-			nsol = nsol+1
-			storage_mol[nsol] = copy(mol)				
-			@debug "Rank n was reached, a solution was found " 
-			return 0
+			n_prune += 1
 		end
-	else
-		n_prune += 1
-	end
 
-	@label exit
-	return 0
-end # closure
-n = NMRdata.dim
-mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
-for i=1:n
-	mol.atoms[i] = AtomType(0.0,0.0,0.0)
-end
-C = zeros(4,4)
-nsol = 0
-storage_mol = Dict{Int64,MoleculeType}()
-n_prune = 0
-n_branch = 0
-#count_nop = [+-,*,/,√]
-nop_node = [0,0,0,0]
-nop_ddf = [0,0,0,0]
-nop_vpath = [0,0,0,0]
-classicBP_closure(1,1,mol,C)
-return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
+		@label exit
+		return 0
+	end # closure
+	n = NMRdata.dim
+	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
+	for i=1:n
+		mol.atoms[i] = AtomType(0.0,0.0,0.0)
+	end
+	C = zeros(4,4)
+	nsol = 0
+	storage_mol = Dict{Int64,MoleculeType}()
+	n_prune = 0
+	n_branch = 0
+	#count_nop = [+-,*,/,√]
+	nop_node = [0,0,0,0]
+	nop_ddf = [0,0,0,0]
+	nop_vpath = [0,0,0,0]
+	classicBP_closure(1,1,mol,C)
+	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
 
 end #solver classicBP
 
@@ -727,7 +726,7 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 function quaternionBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool)
+		allmol :: Bool,maxl=25,bug=true)
 	# defining closure
 	function quaternionBP_closure(l :: Int64,
 			pos::Int64,
@@ -780,36 +779,41 @@ function quaternionBP(NMRdata :: NMRType,
 		Q_before = Q
 		keep = true
 		while keep
-			try
+			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos]
+				D14 = 0.0
+			else
 				D14 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos]].dist
-			catch
-				D14 = sqrt((mol.atoms[NMRdata.virtual_path[pos-3]].x - mol.atoms[NMRdata.virtual_path[pos]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-3]].y - mol.atoms[NMRdata.virtual_path[pos]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-3]].z - mol.atoms[NMRdata.virtual_path[pos]].z)^2)   
-			end			
-			try 
+			end
+			if NMRdata.virtual_path[pos-2] == NMRdata.virtual_path[pos]
+				D24 = 0.0
+			else
 				D24 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos]].dist
-			catch		
-				D24 = sqrt((mol.atoms[NMRdata.virtual_path[pos-2]].x - mol.atoms[NMRdata.virtual_path[pos]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-2]].y - mol.atoms[NMRdata.virtual_path[pos]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-2]].z - mol.atoms[NMRdata.virtual_path[pos]].z)^2)   
-			end			
-			try
+			end
+
+			if NMRdata.virtual_path[pos-1] == NMRdata.virtual_path[pos]
+				D34 = 0.0
+			else
 				D34 = NMRdata.info[NMRdata.virtual_path[pos-1],NMRdata.virtual_path[pos]].dist
-			catch
-				D34 = sqrt((mol.atoms[NMRdata.virtual_path[pos-1]].x - mol.atoms[NMRdata.virtual_path[pos]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-1]].y - mol.atoms[NMRdata.virtual_path[pos]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-1]].z - mol.atoms[NMRdata.virtual_path[pos]].z)^2)  
-			end	
-			try 
+			end
+
+			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-2]
+				D12 = 0.0
+			else
 				D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
-			catch
-				D12 = sqrt((mol.atoms[NMRdata.virtual_path[pos-3]].x - mol.atoms[NMRdata.virtual_path[pos-2]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-3]].y - mol.atoms[NMRdata.virtual_path[pos-2]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-3]].z - mol.atoms[NMRdata.virtual_path[pos-2]].z)^2)
-			end	
-			try
+			end
+			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-1]
+				D13 = 0.0
+			else
 				D13 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-1]].dist
-			catch
-				D13 = sqrt((mol.atoms[NMRdata.virtual_path[pos-3]].x - mol.atoms[NMRdata.virtual_path[pos-1]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-3]].y - mol.atoms[NMRdata.virtual_path[pos-1]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-3]].z - mol.atoms[NMRdata.virtual_path[pos-1]].z)^2)
-			end	
-			try 
+			end
+			if NMRdata.virtual_path[pos-2] == NMRdata.virtual_path[pos-1]
+				D23 = 0.0
+			else
 				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],NMRdata.virtual_path[pos-1]].dist
-			catch
-				D23 = sqrt((mol.atoms[NMRdata.virtual_path[pos-2]].x - mol.atoms[NMRdata.virtual_path[pos-1]].x)^2 + (mol.atoms[NMRdata.virtual_path[pos-2]].y - mol.atoms[NMRdata.virtual_path[pos-1]].y)^2+ (mol.atoms[NMRdata.virtual_path[pos-2]].z - mol.atoms[NMRdata.virtual_path[pos-1]].z)^2)   
-			end	
+			end
+
+
+		
 			cθ,sθ = qbondangle(D23,D24,D34)
 			nop_node += [4,5,1,2]
 			cω,sω = qtorsionangle(D12,D13,D14,D23,D24,D34)
