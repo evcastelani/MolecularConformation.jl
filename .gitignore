@@ -1,5 +1,6 @@
 # Ignore build subfolder from docs
 docs/build/*
+examples/real_instances/statprof/
 # ignore folder with big size
 examples/lavor_instances/100
 examples/lavor_instances/200
