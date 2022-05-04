@@ -357,25 +357,23 @@ pruningtest :: Function
 This functions is an auxiliary function used to test if some molecule is 
 feasible or not.
 """
-function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64,count::Vector{Int64})
+function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64)
 	if isempty(D.additional_distance[i])
 
 		@debug "result of prunning 1"
-		return 1,count
+		return 1
 	else
 		for j in D.additional_distance[i]
 			dij =  (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
-			count += [5,3,0,0]
 			if (D.info[i,j].dist^2 -dij)^2 >ε
-				count += [1,1,0,0]
 				@debug "result of prunning 0"
-				return 0,count
+				return 0
 			end
 		end
 	end
 
 	@debug "result of prunning 1"
-	return 1,count
+	return 1
 end
 
 
