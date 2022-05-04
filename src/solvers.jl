@@ -550,9 +550,8 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
-		λ  = pruningtest(mol,l,NMRdata,ε) 
 
-		if λ == 1 
+		if pruningtest(mol,l,NMRdata,ε) 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
@@ -561,17 +560,17 @@ function classicBP(NMRdata :: NMRType,
 				return
 			end
 		end
-		if allmol==false && nsol>0
+		if !allmol && nsol>0
 			return
 		end
+
 		B = torsionmatrix(B)
 		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
 		mol.atoms[l].z = C[3,4]
-		ρ = pruningtest(mol,l,NMRdata,ε) #preciso modificar
-
-		if ρ == 1 
+		 
+		if pruningtest(mol,l,NMRdata,ε) #preciso modificar 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
