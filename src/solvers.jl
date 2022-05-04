@@ -483,50 +483,12 @@ function classicBP(NMRdata :: NMRType,
 			mol :: MoleculeType,
 			C :: Array{Float64,2})
 		
-		# TODO: remove initialize of the clousure
-		if l == 1
-			# first atom
-			mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
-			mol.atoms[1].x = 0.0
-			mol.atoms[1].y = 0.0
-			mol.atoms[1].z = 0.0
-			#second atom
-			mol.atoms[2].element = NMRdata.info[2,:].nzval[1].atom1
-			mol.atoms[2].x = -NMRdata.info[1,2].dist
-			mol.atoms[2].y = 0.0
-			mol.atoms[2].z = 0.0
-			# tird atom
-			D12 = NMRdata.info[1,2].dist
-			D13 = NMRdata.info[1,3].dist
-			D23 = NMRdata.info[2,3].dist
-			D14 = 0.0
-			D24 = 0.0
-			D34 = 0.0
-			cθ,sθ = bondangle(D12,D13,D23)
-			mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
-			mol.atoms[3].x = -D12+D23*cθ
-			mol.atoms[3].y = D23*sθ
-			mol.atoms[3].z = 0.0
-			C = zeros(4,4)
-			C[1,4] = mol.atoms[3].x
-			C[2,4] = mol.atoms[3].y 
-			C[3,4] = mol.atoms[3].z
-			C[1,1] = cθ
-			C[1,2] = sθ
-			C[2,1] = sθ
-			C[2,2] = -cθ
-			C[3,3] = -1.0
-			C[4,4] = 1.0
-			l = 4 # branching starts at atom 4
-			pos = 4 # position in virtual path
-		end
 		B = zeros(4,4)
 		λ = 1
 		ρ = 1
 		C_before = copy(C)
 
-		keep = true
-		while keep
+		while true
 			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos]
 				D14 = 0.0
 			else
@@ -566,7 +528,7 @@ function classicBP(NMRdata :: NMRType,
 			B = torsionmatrix(cθ,sθ,cω,sω,D34)
 			if l==NMRdata.virtual_path[pos]
 				C = prodmatrix(C_before,B)
-				keep = false
+				break
 			else
 				cpx = mol.atoms[NMRdata.virtual_path[pos]].x
 				cpy = mol.atoms[NMRdata.virtual_path[pos]].y
@@ -619,6 +581,7 @@ function classicBP(NMRdata :: NMRType,
 			end
 		end
 	end # closure
+
 	n = NMRdata.dim
 	mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
 	for i=1:n
@@ -627,7 +590,44 @@ function classicBP(NMRdata :: NMRType,
 	C = zeros(4,4)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
-	classicBP_closure(1,1,mol,C)
+
+	#initialization 
+	# first atom
+	mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
+	mol.atoms[1].x = 0.0
+	mol.atoms[1].y = 0.0
+	mol.atoms[1].z = 0.0
+	#second atom
+	mol.atoms[2].element = NMRdata.info[2,:].nzval[1].atom1
+	mol.atoms[2].x = -NMRdata.info[1,2].dist
+	mol.atoms[2].y = 0.0
+	mol.atoms[2].z = 0.0
+	# tird atom
+	D12 = NMRdata.info[1,2].dist
+	D13 = NMRdata.info[1,3].dist
+	D23 = NMRdata.info[2,3].dist
+	D14 = 0.0
+	D24 = 0.0
+	D34 = 0.0
+	cθ,sθ = bondangle(D12,D13,D23)
+	mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
+	mol.atoms[3].x = -D12+D23*cθ
+	mol.atoms[3].y = D23*sθ
+	mol.atoms[3].z = 0.0
+	C = zeros(4,4)
+	C[1,4] = mol.atoms[3].x
+	C[2,4] = mol.atoms[3].y 
+	C[3,4] = mol.atoms[3].z
+	C[1,1] = cθ
+	C[1,2] = sθ
+	C[2,1] = sθ
+	C[2,2] = -cθ
+	C[3,3] = -1.0
+	C[4,4] = 1.0
+	l = 4 # branching starts at atom 4
+	pos = 4 # position in virtual path
+
+	classicBP_closure(l,pos,mol,C)
 	return nsol, storage_mol
 
 end #solver classicBP
