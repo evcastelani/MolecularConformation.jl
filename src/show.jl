@@ -9,6 +9,9 @@ end
 function Base.show(io::IO, c::ConformationOutput)
 	print(io,"\n ✔ Solver = $(c.solver)")
 	print(io,"\n ✔ Number of solutions = $(c.number)\n")
+	if c.number <1
+		return
+	end
 	print(io,  " ✔ Solutions \n")	
 	n = length(c.molecules[1].atoms)
 	for k=1:c.number
