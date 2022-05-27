@@ -476,8 +476,10 @@ The main difference of our implementation is that the input data (`NMRType`) can
 function classicBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool)
+		allmol :: Bool, time_limit)
 	
+	start =  Dates.now()
+	time_elapsed = Second(0.0)
 	
 	n = NMRdata.dim
 	if n < 3
@@ -533,7 +535,12 @@ function classicBP(NMRdata :: NMRType,
 		pos::Int64,
 		mol :: MoleculeType,
 		C :: Array{Float64,2})
-	
+		
+		time_elapsed = Dates.now()-start
+		if time_elapsed>time_limit && l<n
+			error("Time limit reached without found a solution!")
+		end
+
 		C_before = copy(C)
 		while true
 			virtualPos = NMRdata.virtual_path[pos]
@@ -647,7 +654,10 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 function quaternionBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool)
+		allmol :: Bool, time_limit)
+	
+	start =  Dates.now()
+	time_elapsed = Second(0.0)
 
 	n = NMRdata.dim
 	if n < 3
@@ -694,9 +704,14 @@ function quaternionBP(NMRdata :: NMRType,
 	
 	# defining closure
 	function quaternionBP_closure(l :: Int64,
-		pos::Int64,
-		mol :: MoleculeType,
-		Q :: Quaternion)
+									pos::Int64,
+									mol :: MoleculeType,
+									Q :: Quaternion)
+
+		time_elapsed = Dates.now()-start
+		if time_elapsed>time_limit && l<n
+			error("Time limit reached without found a solution!")
+		end
 	
 		lastpos = 1
 		D34 = 0.0
