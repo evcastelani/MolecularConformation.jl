@@ -239,17 +239,13 @@ bondangle :: Function
 This is an auxiliary function used by ClassicBP solver in order to compute the bond angle by cosine rule. As output the cosine and sine are given.
 """
 function bondangle(d23,d24,d34)
-	c = (-d24^2 + d34^2 + d23^2)/(2.0*d34*d23)
-	#	c = (-D[i-2,i]^2+ D[i-1,i]^2+ D[i-2,i-1]^2)/(2.0*D[i-1,i]*D[i-2,i-1])
+	c = (-d24*d24 + d34*d34 + d23*d23)/(2.0*d34*d23)
 	if c<-1.0
-		c=-1.0
+		return -1.0, 0
+	elseif c>1.0
+		return 1.0, 0.0
 	end
-	if c>1.0
-		c=1.0
-	end
-	s = sqrt(1.0-c^2)
-	@debug "value of cθ and sθ" c,s
-	return c,s
+	return c,sqrt(1.0-c^2)
 end
 
 """
@@ -259,36 +255,18 @@ badtorsionangle :: Function
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
 """
 function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
-	#d12=D[i-3,i-2]
-	#d13=D[i-3,i-1]
-	#d14=D[i-3,i]
-	#d23=D[i-2,i-1]
-	#d24=D[i-2,i]
-	#d34=D[i-1,i]
-	a = d12*d12 + d24*d24 - d14*d14
-	a = a/(2.0*d12*d24)
-	b = d24*d24 + d23*d23 - d34*d34        
-	b = b/(2.0*d24*d23)
-	c = d12*d12 + d23*d23 - d13*d13
-	c = c/(2.0*d12*d23)
-	e = 1.0 - b^2;
-	f = 1.0 - c^2;
-	if (e < 0.0 || f < 0.0)  
-		@debug "some problem in torsion angle"
+	b = (d24*d24 + d23*d23 - d34*d34)/(2.0*d24*d23)
+	c = (d12*d12 + d23*d23 - d13*d13)/(2.0*d12*d23)
+	if (abs(b) > 1.0  || abs(c) > 1.0) 
 		return -2
 	end
-	ef = sqrt(e*f)
-	valc = (a - b*c)/(ef)
+	valc = ((d12*d12 + d24*d24 - d14*d14)/(2.0*d12*d24) - b*c)/(sqrt((1.0 - b*b)*(1.0 - c*c)))
 	if (valc < -1.0)  
-		valc = -1.0
+		return -1.0, 0.0
+	elseif (valc >  1.0)  
+		return 1.0, 0
 	end
-	if (valc >  1.0)  
-		valc =  1.0
-	end
-	vals=sqrt(1.0-valc^2)
-	@debug "value of cω and sω" valc,vals
-	return valc,vals
-	#number of operations [10,20,3,2]
+	return valc,sqrt(1.0-valc*valc)
 end
 
 
@@ -325,7 +303,6 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 end
 
 function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
-
 	B=zeros(4,4)
 	B[1,1] = -cosθ
 	B[1,2] = -sinθ
@@ -347,7 +324,6 @@ function torsionmatrix(C)
 	B[3,1] = -B[3,1]
 	B[3,2] = -B[3,2]
 	B[3,4] = -B[3,4]	
-	#println("qualquer coisa!")
 	return B
 end
 """
@@ -360,19 +336,19 @@ feasible or not.
 function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64) :: Bool
 	if isempty(D.additional_distance[i])
 
-		@debug "result of prunning 1"
+		@debug "result of prunning true"
 		return true
 	else
 		for j in D.additional_distance[i]
 			dij =  (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
 			if (D.info[i,j].dist^2 -dij)^2 >ε
-				@debug "result of prunning 0"
+				@debug "result of prunning false"
 				return false
 			end
 		end
 	end
 
-	@debug "result of prunning 1"
+	@debug "result of prunning true"
 	return true
 end
 
@@ -466,7 +442,6 @@ function build_distance_matrix(v::Array{AtomType,1})
 	return D
 end
 
-
 function Base.copy(A::AtomType)
 	return AtomType(A.x,A.y,A.z,A.element)
 end
@@ -509,60 +484,29 @@ end
 
 # these functions are used by quaternion_bp#########################################
 function qbondangle(d23,d24,d34)
-	c = (-d24^2+ d34^2+ d23^2)/(4.0*d34*d23)
+	c = (-d24*d24+ d34*d34+ d23*d23)/(4.0*d34*d23)
 	if c<-0.5
-		c=-0.5
+		return 0.0, 1.0
+	elseif c>0.5
+		return 1.0, 0.0
 	end
-	if c>0.5
-		c=0.5
-	end
-	#cm = c/2.0 
 	return sqrt(0.5 + c),sqrt(0.5 - c)
-	# number of operations =  [4,5,1,2]
 end
 
 function qtorsionangle(d12,d13,d14,d23,d24,d34)
-	############################################
-
 	d12m = d12*d12 
 	d23m = d23*d23
 	d24m = d24*d24
 	d34m = d34*d34
 	dtil3 = d12m + d23m - d13*d13
 	dtil2 = d24m + d23m - d34m        
-	valc = d23m*(d12m + d24m - d14^2) - 0.5*dtil3*dtil2
-	valc = valc/sqrt((4.0*d12m*d23m - dtil3^2)*(4.0*d23m*d24m - dtil2^2))
-	#	if (valc < -1.0)  
-	#		valc = -1.0
-	#	end
-	#	if (valc >  1.0)  
-	#		valc =  1.0
-	#	end
-	#	vals=sqrt(1.0-valc^2)
-
-	###########################################
-
-	#	a = d12*d12 + d24*d24 - d14*d14
-	#	a = a/(2.0*d12*d24)
-	#	b = d24*d24 + d23*d23 - d34*d34        
-	#	b = b / (2.0*d24*d23)
-	#	c = d12*d12 + d23*d23 - d13*d13
-	#	c = c / (2.0*d12*d23)
-	#	e = 1.0 - b^2;
-	#	f = 1.0 - c^2;
-	#	if (e < 0.0 || f < 0.0)  
-	#		return -2
-	#	end
-	#	ef = 2.0*sqrt(e*f)
-	#	valc = (a - b*c)/(ef)
+	valc = (d23m*(d12m + d24m - d14*d14) - 0.5*dtil3*dtil2)/sqrt((4.0*d12m*d23m - dtil3*dtil3)*(4.0*d23m*d24m - dtil2*dtil2))
 	if (valc < -0.5)  
-		valc = -0.5
-	end
-	if (valc >  0.5)  
-		valc =  0.5
+		return 0.0, 1.0
+	elseif (valc >  0.5)  
+		return 1.0, 0.0
 	end
 	return sqrt(0.5+valc),sqrt(0.5-valc)
-	# number of operations = [11,16,1,3] 
 end
 
 # Quaternion small library
@@ -571,6 +515,10 @@ mutable struct Quaternion
 	v1 :: Float64
 	v2 :: Float64
 	v3 :: Float64
+end
+
+function Base.copy(Q::Quaternion)
+	return Quaternion(Q.s, Q.v1, Q.v2, Q.v3)
 end
 
 #function qsign(q::Quaternion)
@@ -590,7 +538,13 @@ function qprod(q::Quaternion,w::Quaternion)
 					   q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
 					   q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
 					   q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
-	# number of operations = [12,16,0,0]
+end
+
+function qprod(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
+	return  Quaternion(q.s * a - q.v1 * b - q.v2 * c - q.v3 * d,
+					   q.s * b + q.v1 * a + q.v2 * d - q.v3 * c,
+					   q.s * c - q.v1 * d + q.v2 * a + q.v3 * b,
+					   q.s * d + q.v1 * c - q.v2 * b + q.v3 * a)
 end
 
 #function conj(q::Quaternion)
@@ -601,12 +555,9 @@ end
 
 function rotopt(Q::Quaternion,t::Float64)
 	sl = 2.0*t
-	p1 = sl*(Q.s^2+Q.v1^2-0.5)
-	p2 = sl*(Q.v2*Q.v1 + Q.v3*Q.s)
-	p3 = sl*(Q.v3*Q.v1 - Q.v2*Q.s)
-	return Quaternion(0.0,p1,p2,p3)
-	# number of operations = [4,10,0,0]
+	return Quaternion(0.0, sl*(Q.s*Q.s + Q.v1*Q.v1 -0.5) ,sl*(Q.v2*Q.v1 + Q.v3*Q.s), sl*(Q.v3*Q.v1 - Q.v2*Q.s))
 end
+
 # to be fair with memory acess in comparations
 function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 	C=zeros(4,4)
