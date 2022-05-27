@@ -545,7 +545,7 @@ function classicBP(NMRdata :: NMRType,
 		while true
 			virtualPos = NMRdata.virtual_path[pos]
 			virtualLastPos = NMRdata.virtual_path[pos-1]
-
+			
 			if NMRdata.virtual_path[pos-3] == virtualPos
 				D14 = 0.0
 			else

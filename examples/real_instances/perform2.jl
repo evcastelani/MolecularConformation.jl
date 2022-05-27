@@ -75,7 +75,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 	for prob in list_of_problems
 		# before make the benchmark we need to verify if is possible solve the problem
 		# considering the limit_time
-		data = preprocessing(string(prob,".nmr"))
+		data = preprocessing(string("HCProtInsctances/",string(prob,".nmr")))
 		try 
 			solq = conformation(data,optq,limit_time)
 			solc = conformation(data,optc,limit_time)
