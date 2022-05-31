@@ -239,7 +239,7 @@ bondangle :: Function
 This is an auxiliary function used by ClassicBP solver in order to compute the bond angle by cosine rule. As output the cosine and sine are given.
 """
 function bondangle(d23,d24,d34)
-	c = (-d24*d24 + d34*d34 + d23*d23)/(2.0*d34*d23)
+	c = (d34*d34 - d24*d24 + d23*d23)/(2.0*d34*d23)
 	if c<-1.0
 		return -1.0, 0
 	elseif c>1.0
@@ -255,12 +255,41 @@ badtorsionangle :: Function
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
 """
 function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
-	b = (d24*d24 + d23*d23 - d34*d34)/(2.0*d24*d23)
-	c = (d12*d12 + d23*d23 - d13*d13)/(2.0*d12*d23)
-	if (abs(b) > 1.0  || abs(c) > 1.0) 
-		return -2
+	d23² = d23*d23
+	d24² = d24*d24
+	d12² = d12*d12
+	b = (d24² + d23² - d34*d34)/(2.0*d24*d23)
+	c = (d12² + d23² - d13*d13)/(2.0*d12*d23)
+	#if (abs(b) > 1.0  || abs(c) > 1.0) 
+	#	error("Let to throw someting useful")
+	#end
+	valc = ((d12² + d24² - d14*d14)/(2.0*d12*d24) - b*c)/(sqrt((1.0 - b*b)*(1.0 - c*c)))
+	if (valc < -1.0)  
+		return -1.0, 0.0
+	elseif (valc >  1.0)  
+		return 1.0, 0
 	end
-	valc = ((d12*d12 + d24*d24 - d14*d14)/(2.0*d12*d24) - b*c)/(sqrt((1.0 - b*b)*(1.0 - c*c)))
+	return valc,sqrt(1.0-valc*valc)
+end
+
+"""
+```
+torsionangle :: Function
+```
+This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
+"""
+# d12 -> d-3,-2; d13 -> d-3,-1; d14 -> d-3,i; 
+# d23 -> d-2,-1; d24 -> d-2,i;
+# d34 -> d-1,i 
+function realyBadtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
+	d23² = d23*d23 # 1 cm
+	#d24² = d24*d24
+	#d12² = d12*d12 
+	d34² = d34*d34 # 1 cm
+	d13til = d12*d12 + d23² - d13*d13 # 2 cm 
+	d24til = d23² + d34² - d24*d24 # 1 cm
+	valc = (2*d23²*(d12*d12+d24*d24-d14*d14)-(d13til*d24til))/sqrt((4*d12*d12*d23²-d13til*d13til)*(4*d23²*d34²-d24til*d24til)) # 14 cm
+
 	if (valc < -1.0)  
 		return -1.0, 0.0
 	elseif (valc >  1.0)  
@@ -276,32 +305,6 @@ torsionmatrix :: Function
 ```
 This is an auxiliary function  used by classicBp solver to compute the torsion array.
 """
-function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
-	if sign == true
-
-		B=zeros(4,4)
-		B[1,1] = -cosθ
-		B[1,2] = -sinθ
-		B[1,4] = -d34*cosθ
-		B[2,1] = sinθ*cosω
-		B[2,2] = -cosθ*cosω
-		B[2,3] = -sinω
-		B[2,4] = d34*B[2,1]
-		B[3,1] = sinθ*sinω
-		B[3,2] = -cosθ*sinω
-		B[3,3] = cosω
-		B[3,4] = d34*B[3,1] 
-		B[4,4] = 1
-	else
-
-		B[2,3] = -B[2,3]
-		B[3,1] = -B[3,1]
-		B[3,2] = -B[3,2]
-		B[3,4] = -B[3,4]	
-	end
-	return B
-end
-
 function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B=zeros(4,4)
 	B[1,1] = -cosθ
@@ -484,7 +487,7 @@ end
 
 # these functions are used by quaternion_bp#########################################
 function qbondangle(d23,d24,d34)
-	c = (-d24*d24+ d34*d34+ d23*d23)/(4.0*d34*d23)
+	c = (d34*d34 - d24*d24 + d23*d23)/(4.0*d34*d23)
 	if c<-0.5
 		return 0.0, 1.0
 	elseif c>0.5
@@ -494,13 +497,13 @@ function qbondangle(d23,d24,d34)
 end
 
 function qtorsionangle(d12,d13,d14,d23,d24,d34)
-	d12m = d12*d12 
-	d23m = d23*d23
-	d24m = d24*d24
-	d34m = d34*d34
-	dtil3 = d12m + d23m - d13*d13
-	dtil2 = d24m + d23m - d34m        
-	valc = (d23m*(d12m + d24m - d14*d14) - 0.5*dtil3*dtil2)/sqrt((4.0*d12m*d23m - dtil3*dtil3)*(4.0*d23m*d24m - dtil2*dtil2))
+	d12² = d12*d12 
+	d23² = d23*d23
+	d24² = d24*d24
+	dtil3 = d12² + d23² - d13*d13
+	dtil2 = d24² + d23² - d34*d34        
+	fourd23² = 4.0*d23²
+	valc = (d23²*(d12² + d24² - d14*d14) - 0.5*dtil3*dtil2)/sqrt((fourd23²*d12² - dtil3*dtil3)*(fourd23²*d24² - dtil2*dtil2))
 	if (valc < -0.5)  
 		return 0.0, 1.0
 	elseif (valc >  0.5)  

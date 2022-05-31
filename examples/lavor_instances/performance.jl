@@ -1,4 +1,4 @@
-using MolecularConformation,BenchmarkTools, Plots, DataFrames#, CSV
+using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV
 
 gr()
 
@@ -103,9 +103,9 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	#	display(df)
 	#	write_results(df)
 	end
-	#CSV.write("$(ndiag).csv", df;delim=";")
-	#plot_results(df)
-	#write_results(df)
+	CSV.write("$(ndiag).csv", df;delim=";")
+	plot_results(df)
+	write_results(df)
 end
 
 """

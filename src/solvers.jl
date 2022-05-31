@@ -478,8 +478,8 @@ function classicBP(NMRdata :: NMRType,
 		virtual_ε :: Float64,
 		allmol :: Bool, time_limit)
 	
-	start =  Dates.now()
-	time_elapsed = Second(0.0)
+	#start =  Dates.now()
+	#time_elapsed = Second(0.0)
 	
 	n = NMRdata.dim
 	if n < 3
@@ -536,10 +536,10 @@ function classicBP(NMRdata :: NMRType,
 		mol :: MoleculeType,
 		C :: Array{Float64,2})
 		
-		time_elapsed = Dates.now()-start
-		if time_elapsed>time_limit && l<n
-			error("Time limit reached without found a solution!")
-		end
+		#time_elapsed = Dates.now()-start
+		#if time_elapsed>time_limit && l<n
+		#	error("Time limit reached without found a solution!")
+		#end
 
 		C_before = copy(C)
 		while true
@@ -656,8 +656,8 @@ function quaternionBP(NMRdata :: NMRType,
 		virtual_ε :: Float64,
 		allmol :: Bool, time_limit)
 	
-	start =  Dates.now()
-	time_elapsed = Second(0.0)
+	#start =  Dates.now()
+	#time_elapsed = Second(0.0)
 
 	n = NMRdata.dim
 	if n < 3
@@ -708,10 +708,10 @@ function quaternionBP(NMRdata :: NMRType,
 									mol :: MoleculeType,
 									Q :: Quaternion)
 
-		time_elapsed = Dates.now()-start
-		if time_elapsed>time_limit && l<n
-			error("Time limit reached without found a solution!")
-		end
+		#time_elapsed = Dates.now()-start
+		#if time_elapsed>time_limit && l<n
+		#	error("Time limit reached without found a solution!")
+		#end
 	
 		lastpos = 1
 		D34 = 0.0
@@ -807,7 +807,6 @@ function quaternionBP(NMRdata :: NMRType,
 		mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
 		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
 		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
-
 
 		if pruningtest(mol,l,NMRdata,ε)  
 			if l<n

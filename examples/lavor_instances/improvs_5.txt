@@ -1,20 +1,18 @@
 Remark: Analysis of improvements from quaternion to classic 
 Average of improvements in processing time (%)
-mean -> 5.104599678885988 
-median -> 6.401577628837857 
-minimum -> 4.238253617952067 
-maximum -> 0.4059907410193634 
+mean -> 26.205828075102804 
+median -> 22.174335844693868 
+minimum -> 22.415762855493778 
+maximum -> -4.166867792706105 
 Average of improvements in number of operations for each problem (%)
-[12.8931, 29.4624, 157.143, -37.1429]
-[13.3048, 28.8589, 150.515, -39.7938]
-[12.6529, 28.9267, 150.254, -39.8985]
-[12.5078, 28.9391, 150.168, -39.9327]
-[12.7081, 28.9083, 150.126, -39.9496]
-[12.6473, 28.9144, 150.101, -39.9598]
-[12.5663, 28.9239, 150.084, -39.9665]
-[12.612, 28.9167, 150.072, -39.9713]
-[12.6759, 28.9073, 150.063, -39.9749]
-[12.5621, 28.922, 150.056, -39.9777]
-[12.6425, 28.9107, 150.05, -39.98]
-[12.6086, 28.9131, 150.025, -39.99]
-[12.6711, 28.904, 150.017, -39.9933]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
