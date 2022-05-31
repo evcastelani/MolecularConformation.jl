@@ -2,7 +2,7 @@ module MolecularConformation
 
 export  preprocessing,NMRInfo,NMRType,conformation,ConformationSetup,ConformationOutput,
 AtomType,MoleculeType,classicBP, classicBP_closure,
-quaternionBP,≈,generate_virtual_path, bondangle,torsionmatrix,badtorsionangle,
+quaternionBP,symBP,≈,generate_virtual_path, bondangle,torsionmatrix,badtorsionangle,
 pruningtest,LDE,build_distance_matrix,outputfilter,writefile,convert_to_dataframe
 
 
@@ -43,6 +43,9 @@ function conformation(NMRdata::NMRType,
 	s = ConformationOutput(cs.solver,solutions[1],solutions[2],Counter([0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0],0.0,0.0))
 	if cs.evalLDE == true
 		map(i->MolecularConformation.LDE(s.molecules[i],NMRdata),[1:1:s.number;])
+	end
+	if !cs.allsolutions
+		return s, solutions[3]
 	end
 	return s
 end				
