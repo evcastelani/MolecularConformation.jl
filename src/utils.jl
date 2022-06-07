@@ -254,7 +254,29 @@ badtorsionangle :: Function
 ```
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
 """
-function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
+# d12 -> d-3,-2; d13 -> d-3,-1; d14 -> d-3,i; 
+# d23 -> d-2,-1; d24 -> d-2,i;
+# d34 -> d-1,i 
+function rbadtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
+	d23² = d23*d23
+	d24² = d24*d24
+	d12² = d12*d12
+	d34² = d34*d34
+	d13til = d12² + d23² - d13*d13
+	d24til = d24² + d23² - d34² # d23² + d34² - d24²
+	fourd23² = 4.0*d23²
+
+	valc = (2*d23²*(d12² + d24² - d14*d14) - (d13til*d24til))/sqrt((fourd23²*d12² - d13til*d13til)*(fourd23²*d34² - d24til*d24til))
+
+	if (valc < -1.0)  
+		return -1.0, 0.0
+	elseif (valc >  1.0)  
+		return 1.0, 0
+	end
+	return valc,sqrt(1.0-valc*valc)
+end
+
+function badtorsionangleOld(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	d23² = d23*d23
 	d24² = d24*d24
 	d12² = d12*d12
@@ -298,6 +320,24 @@ function realyBadtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	return valc,sqrt(1.0-valc*valc)
 end
 
+# d12 -> d-3,-2; d13 -> d-3,-1; d14 -> d-3,i; 
+# d23 -> d-2,-1; d24 -> d-2,i;
+# d34 -> d-1,i 
+function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
+	d23² = d23*d23
+	d24² = d24*d24
+	d12² = d12*d12 
+	dtil3 = d12² + d23² - d13*d13
+	dtil2 = d24² + d23² - d34*d34        
+	fourd23² = 4.0*d23²
+	valc = (2*d23²*(d12² + d24² - d14*d14) - dtil3*dtil2)/sqrt((fourd23²*d12² - dtil3*dtil3)*(fourd23²*d24² - dtil2*dtil2))
+	if (valc < -1.0)  
+		return -1.0, 0.0
+	elseif (valc >  1.0)  
+		return 1.0, 0
+	end
+	return valc,sqrt(1.0-valc*valc)
+end
 
 """
 ```
