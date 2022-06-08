@@ -579,8 +579,9 @@ function classicBP(NMRdata :: NMRType,
 				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
 			end
 
+			#cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
+			c1,s1,cω,sω = getangles(D12,D13,D14,D23,D24,D34)
 			cθ,sθ = bondangle(D23,D24,D34)
-			cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
 			B = torsionmatrix(cθ,sθ,cω,sω,D34)
 			if l==virtualPos
 				C = prodmatrix(C_before,B)
