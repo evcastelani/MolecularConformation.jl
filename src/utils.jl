@@ -254,9 +254,6 @@ badtorsionangle :: Function
 ```
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
 """
-# d12 -> d-3,-2; d13 -> d-3,-1; d14 -> d-3,i; 
-# d23 -> d-2,-1; d24 -> d-2,i;
-# d34 -> d-1,i 
 function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	d23² = d23*d23
 	d24² = d24*d24
@@ -280,12 +277,9 @@ end
 torsionangle :: Function
 ```
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
-This second version is based on quaternion qbondangle. 
-"""
-# d12 -> d-3,-2; d13 -> d-3,-1; d14 -> d-3,i; 
-# d23 -> d-2,-1; d24 -> d-2,i;
-# d34 -> d-1,i 
-function badtorsionangleQ(d12,d13,d14,d23,d24,d34)#i=4,...,n
+This second version is based on quaternion qbondangle. This is a economic way to compute the angles. 
+""" 
+function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	d23² = d23*d23
 	d24² = d24*d24
 	d12² = d12*d12 
@@ -303,7 +297,7 @@ end
 
 """
 ```
-torsionangle :: Function
+getangles :: Function
 ```
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
 The third version has proposed to use some angles. 
@@ -332,7 +326,6 @@ function getangles(d12,d13,d14,d23,d24,d34)#i=4,...,n
 		valst = sqrt(1.0-valct*valct)
 	end
 
-	#c = (d34*d34 - d24*d24 + d23*d23)/(2.0*d34*d23)
 	valca = (q23 + q24 - q34)/p3
 	if (valca < -1.0)
 		valca, valsa = -1.0, 0.0
@@ -376,13 +369,12 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[4,4] = 1
 	return B
 end
-function torsionmatrix(C)
-	B = copy(C)
+function reflectmatrix(B)
+	#B = copy(C)
 	B[2,3] = -B[2,3]
 	B[3,1] = -B[3,1]
 	B[3,2] = -B[3,2]
 	B[3,4] = -B[3,4]	
-	return B
 end
 """
 ```

@@ -157,7 +157,7 @@ function classicBPseq(NMRdata::NMRType,
 				nop_node += [23,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-					B[l] = torsionmatrix(B[l])
+					reflectmatrix(B[l])
 					C_before = prodmatrix(C_before,B[l])
 					nop_vpath += [24,33,0,0]
 					nop_node += [24,33,0,0]
@@ -212,7 +212,7 @@ function classicBPseq(NMRdata::NMRType,
 		end
 		if explore_right_side[l] == true 
 			#display(l)
-			B[l] = torsionmatrix(B[l])
+			reflectmatrix(B[l])
 			#nop_node += [0,0,0,0]
 			C_list[l] = prodmatrix(C_before,B[l])# tenho que otimizar este calculo
 			if bug && (3<l<=maxl)
@@ -400,7 +400,7 @@ function classicBPseq2(NMRdata::NMRType,
 				nop_node += [23,33,0,0]
 
 				if sqrt((Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2)> virtual_ε
-					B[l] = torsionmatrix(B[l])
+					reflectmatrix(B[l])
 					C_list[l-1] = prodmatrix(C_list[l-1],B[l])
 					nop_vpath += [24,33,0,0]
 					nop_node += [24,33,0,0]
@@ -419,7 +419,7 @@ function classicBPseq2(NMRdata::NMRType,
 
 
 		if explore_right_side[l] == true 
-			B[l] = torsionmatrix(B[l])
+			reflectmatrix(B[l])
 			#nop_node += [0,0,0,0]
 			C_list[l] = prodmatrix(C_list[l-1],B[l])# tenho que otimizar este calculo
 			nop_node += [24,33,0,0]
@@ -542,6 +542,7 @@ function classicBP(NMRdata :: NMRType,
 		#end
 
 		C_before = copy(C)
+		B = Array{Float64,2}
 		while true
 			virtualPos = NMRdata.virtual_path[pos]
 			virtualLastPos = NMRdata.virtual_path[pos-1]
@@ -579,9 +580,8 @@ function classicBP(NMRdata :: NMRType,
 				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
 			end
 
-			#cω,sω = badtorsionangle(D12,D13,D14,D23,D24,D34)
-			c1,s1,cω,sω = getangles(D12,D13,D14,D23,D24,D34)
 			cθ,sθ = bondangle(D23,D24,D34)
+			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
 			B = torsionmatrix(cθ,sθ,cω,sω,D34)
 			if l==virtualPos
 				C = prodmatrix(C_before,B)
@@ -594,10 +594,10 @@ function classicBP(NMRdata :: NMRType,
 				Virtual_Torsion = prodmatrix(C_before,B)
 
 				if (Virtual_Torsion[1,4]- cpx)^2+(Virtual_Torsion[2,4]- cpy)^2+(Virtual_Torsion[3,4]- cpz)^2> virtual_ε²
-					B = torsionmatrix(B)
+					reflectmatrix(B)
 					C_before = prodmatrix(C_before,B)
 				else
-					C_before = copy(Virtual_Torsion) 
+					C_before = Virtual_Torsion
 				end
 				pos = pos+1		
 			end
@@ -620,8 +620,8 @@ function classicBP(NMRdata :: NMRType,
 		if !allmol && nsol>0
 			return
 		end
-
-		B = torsionmatrix(B)
+		
+		reflectmatrix(B)
 		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
 		mol.atoms[l].x = C[1,4]
 		mol.atoms[l].y = C[2,4]
