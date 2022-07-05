@@ -730,11 +730,11 @@ function quaternionBP(NMRdata :: NMRType,
 			end
 		end
 		qmol = rotopt(Q,D34)
-		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1
-		mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
-		
+		#mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1 we not need anymore
+		changeposition(mol.atoms[l], qmol.v1 + mol.atoms[virtualLastPos].x, 
+									 qmol.v2 + mol.atoms[virtualLastPos].y,
+									 qmol.v3 + mol.atoms[virtualLastPos].z)
+
 		if pruningtest(mol,l,NMRdata,ε)
 			if l<n
 				quaternionBP_closure(l+1,pos+1,mol,Q)
