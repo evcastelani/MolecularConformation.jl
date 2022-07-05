@@ -76,7 +76,15 @@ function preprocessing(file::String,opt="read")
 				push!(V,NMRInfo(V[i].dist,V[i].atom2,V[i].atom1))
 			end
 		end
-		nmrt = NMRType(vpath,vadd,sparse(I,J,V),n)
+		info = sparse(I,J,V)
+		for i=1:lenI
+			try 
+				info[i,i] = NMRInfo(0.0,V[i,end].atom1,V[i,end].atom1)
+			catch
+				continue
+			end
+		end
+		nmrt = NMRType(vpath,vadd,info,n)
 	else
 		error("Unidentified option or file")	
 	end
@@ -176,6 +184,11 @@ mutable struct AtomType
 	end
 end
 
+function changeposition(A::AtomType, x::Float64,y::Float64,z::Float64)
+	A.x = x
+	A.y = y
+	A.z = z
+end
 
 """
 ```
@@ -369,6 +382,21 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[4,4] = 1
 	return B
 end
+function torsionmatrix(B::Array{Float64,2},cosθ::Float64,sinθ::Float64,cosω::Float64,sinω::Float64,d34::Float64)
+	B[1,1] = -cosθ
+	B[1,2] = -sinθ
+	B[1,3] = 0
+	B[1,4] = -d34*cosθ
+	B[2,1] = sinθ*cosω
+	B[2,2] = -cosθ*cosω
+	B[2,3] = -sinω
+	B[2,4] = d34*B[2,1]
+	B[3,1] = sinθ*sinω
+	B[3,2] = -cosθ*sinω
+	B[3,3] = cosω
+	B[3,4] = d34*B[3,1] 
+	B[4,1:4] = [0,0,0,1]
+end
 function reflectmatrix(B)
 	#B = copy(C)
 	B[2,3] = -B[2,3]
@@ -420,6 +448,9 @@ function LDE(v::MoleculeType,D::NMRType)
 	for k=1:num_nne
 		i=nne[1][k]
 		j=nne[2][k]
+		if i == j ## to not divide by zero;
+			continue
+		end
 		aux = (D.info[i,j].dist^2-((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2))^2
 		maxε = max(maxε,aux)
 		dij = dij+(aux)/D.info[i,j].dist
@@ -597,6 +628,14 @@ function qprod(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
 					   q.s * d + q.v1 * c - q.v2 * b + q.v3 * a)
 end
 
+function reflectq(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
+	Q_before,a,-b,-c,d
+	q.s = q.s * a - q.v1 * b - q.v2 * c - q.v3 * d
+	q.v1 = q.s * b + q.v1 * a + q.v2 * d - q.v3 * c
+	q.v2 = q.s * c - q.v1 * d + q.v2 * a + q.v3 * b
+	q.v3 = q.s * d + q.v1 * c - q.v2 * b + q.v3 * a
+end
+
 #function conj(q::Quaternion)
 #	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
 #end
@@ -622,6 +661,15 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 end
 #[24,33,0,0]
 #[48,64,0,0]
+function prodmatrix(C::Array{Float64,2},A::Array{Float64,2},B::Array{Float64,2})
+	C[4,1:4] = [0,0,0,1]
+	for i=1:3
+		C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
+		C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,2] 
+		C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
+		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
+	end
+end
 """
 	convert_to_dataframe
 

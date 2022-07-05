@@ -36,7 +36,7 @@ as return a ConformationOutput type is provided.
 There are others parameters to setup, for example, need to complete.
 """
 function conformation(NMRdata::NMRType,
-		cs::ConformationSetup,time_limit=Second(5))
+		cs::ConformationSetup,time_limit=Second(5), count=false)
 
 
 	solutions = cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions,time_limit)

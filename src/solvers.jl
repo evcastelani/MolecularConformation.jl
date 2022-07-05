@@ -542,49 +542,23 @@ function classicBP(NMRdata :: NMRType,
 		#end
 
 		C_before = copy(C)
-		B = Array{Float64,2}
+		B = Array{Float64,2}(undef,4,4)
 		while true
 			virtualPos = NMRdata.virtual_path[pos]
 			virtualLastPos = NMRdata.virtual_path[pos-1]
 			
-			if NMRdata.virtual_path[pos-3] == virtualPos
-				D14 = 0.0
-			else
-				D14 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualPos].dist
-			end
-			if NMRdata.virtual_path[pos-2] == virtualPos
-				D24 = 0.0
-			else
-				D24 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualPos].dist
-			end
-
-			if virtualLastPos == virtualPos
-				D34 = 0.0
-			else
-				D34 = NMRdata.info[virtualLastPos,virtualPos].dist
-			end
-
-			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-2]
-				D12 = 0.0
-			else
-				D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
-			end
-			if NMRdata.virtual_path[pos-3] == virtualLastPos
-				D13 = 0.0
-			else
-				D13 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualLastPos].dist
-			end
-			if NMRdata.virtual_path[pos-2] == virtualLastPos
-				D23 = 0.0
-			else
-				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
-			end
-
+			D14 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualPos].dist
+			D24 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualPos].dist
+			D34 = NMRdata.info[virtualLastPos,virtualPos].dist
+			D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
+			D13 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualLastPos].dist
+			D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
+			
 			cθ,sθ = bondangle(D23,D24,D34)
 			cω,sω = torsionangle(D12,D13,D14,D23,D24,D34)
-			B = torsionmatrix(cθ,sθ,cω,sω,D34)
+			torsionmatrix(B,cθ,sθ,cω,sω,D34)
 			if l==virtualPos
-				C = prodmatrix(C_before,B)
+				prodmatrix(C,C_before,B)
 				break
 			else
 				cpx = mol.atoms[virtualPos].x
@@ -603,11 +577,9 @@ function classicBP(NMRdata :: NMRType,
 			end
 		end
 
-		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
-		mol.atoms[l].x = C[1,4]
-		mol.atoms[l].y = C[2,4]
-		mol.atoms[l].z = C[3,4]
-
+		#mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1 we not need anymore
+		changeposition(mol.atoms[l], C[1,4], C[2,4], C[3,4])
+		
 		if pruningtest(mol,l,NMRdata,ε) 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,C)
@@ -622,10 +594,8 @@ function classicBP(NMRdata :: NMRType,
 		end
 		
 		reflectmatrix(B)
-		C = prodmatrix(C_before,B)# tenho que otimizar este calculo
-		mol.atoms[l].x = C[1,4]
-		mol.atoms[l].y = C[2,4]
-		mol.atoms[l].z = C[3,4]
+		prodmatrix(C,C_before,B)
+		changeposition(mol.atoms[l], C[1,4], C[2,4], C[3,4])
 		
 		if pruningtest(mol,l,NMRdata,ε) #preciso modificar 
 			if l<n
@@ -727,38 +697,12 @@ function quaternionBP(NMRdata :: NMRType,
 			virtualPos = NMRdata.virtual_path[pos]
 			virtualLastPos = NMRdata.virtual_path[pos-1]
 
-			if NMRdata.virtual_path[pos-3] == virtualPos
-				D14 = 0.0
-			else
-				D14 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualPos].dist
-			end
-			if NMRdata.virtual_path[pos-2] == virtualPos
-				D24 = 0.0
-			else
-				D24 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualPos].dist
-			end
-
-			if virtualLastPos == virtualPos
-				D34 = 0.0
-			else
-				D34 = NMRdata.info[virtualLastPos,virtualPos].dist
-			end
-
-			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-2]
-				D12 = 0.0
-			else
-				D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
-			end
-			if NMRdata.virtual_path[pos-3] == virtualLastPos
-				D13 = 0.0
-			else
-				D13 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualLastPos].dist
-			end
-			if NMRdata.virtual_path[pos-2] == virtualLastPos
-				D23 = 0.0
-			else
-				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
-			end
+			D14 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualPos].dist
+			D24 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualPos].dist
+			D34 = NMRdata.info[virtualLastPos,virtualPos].dist
+			D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
+			D13 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualLastPos].dist
+			D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
 			
 			cθ,sθ = qbondangle(D23,D24,D34)
 			cω,sω = qtorsionangle(D12,D13,D14,D23,D24,D34)
