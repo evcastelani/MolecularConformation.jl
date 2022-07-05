@@ -487,6 +487,7 @@ function classicBP(NMRdata :: NMRType,
 	end
 
 	virtual_ε² = virtual_ε*virtual_ε 
+	ϵₛ = sqrt(ε)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 
@@ -580,7 +581,7 @@ function classicBP(NMRdata :: NMRType,
 		#mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1 we not need anymore
 		changeposition(mol.atoms[l], C[1,4], C[2,4], C[3,4])
 		
-		if pruningtest(mol,l,NMRdata,ε) 
+		if pruningtest(mol,l,NMRdata,ϵₛ) 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
@@ -597,7 +598,7 @@ function classicBP(NMRdata :: NMRType,
 		prodmatrix(C,C_before,B)
 		changeposition(mol.atoms[l], C[1,4], C[2,4], C[3,4])
 		
-		if pruningtest(mol,l,NMRdata,ε) #preciso modificar 
+		if pruningtest(mol,l,NMRdata,ϵₛ) #preciso modificar 
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
@@ -636,6 +637,7 @@ function quaternionBP(NMRdata :: NMRType,
 	end
 
 	virtual_ε² = virtual_ε*virtual_ε 
+	ϵₛ = sqrt(ε)
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 	
@@ -735,7 +737,7 @@ function quaternionBP(NMRdata :: NMRType,
 									 qmol.v2 + mol.atoms[virtualLastPos].y,
 									 qmol.v3 + mol.atoms[virtualLastPos].z)
 
-		if pruningtest(mol,l,NMRdata,ε)
+		if pruningtest(mol,l,NMRdata,ϵₛ)
 			if l<n
 				quaternionBP_closure(l+1,pos+1,mol,Q)
 			else
@@ -753,7 +755,7 @@ function quaternionBP(NMRdata :: NMRType,
 		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
 		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
 
-		if pruningtest(mol,l,NMRdata,ε)  
+		if pruningtest(mol,l,NMRdata,ϵₛ)  
 			if l<n
 				quaternionBP_closure(l+1,pos+1,mol,Q)
 			else

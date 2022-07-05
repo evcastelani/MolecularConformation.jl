@@ -412,24 +412,20 @@ This functions is an auxiliary function used to test if some molecule is
 feasible or not.
 """
 function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64) :: Bool
-	if isempty(D.additional_distance[i])
-
-		@debug "result of prunning true"
-		return true
-	else
-		for j in D.additional_distance[i]
-			dij =  (v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2
-			if (D.info[i,j].dist^2 -dij)^2 >ε
-				@debug "result of prunning false"
-				return false
-			end
+	atom = v.atoms[i]
+	atoms = v.atoms
+	additional_distance_index = D.additional_distance[i]
+	for j in additional_distance_index
+		dij =  (atom.x-atoms[j].x)^2+(atom.y-atoms[j].y)^2 +(atom.z-atoms[j].z)^2
+		if abs(D.info[i,j].dist*D.info[i,j].dist -dij) > ε
+			@debug "result of prunning false"
+			return false
 		end
 	end
 
 	@debug "result of prunning true"
 	return true
 end
-
 
 ####################################################################################
 # these functions can be used by any solver#########################################
