@@ -1,10 +1,12 @@
 Remark: Analysis of improvements from quaternion to classic 
 Average of improvements in processing time (%)
-mean -> 8.784016691257072 
-median -> 6.567055708546182 
-minimum -> 5.613630846265503 
-maximum -> 10.71021563201107 
+mean -> 7.404153121041826 
+median -> 5.969157173034374 
+minimum -> 5.002083179946634 
+maximum -> -1.243938114680712 
 Average of improvements in number of operations for each problem (%)
+[NaN, NaN, NaN, NaN]
+[NaN, NaN, NaN, NaN]
 [NaN, NaN, NaN, NaN]
 [NaN, NaN, NaN, NaN]
 [NaN, NaN, NaN, NaN]
