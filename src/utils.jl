@@ -158,6 +158,9 @@ struct ConformationSetup
 	function ConformationSetup(a,c,f,d=true,b=1.0e-6)
 		return new(a,b,c,d,f)
 	end
+	function ConformationSetup(;precision=1.0e-6, virtual_precision=precision, solver, evalLDE=true, allsolutions=false)
+		return new(precision,virtual_precision,solver,evalLDE,allsolutions)
+	end
 end
 
 """
@@ -226,7 +229,6 @@ mutable struct ConformationOutput
 	solver :: Function
 	number :: Int64
 	molecules :: Dict{Int64,MoleculeType}
-	nop :: Counter
 end
 
 

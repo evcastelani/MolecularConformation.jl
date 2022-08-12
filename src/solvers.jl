@@ -260,7 +260,7 @@ function classicBPseq(NMRdata::NMRType,
 		error("Solution not found, problem possible infeasible")
 	end
 	display(first_ocor)
-	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
+	return ConformationOutput(classicBPseq, nsol, storage_mol)
 end
 
 ################
@@ -457,7 +457,7 @@ function classicBPseq2(NMRdata::NMRType,
 			end
 		end
 	end
-	return nsol, storage_mol,Counter(nop_node,nop_vpath,nop_ddf,n_branch,n_prune)
+	return ConformationOutput(classicBPseq2 , nsol, storage_mol)
 end
 
 
@@ -476,7 +476,7 @@ The main difference of our implementation is that the input data (`NMRType`) can
 function classicBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool, time_limit)
+		allmol :: Bool, time_limit=Second(5))
 	
 	start =  Dates.now()
 	time_elapsed = Second(0.0)
@@ -639,7 +639,7 @@ function classicBP(NMRdata :: NMRType,
 
 	__l, __pos, __mol, __C = initialization()
 	classicBP_closure(__l, __pos, __mol, __C)
-	return nsol, storage_mol
+	return ConformationOutput(classicBP , nsol, storage_mol)
 
 end #solver classicBP
 
@@ -654,7 +654,7 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 function quaternionBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool, time_limit)
+		allmol :: Bool, time_limit=Second(5))
 	
 	start =  Dates.now()
 	time_elapsed = Second(0.0)
@@ -669,7 +669,7 @@ function quaternionBP(NMRdata :: NMRType,
 	storage_mol = Dict{Int64,MoleculeType}()
 	
 	if !allmol
-		pathToSol = Vector{Bool}(false, n)
+		path_to_sol = zeros(Bool,n)
 	end
 
 	function initialization()
@@ -815,7 +815,7 @@ function quaternionBP(NMRdata :: NMRType,
 
 		if pruningtest(mol,l,NMRdata,ε)  
 			if !allmol
-				pathToSol[l] = true
+				path_to_sol[l] = true
 			end
 			if l<n
 				quaternionBP_closure(l+1,pos+1,mol,Q)
@@ -831,10 +831,9 @@ function quaternionBP(NMRdata :: NMRType,
 	quaternionBP_closure(__l, __pos, __mol, __Q)
 
 	if !allmol
-		return nsol, storage_mol, pathToSol
+		return ConformationOutput(quaternionBP, nsol, storage_mol), BitVector(path_to_sol)
 	end
-	return nsol, storage_mol
-
+	return ConformationOutput(quaternionBP, nsol, storage_mol)
 end #solver quaternionBP 
 
 """ 
@@ -847,15 +846,21 @@ function symBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
 		allmol :: Bool; 
-		path_to_first_sol :: Vector{Bool},
-		sym_vertices :: Vector{Int64})
+		path :: BitVector)
 
 	n = NMRdata.dim
 	if n < 3
 		ArgumentError("Invalid dimension of NMRdata")
 	end
-	if length(pathToSol) != n
+	if length(path) != n
 		ArgumentError("Invalid dimension of path to solution: it needs to be equal of NMRdata dimension.")
+	end
+
+	sym_vertices = Vector{Int64}()
+	for i=5:n
+		if (length(findnz(NMRdata.info[1:i,i])[1]) < 4)
+			append!(sym_vertices,i)
+		end
 	end
 
 	virtual_ε² = virtual_ε*virtual_ε 
@@ -901,7 +906,7 @@ function symBP(NMRdata :: NMRType,
 									pos::Int64,
 									mol :: MoleculeType,
 									Q :: Quaternion,
-									path_to_sol :: Vector{Bool})
+									path_to_sol :: BitVector)
 		lastpos = 1
 		D34 = 0.0
 		virtualLastPos = 0.0
@@ -979,7 +984,7 @@ function symBP(NMRdata :: NMRType,
 		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
 		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
 		
-		if !path_to_sol(l)
+		if !path_to_sol[l]
 			if l<n
 				symBP_closure(l+1,pos+1,mol,Q,path_to_sol)
 			else
@@ -1003,16 +1008,16 @@ function symBP(NMRdata :: NMRType,
 			end
 		end
 		if (l+1 in sym_vertices)
-			path = .!copy(path_to_sol)
-			symBP_closure(l+1,pos+1,mol,Q,path)
+			new_path = .!copy(path_to_sol)
+			symBP_closure(l+1,pos+1,mol,Q,new_path)
 		end
 
 	end #closure
 
 	__l, __pos, __mol, __Q = initialization()
-	symBP_closure(__l, __pos, __mol, __Q, path_to_first_sol)
-	symBP_closure(__l, __pos, __mol, __Q, .!path_to_first_sol)
+	symBP_closure(__l, __pos, __mol, __Q, path)
+	symBP_closure(__l, __pos, __mol, __Q, .!path)
 
-	return nsol, storage_mol
+	return ConformationOutput(symBP, nsol, storage_mol)
 
-end #solver quaternionBP 
+end #solver symBP 

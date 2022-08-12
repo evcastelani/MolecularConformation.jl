@@ -36,16 +36,12 @@ as return a ConformationOutput type is provided.
 There are others parameters to setup, for example, need to complete.
 """
 function conformation(NMRdata::NMRType,
-		cs::ConformationSetup,time_limit=Second(5); kargs...)
+		cs::ConformationSetup, args...; kargs...)
 
 
-	solutions = cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions,time_limit; kargs...)
-	s = ConformationOutput(cs.solver,solutions[1],solutions[2],Counter([0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0],0.0,0.0))
+	s = cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions, args...; kargs...)
 	if cs.evalLDE == true
-		map(i->MolecularConformation.LDE(s.molecules[i],NMRdata),[1:1:s.number;])
-	end
-	if !cs.allsolutions
-		return s, solutions[3]
+		map(i->MolecularConformation.LDE((typeof(s) == ConformationOutput ? s : s[1]).molecules[i],NMRdata),[1:1:(typeof(s) == ConformationOutput ? s : s[1]).number;])
 	end
 	return s
 end				
