@@ -30,7 +30,6 @@ struct NMRType
 	additional_distance::Vector{Vector{Int64}}
 	info :: SparseMatrixCSC{NMRInfo,Int64}
 	dim :: Int64
-	sym_vertices :: Vector{Bool}
 end
 
 """

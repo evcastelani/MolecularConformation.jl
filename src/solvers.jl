@@ -846,9 +846,9 @@ symBP :: Function
 function symBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool, 
-		pathToSol :: Vector{Bool})
-
+		allmol :: Bool; 
+		path_to_first_sol :: Vector{Bool},
+		sym_vertices :: Vector{Int64})
 
 	n = NMRdata.dim
 	if n < 3
@@ -897,10 +897,11 @@ function symBP(NMRdata :: NMRType,
 	end
 	
 	# defining closure
-	function quaternionBP_closure(l :: Int64,
+	function symBP_closure(l :: Int64,
 									pos::Int64,
 									mol :: MoleculeType,
-									Q :: Quaternion)
+									Q :: Quaternion,
+									path_to_sol :: Vector{Bool})
 		lastpos = 1
 		D34 = 0.0
 		virtualLastPos = 0.0
@@ -978,9 +979,9 @@ function symBP(NMRdata :: NMRType,
 		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
 		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
 		
-		if !pathToSol(l)
+		if !path_to_sol(l)
 			if l<n
-				quaternionBP_closure(l+1,pos+1,mol,Q)
+				symBP_closure(l+1,pos+1,mol,Q,path_to_sol)
 			else
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
@@ -994,17 +995,23 @@ function symBP(NMRdata :: NMRType,
 			mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
 
 			if l<n
-				quaternionBP_closure(l+1,pos+1,mol,Q)
+				symBP_closure(l+1,pos+1,mol,Q,path_to_sol)
 			else
 				nsol = nsol+1
 				storage_mol[nsol] = copy(mol)				
 				return
 			end
 		end
+		if (l+1 in sym_vertices)
+			path = .!copy(path_to_sol)
+			symBP_closure(l+1,pos+1,mol,Q,path)
+		end
+
 	end #closure
 
 	__l, __pos, __mol, __Q = initialization()
-	quaternionBP_closure(__l, __pos, __mol, __Q)
+	symBP_closure(__l, __pos, __mol, __Q, path_to_first_sol)
+	symBP_closure(__l, __pos, __mol, __Q, .!path_to_first_sol)
 
 	return nsol, storage_mol
 
