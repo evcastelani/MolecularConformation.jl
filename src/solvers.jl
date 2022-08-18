@@ -476,7 +476,9 @@ The main difference of our implementation is that the input data (`NMRType`) can
 function classicBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool, time_limit=Second(5))
+		allmol :: Bool, 
+		time_limit=Second(5);
+		output_to_symBP::Bool=false)
 	
 	start =  Dates.now()
 	time_elapsed = Second(0.0)
@@ -489,6 +491,11 @@ function classicBP(NMRdata :: NMRType,
 	virtual_ε² = virtual_ε*virtual_ε 
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
+
+	if !allmol && output_to_symBP
+		path_to_sol = zeros(Bool,n)
+		torsionmatrices = Array{Array{Float64,2}}(undef,n)
+	end
 
 	function initialization()
 		mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
@@ -540,7 +547,7 @@ function classicBP(NMRdata :: NMRType,
 		if time_elapsed>time_limit && l<n
 			error("Time limit reached without found a solution!")
 		end
-
+		
 		C_before = copy(C)
 		while true
 			virtualPos = NMRdata.virtual_path[pos]
@@ -613,10 +620,17 @@ function classicBP(NMRdata :: NMRType,
 			else
 				nsol=nsol+1
 				storage_mol[nsol] = copy(mol)
+				
+				if !allmol && output_to_symBP
+					torsionmatrices[l] = copy(C)	
+				end
 				return
 			end
 		end
 		if !allmol && nsol>0
+			if output_to_symBP
+				torsionmatrices[l] = copy(C)	
+			end
 			return
 		end
 
@@ -627,18 +641,32 @@ function classicBP(NMRdata :: NMRType,
 		mol.atoms[l].z = C[3,4]
 		
 		if pruningtest(mol,l,NMRdata,ε) #preciso modificar 
+			if !allmol && output_to_symBP
+				path_to_sol[l] = true
+			end
 			if l<n
 				classicBP_closure(l+1,pos+1,mol,C)
 			else
 				nsol = nsol+1
-				storage_mol[nsol] = copy(mol)				
+				storage_mol[nsol] = copy(mol)
+				
+				if !allmol && output_to_symBP
+					torsionmatrices[l] = copy(C)	
+				end
 				return
 			end
+		end
+		if output_to_symBP && !allmol && nsol>0
+			torsionmatrices[l] = copy(C)	
 		end
 	end # closure
 
 	__l, __pos, __mol, __C = initialization()
 	classicBP_closure(__l, __pos, __mol, __C)
+	
+	if !allmol && output_to_symBP
+		return ConformationOutput(classicBP , nsol, storage_mol), BitVector(path_to_sol), torsionmatrices
+	end
 	return ConformationOutput(classicBP , nsol, storage_mol)
 
 end #solver classicBP
@@ -654,7 +682,9 @@ Fidalgo, F. Using Quaternion Geometric Algebra for efficient rotations in Branch
 function quaternionBP(NMRdata :: NMRType,
 		ε :: Float64,
 		virtual_ε :: Float64,
-		allmol :: Bool, time_limit=Second(5))
+		allmol :: Bool, 
+		time_limit=Second(5);
+		output_to_symBP::Bool=false)
 	
 	start =  Dates.now()
 	time_elapsed = Second(0.0)
@@ -668,7 +698,7 @@ function quaternionBP(NMRdata :: NMRType,
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 	
-	if !allmol
+	if !allmol && output_to_symBP
 		path_to_sol = zeros(Bool,n)
 	end
 
@@ -814,7 +844,7 @@ function quaternionBP(NMRdata :: NMRType,
 
 
 		if pruningtest(mol,l,NMRdata,ε)  
-			if !allmol
+			if !allmol && output_to_symBP
 				path_to_sol[l] = true
 			end
 			if l<n
@@ -830,7 +860,7 @@ function quaternionBP(NMRdata :: NMRType,
 	__l, __pos, __mol, __Q = initialization()
 	quaternionBP_closure(__l, __pos, __mol, __Q)
 
-	if !allmol
+	if !allmol && output_to_symBP
 		return ConformationOutput(quaternionBP, nsol, storage_mol), BitVector(path_to_sol)
 	end
 	return ConformationOutput(quaternionBP, nsol, storage_mol)
@@ -842,31 +872,36 @@ symBP :: Function
 ```
 # TODO: Descrition
 """
-function symBP(NMRdata :: NMRType,
-		ε :: Float64,
-		virtual_ε :: Float64,
-		allmol :: Bool; 
-		path :: BitVector)
+function symBP(NMRdata::NMRType,
+    ε::Float64,
+    virtual_ε::Float64,
+    allmol::Bool,
+	time_limit=Second(5);
+    path::Union{BitVector,Nothing}=nothing)
+	#torsionmatrices::Union{Array{Array{Float64,2}},Nothing}=nothing)
 
-	n = NMRdata.dim
-	if n < 3
-		ArgumentError("Invalid dimension of NMRdata")
-	end
-	if length(path) != n
-		ArgumentError("Invalid dimension of path to solution: it needs to be equal of NMRdata dimension.")
-	end
+	start =  Dates.now()
+	time_elapsed = Second(0.0)
 
-	sym_vertices = Vector{Int64}()
-	for i=5:n
-		if (length(findnz(NMRdata.info[1:i,i])[1]) < 4)
-			append!(sym_vertices,i)
-		end
-	end
+    n = NMRdata.dim
+    if n < 3
+        ArgumentError("Invalid dimension of NMRdata")
+    end
+    if !(path === nothing) && length(path) != n
+        ArgumentError("Invalid dimension of path to solution: it needs to be equal of NMRdata dimension.")
+    end
 
-	virtual_ε² = virtual_ε*virtual_ε 
-	nsol = 0
-	storage_mol = Dict{Int64,MoleculeType}()
-	
+    sym_vertices = Vector{Int64}()
+    for i = 5:n
+        if length(findnz(NMRdata.info[1:i-4, i:n])[1]) == 0 # (length(findnz(NMRdata.info[1:i, i])[1]) < 4) 
+            append!(sym_vertices, i)
+        end
+    end
+
+    virtual_ε² = virtual_ε * virtual_ε
+    nsol = 0
+    storage_mol = Dict{Int64,MoleculeType}()
+
 	function initialization()
 		# TODO: (Emerson) na criação desse vetor você não pode já estabelecer um valor default para atoms?
 		mol = MoleculeType(Vector{AtomType}(undef,n),0.0)
@@ -900,124 +935,180 @@ function symBP(NMRdata :: NMRType,
 
 		return 4,4,mol,Q
 	end
-	
-	# defining closure
-	function symBP_closure(l :: Int64,
-									pos::Int64,
-									mol :: MoleculeType,
-									Q :: Quaternion,
-									path_to_sol :: BitVector)
-		lastpos = 1
-		D34 = 0.0
-		virtualLastPos = 0.0
-		a = 0.0
-		b = 0.0
-		c = 0.0
-		d = 0.0 
-		Q_before = copy(Q)
-
-		while true
-			virtualPos = NMRdata.virtual_path[pos]
-			virtualLastPos = NMRdata.virtual_path[pos-1]
-
-			if NMRdata.virtual_path[pos-3] == virtualPos
-				D14 = 0.0
-			else
-				D14 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualPos].dist
-			end
-			if NMRdata.virtual_path[pos-2] == virtualPos
-				D24 = 0.0
-			else
-				D24 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualPos].dist
-			end
-
-			if virtualLastPos == virtualPos
-				D34 = 0.0
-			else
-				D34 = NMRdata.info[virtualLastPos,virtualPos].dist
-			end
-
-			if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-2]
-				D12 = 0.0
-			else
-				D12 = NMRdata.info[NMRdata.virtual_path[pos-3],NMRdata.virtual_path[pos-2]].dist
-			end
-			if NMRdata.virtual_path[pos-3] == virtualLastPos
-				D13 = 0.0
-			else
-				D13 = NMRdata.info[NMRdata.virtual_path[pos-3],virtualLastPos].dist
-			end
-			if NMRdata.virtual_path[pos-2] == virtualLastPos
-				D23 = 0.0
-			else
-				D23 = NMRdata.info[NMRdata.virtual_path[pos-2],virtualLastPos].dist
-			end
-			
-			cθ,sθ = qbondangle(D23,D24,D34)
-			cω,sω = qtorsionangle(D12,D13,D14,D23,D24,D34)
-			a = sθ*cω
-			b = sθ*sω
-			c = -cθ*sω
-			d = cθ*cω
-			if l==virtualPos
-				Q = qprod(Q_before,a,b,c,d)
-				lastpos = pos
-				break
-			else
-				Q_virtual = qprod(Q_before,a,b,c,d)
-				qmol = rotopt(Q_virtual,D34)
-				# TODO: (Emerson) não conseguimos fazer o calculo abaixo da mesma forma que o classicBP?
-				vx = qmol.v1 + mol.atoms[virtualLastPos].x-mol.atoms[virtualPos].x
-				vy = qmol.v2 + mol.atoms[virtualLastPos].y-mol.atoms[virtualPos].y
-				vz = qmol.v3 + mol.atoms[virtualLastPos].z-mol.atoms[virtualPos].z
-				if vx*vx + vy*vy + vz*vz > virtual_ε²
-					Q_before = qprod(Q_before,a,-b,-c,d)
-				else
-					Q_before = Q_virtual
-				end
-				pos = pos+1		
-			end
-		end
-		qmol = rotopt(Q,D34)
-		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1
-		mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
+ 
+	# # defining closure
+	# function symBP_closure(l :: Int64,
+	# 	mol :: MoleculeType,
+    #     path_to_sol::BitVector)
 		
-		if !path_to_sol[l]
-			if l<n
-				symBP_closure(l+1,pos+1,mol,Q,path_to_sol)
-			else
-				nsol=nsol+1
-				storage_mol[nsol] = copy(mol)
-				return
-			end
-		else	
-			Q = qprod(Q_before,a,-b,-c,d)
-			qmol = rotopt(Q,D34)
-			mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
-			mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
-			mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
+	# 	time_elapsed = Dates.now()-start
+	# 	if time_elapsed>time_limit && l<n
+	# 		error("Time limit reached without found a solution!")
+	# 	end
+	# 	if path_to_sol[l] == path[l]
+	# 		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
+	# 		mol.atoms[l].x = torsionmatrices[l][1,4]
+	# 		mol.atoms[l].y = torsionmatrices[l][2,4]
+	# 		mol.atoms[l].z = torsionmatrices[l][3,4]
+	# 		if l<n
+	# 			symBP_closure(l+1,mol,path_to_sol)
+	# 		else
+	# 			nsol=nsol+1
+	# 			storage_mol[nsol] = copy(mol)
+	# 			return
+	# 		end
+	# 	else
+	# 		local B = copy(torsionmatrices[l])
+	# 		B[2,3] = -B[2,3]
+	# 		B[3,1] = -B[3,1]
+	# 		B[1,3] = -B[1,3] 
+	# 		B[3,2] = -B[3,2]
+	# 		B[3,4] = -B[3,4]	
+			
+	# 		mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1		
+	# 		mol.atoms[l].x = B[1,4]
+	# 		mol.atoms[l].y = B[2,4]
+	# 		mol.atoms[l].z = B[3,4]
 
-			if l<n
-				symBP_closure(l+1,pos+1,mol,Q,path_to_sol)
-			else
-				nsol = nsol+1
-				storage_mol[nsol] = copy(mol)				
-				return
-			end
-		end
-		if (l+1 in sym_vertices)
-			new_path = .!copy(path_to_sol)
-			symBP_closure(l+1,pos+1,mol,Q,new_path)
+	# 		if l<n
+	# 			symBP_closure(l+1,mol,path_to_sol)
+	# 		else
+	# 			nsol = nsol+1
+	# 			storage_mol[nsol] = copy(mol)
+	# 			return
+	# 		end
+	# 	end
+		
+	# end # closure
+
+	if path === nothing
+		local solution = quaternionBP(NMRdata,ε,virtual_ε,false,time_limit,output_to_symBP=true)
+		path = solution[2]
+	end
+
+    # defining closure
+    function symBP_closure(l::Int64,
+        pos::Int64,
+        mol::MoleculeType,
+        Q::Quaternion,
+        path_to_sol::BitVector)
+
+		time_elapsed = Dates.now()-start
+		if time_elapsed>time_limit && l<n
+			error("Time limit reached without found a solution!")
 		end
 
-	end #closure
+        lastpos = 1
+        D34 = 0.0
+        virtualLastPos = 0.0
+        a = 0.0
+        b = 0.0
+        c = 0.0
+        d = 0.0
+        Q_before = copy(Q)
+
+        while true
+            virtualPos = NMRdata.virtual_path[pos]
+            virtualLastPos = NMRdata.virtual_path[pos-1]
+
+            if NMRdata.virtual_path[pos-3] == virtualPos
+                D14 = 0.0
+            else
+                D14 = NMRdata.info[NMRdata.virtual_path[pos-3], virtualPos].dist
+            end
+            if NMRdata.virtual_path[pos-2] == virtualPos
+                D24 = 0.0
+            else
+                D24 = NMRdata.info[NMRdata.virtual_path[pos-2], virtualPos].dist
+            end
+
+            if virtualLastPos == virtualPos
+                D34 = 0.0
+            else
+                D34 = NMRdata.info[virtualLastPos, virtualPos].dist
+            end
+
+            if NMRdata.virtual_path[pos-3] == NMRdata.virtual_path[pos-2]
+                D12 = 0.0
+            else
+                D12 = NMRdata.info[NMRdata.virtual_path[pos-3], NMRdata.virtual_path[pos-2]].dist
+            end
+            if NMRdata.virtual_path[pos-3] == virtualLastPos
+                D13 = 0.0
+            else
+                D13 = NMRdata.info[NMRdata.virtual_path[pos-3], virtualLastPos].dist
+            end
+            if NMRdata.virtual_path[pos-2] == virtualLastPos
+                D23 = 0.0
+            else
+                D23 = NMRdata.info[NMRdata.virtual_path[pos-2], virtualLastPos].dist
+            end
+
+            cθ, sθ = qbondangle(D23, D24, D34)
+            cω, sω = qtorsionangle(D12, D13, D14, D23, D24, D34)
+            a = sθ * cω
+            b = sθ * sω
+            c = -cθ * sω
+            d = cθ * cω
+            if l == virtualPos
+                Q = qprod(Q_before, a, b, c, d)
+                lastpos = pos
+                break
+            else
+                Q_virtual = qprod(Q_before, a, b, c, d)
+                qmol = rotopt(Q_virtual, D34)
+                # TODO: (Emerson) não conseguimos fazer o calculo abaixo da mesma forma que o classicBP?
+                vx = qmol.v1 + mol.atoms[virtualLastPos].x - mol.atoms[virtualPos].x
+                vy = qmol.v2 + mol.atoms[virtualLastPos].y - mol.atoms[virtualPos].y
+                vz = qmol.v3 + mol.atoms[virtualLastPos].z - mol.atoms[virtualPos].z
+                if vx * vx + vy * vy + vz * vz > virtual_ε²
+                    Q_before = qprod(Q_before, a, -b, -c, d)
+                else
+                    Q_before = Q_virtual
+                end
+                pos = pos + 1
+            end
+        end
+        qmol = rotopt(Q, D34)
+        mol.atoms[l].element = NMRdata.info[l, :].nzval[1].atom1
+        mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
+        mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
+        mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
+
+        if !path_to_sol[l]
+            if l < n
+                symBP_closure(l + 1, pos + 1, mol, Q, path_to_sol)
+            else
+                nsol = nsol + 1
+                storage_mol[nsol] = copy(mol)
+                return
+            end
+        else
+            Q = qprod(Q_before, a, -b, -c, d)
+            qmol = rotopt(Q, D34)
+            mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
+            mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
+            mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
+
+            if l < n
+                symBP_closure(l + 1, pos + 1, mol, Q, path_to_sol)
+            else
+                nsol = nsol + 1
+                storage_mol[nsol] = copy(mol)
+                return
+            end
+        end
+        if (l + 1 in sym_vertices)
+            new_path = .!copy(path_to_sol)
+            symBP_closure(l + 1, pos + 1, mol, Q, new_path)
+        end
+
+    end #closure
 
 	__l, __pos, __mol, __Q = initialization()
-	symBP_closure(__l, __pos, __mol, __Q, path)
-	symBP_closure(__l, __pos, __mol, __Q, .!path)
+    symBP_closure(__l, __pos, __mol, __Q, path)
+    symBP_closure(__l, __pos, __mol, __Q, .!path)
 
-	return ConformationOutput(symBP, nsol, storage_mol)
+    return ConformationOutput(symBP, nsol, storage_mol)
 
 end #solver symBP 

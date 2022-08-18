@@ -280,7 +280,6 @@ This is an auxiliary function  used by classicBp solver to compute the torsion a
 """
 function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 	if sign == true
-
 		B=zeros(4,4)
 		B[1,1] = -cosθ
 		B[1,2] = -sinθ
@@ -295,9 +294,9 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
 		B[3,4] = d34*B[3,1] 
 		B[4,4] = 1
 	else
-
 		B[2,3] = -B[2,3]
 		B[3,1] = -B[3,1]
+		#B[1,3] = -B[1,3] # Commented because is zero in torsion matrix (B). Be careful to NOT apply this function to accumulated torsion matrix (C)
 		B[3,2] = -B[3,2]
 		B[3,4] = -B[3,4]	
 	end
@@ -320,13 +319,14 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[4,4] = 1
 	return B
 end
-function torsionmatrix(C)
-	B = copy(C)
-	B[2,3] = -B[2,3]
-	B[3,1] = -B[3,1]
-	B[3,2] = -B[3,2]
-	B[3,4] = -B[3,4]	
-	return B
+function torsionmatrix(B)
+	B_temp = copy(B)
+	B_temp[2,3] = -B_temp[2,3]
+	B_temp[3,1] = -B_temp[3,1]
+	#B_temp[1,3] = -B_temp[1,3] # Commented because is zero in torsion matrix (B). Be careful to NOT apply this function to accumulated torsion matrix (C)
+	B_temp[3,2] = -B_temp[3,2]
+	B_temp[3,4] = -B_temp[3,4]	
+	return B_temp
 end
 """
 ```
