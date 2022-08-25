@@ -1,6 +1,6 @@
 using MolecularConformation, DelimitedFiles,BenchmarkTools, Dates, Printf, DelimitedFiles
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 1
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
 include("rmsd.jl")
 """
@@ -45,8 +45,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 	io = open("not_solved.csv",opwrite)
     ioperf = open("results.csv",opwrite)
 	iogen = open("table_general.tex",opwrite)
-	ioop  = open("table_operations.tex",opwrite)
-
+	
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.5]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
 	\t\\toprule
@@ -59,19 +58,6 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 	\t\\midrule
 	\t\\endhead")
 
-	println(ioop, "\\begin{xltabular}{\\textwidth}{r|rcccSc}
-	\t\\caption{Operation Results}\\label{tab:opResults}\\\\
-	\t\\toprule
-	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{\\makecell[cc]{Operation \\\\Nodes}} & \\multicolumn{1}{c}{\\makecell[cc]{Operation \\\\Virtual Path}} & \\multicolumn{1}{c}{\\makecell[cc]{Operation \\\\ddf}} & \\multicolumn{1}{c}{\\makecell[cc]{No. Operations\\\\ Improvments}} & \\multicolumn{1}{c}{\\makecell[cc]{Branchs \\\\ Prunes}}  \\\\
-	\t\\midrule
-	\t\\endfirsthead
-	\t\\caption{Results - continued}\\\\
-	\t\\toprule
-	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{\\makecell[cc]{Operation \\\\Nodes}} & \\multicolumn{1}{c}{\\makecell[cc]{Operation \\\\Virtual Path}} & \\multicolumn{1}{c}{\\makecell[cc]{Operation \\\\ddf}} &
-	\t\\multicolumn{1}{c}{\\makecell[cc]{No. Operations\\\\ Improvments}} & \\multicolumn{1}{c}{\\makecell[cc]{Branchs \\\\ Prunes}}  \\\\
-	\t\\midrule
-	\t\\endhead")
-	
 	c = 1e-9
 	for prob in list_of_problems
 		# before make the benchmark we need to verify if is possible solve the problem
@@ -105,32 +91,17 @@ function perform(limit_time,opwrite::String="a",f::Function=median)
 		improv = (-1.0+PTc/PTq)*100
 		rmsd = evalrmsd(solc,solq)[2]
 
-        println(ioperf,"$(prob) , $(TPc), $(TPq) ")
+        println(ioperf,"$(prob) , $(PTc), $(PTq) ")
 
 		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",LDEc)) &  & $(@sprintf("%.4e",PTc)) & \\\\")
 		println(iogen,"& Quaternion & $(@sprintf("%.3e",LDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-6} \\addlinespace")
-
-		improv_nop = (-1.0 .+ solc.nop.node./solq.nop.node).*100
-		#improv_total = (-1.0 + sum(solc.nop.node)/sum(solq.nop.node))*100
-		improv_total = (-1.0 + (solc.nop.node[1]+solc.nop.node[2]*5+solc.nop.node[3]*16+solc.nop.node[1]*21)/(solq.nop.node[1]+solq.nop.node[2]*5+solq.nop.node[3]*16+solq.nop.node[1]*21))*100
-		println(ioop,"$(prob) & Classic & $(solc.nop.node[1]) & $(solc.nop.virtual_path[1]) & $(solc.nop.ddf[1]) & & $(solc.nop.branch) \\\\")
-		println(ioop,"& & $(solc.nop.node[2]) & $(solc.nop.virtual_path[2]) & $(solc.nop.ddf[2]) & & $(solc.nop.prune) \\\\")
-		println(ioop,"& & $(solc.nop.node[3]) & $(solc.nop.virtual_path[3]) & $(solc.nop.ddf[3]) & & \\\\")
-		println(ioop,"& & $(solc.nop.node[4]) & $(solc.nop.virtual_path[4]) & $(solc.nop.ddf[4]) & & \\\\")
-		
-		println(ioop,"& Quaternion & $(solq.nop.node[1]) & $(solq.nop.virtual_path[1]) & $(solq.nop.ddf[1]) & $(@sprintf("%.2f",improv_nop[1])) & \\\\")
-		println(ioop,"& & $(solq.nop.node[2]) & $(solq.nop.virtual_path[2]) & $(solq.nop.ddf[2]) & $(@sprintf("%.2f",improv_nop[2])) & \\\\")
-		println(ioop,"& & $(solq.nop.node[3]) & $(solq.nop.virtual_path[3]) & $(solq.nop.ddf[3]) & $(@sprintf("%.2f",improv_nop[3])) & \\\\")
-		println(ioop,"& & $(solq.nop.node[4]) & $(solq.nop.virtual_path[4]) & $(solq.nop.ddf[4]) & $(@sprintf("%.2f",improv_nop[4])) & \\\\ \\cline{2-7}\\addlinespace")
 	end
 
 	println(iogen, "\\end{xltabular}")
-	println(ioop, "\\end{xltabular}")
 
 	close(io)
     close(ioperf)
 	close(iogen)
-	close(ioop)
 end
 
 function performRMSD(limit_time,opwrite::String="a",f::Function=median)
