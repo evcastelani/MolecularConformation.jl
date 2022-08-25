@@ -477,26 +477,19 @@ This function is an auxiliary function used to compute the LDE of some molecule.
 This function change the .lde field of the molecule.
 """
 function LDE(v::MoleculeType,D::NMRType)
-	dij=0.0
+	sumval=0.0
 	nne = findnz(D.info)
 	num_nne = length(nne[1])
-	maxε = 0.0
 	for k=1:num_nne
 		i=nne[1][k]
 		j=nne[2][k]
 		if i == j ## to not divide by zero;
 			continue
 		end
-		aux = (D.info[i,j].dist^2-((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2))^2
-		maxε = max(maxε,aux)
-		dij = dij+(aux)/D.info[i,j].dist
+		aux = abs(sqrt((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2) - D.info[i,j].dist)
+		sumval = sumval+(aux)/D.info[i,j].dist
 	end
-	#	println("max ε = $(maxε)")
-	#	if nad>0.0
-	v.lde = dij/(2.0*num_nne)
-	#	else
-	#		return dij
-	#	end
+	v.lde = sumval/(num_nne-D.dim) ##  remove main diag
 end
 
 """
