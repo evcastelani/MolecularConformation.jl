@@ -33,8 +33,8 @@ julia> perform(Minute(2)) # to timeout of 2 minutes
 """
 function perform(limit_time,opwrite::String="a",f::Function=median;list_of_problems="")
 	# setup 
-	optq = ConformationSetup(0.000001,quaternionBP,false)
-	optc = ConformationSetup(0.000001,classicBP,false)
+	optq = ConformationSetup(1.0e-8,quaternionBP,false,true,1.0e-8)
+	optc = ConformationSetup(1.0e-8,classicBP,false,true,1.0e-8)
 	data = preprocessing("toyinstance.nmr")
 	# first run (to optimize)
 	solq = conformation(data,optq,limit_time)
@@ -82,13 +82,13 @@ function perform(limit_time,opwrite::String="a",f::Function=median;list_of_probl
 		print(" 🔔 The problem $(prob) can be solved within the timeout. \n") 
 		print(" 👏 The benchmark will be performed for both methods! \n")
 		print(" 🕐 Running benchmark using QuaternionBP... \n")
-		bchq = @benchmark conformation($(data),$(optq),$(limit_time)+Second(10.0))
+		bchq = @benchmark conformation($(data),$(optq))
 		print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
 		LDEq = outputfilter(solq,"lde")
 		PTq = f(bchq).time*c
  
 		print(" 🕞 Running benchmark using ClassicBP... \n")
-		bchc = @benchmark conformation($(data),$(optc),$(limit_time)+Second(10.0))
+		bchc = @benchmark conformation($(data),$(optc))
 		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
 		print(" \n")
 		LDEc = outputfilter(solc,"lde")
@@ -154,7 +154,7 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		print(" 🔔 The problem $(prob) can be solved within the timeout. \n")
 		print(" 👏 The benchmark will be performed for both methods! \n")
 		print(" 🕐 Running benchmark using QuaternionBP... \n")
-		bchq = @benchmark conformation($(data),$(optq),$(limit_time)+Second(10.0))
+		bchq = @benchmark conformation($(data),$(optq))
 		print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
 		LDEq = outputfilter(solq,"lde")
 		PTq = f(bchq).time*c
@@ -168,7 +168,7 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		end
 
 		print(" 🕞 Running benchmark using ClassicBP... \n")
-		bchc = @benchmark conformation($(data),$(optc),$(limit_time)+Second(10.0))
+		bchc = @benchmark conformation($(data),$(optc))
 		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
 		print(" \n")
 		LDEc = outputfilter(solc,"lde")
@@ -214,17 +214,9 @@ function performoneRMSD(prob, bpall=false, limit_time=Second(120.0); ε=1.0e-8, 
 		return
     end
     print(" 🔔 The problem $(prob) can be solved within the timeout. \n")
-    print(" 👏 The benchmark will be performed for both methods! \n")
-    
-    print(" 🕞 Running benchmark using ClassicBP... \n")
-    bchc = @benchmark conformation($(data), $(optc), $(limit_time) + Second(10.0))
-    print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
-    print(" \n")``
     LDEc = outputfilter(solc, "lde")
-    #PTc = f(bchc).time * c
 
 	@show LDEc
-	#@show PTc
 
     originalcoord = originalxyz(prob)
     coordsol = outputfilter(solc, "xyz")
