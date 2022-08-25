@@ -25,6 +25,4 @@ function Base.show(io::IO, c::ConformationOutput)
 		end
 	
 	end
-	print(io," ✔ Number of main operations [+-,*,/,√] ")
-	print(io,"   $(c.nop) ")
 end
