@@ -161,13 +161,13 @@ struct ConformationSetup
 	precision :: Float64
 	virtual_precision :: Float64
 	solver :: Function 
-	evalLDE :: Bool
+	evalMDE :: Bool
 	allsolutions :: Bool
 	function ConformationSetup(a,c,f,d=true,b=1.0e-6)
 		return new(a,b,c,d,f)
 	end
-	function ConformationSetup(;precision=1.0e-6, virtual_precision=precision, solver, evalLDE=true, allsolutions=false)
-		return new(precision,virtual_precision,solver,evalLDE,allsolutions)
+	function ConformationSetup(;precision=1.0e-6, virtual_precision=precision, solver, evalMDE=true, allsolutions=false)
+		return new(precision,virtual_precision,solver,evalMDE,allsolutions)
 	end
 end
 
@@ -197,11 +197,11 @@ end
 ```
 MoleculeType :: Type
 ```
-It is used to store a (just one) solution find by conformation process. It is a mutable struct and has two fields: .atoms (used to store a vector of AtomType) and .lde (used to store the lde of an molecule)
+It is used to store a (just one) solution find by conformation process. It is a mutable struct and has two fields: .atoms (used to store a vector of AtomType) and .mde (used to store the mde of an molecule)
 """
 mutable struct MoleculeType
 	atoms :: Vector{AtomType}
-	lde :: Float64
+	mde :: Float64
 end
 
 function writefile(A::MoleculeType,file="SpatialPosition";format = "xyz")
@@ -471,12 +471,12 @@ end
 # these functions can be used by any solver#########################################
 """
 ```
-LDE :: Function
+MDE :: Function
 ```
-This function is an auxiliary function used to compute the LDE of some molecule.
-This function change the .lde field of the molecule.
+This function is an auxiliary function used to compute the MDE of some molecule.
+This function change the .mde field of the molecule.
 """
-function LDE(v::MoleculeType,D::NMRType)
+function MDE(v::MoleculeType,D::NMRType)
 	sumval=0.0
 	nne = findnz(D.info)
 	num_nne = length(nne[1])
@@ -489,29 +489,29 @@ function LDE(v::MoleculeType,D::NMRType)
 		aux = abs(sqrt((v.atoms[i].x-v.atoms[j].x)^2+(v.atoms[i].y-v.atoms[j].y)^2 +(v.atoms[i].z-v.atoms[j].z)^2) - D.info[i,j].dist)
 		sumval = sumval+(aux)/D.info[i,j].dist
 	end
-	v.lde = sumval/(num_nne-D.dim) ##  remove main diag
+	v.mde = sumval/(num_nne-D.dim) ##  remove main diag
 end
 
 """
 ```
 outputfilter
 ```
-This function is especially useful when we need to filter an information about a solution in ConformationOutput. For example, let us suppose that we want to compute the worst LDE measure. So, we need to type:
+This function is especially useful when we need to filter an information about a solution in ConformationOutput. For example, let us suppose that we want to compute the worst MDE measure. So, we need to type:
 
 julia> a = conformation(data,option)
 
-julia> outputfilter(a,"lde")
+julia> outputfilter(a,"mde")
 """
-function outputfilter(a::ConformationOutput, option = "lde")
+function outputfilter(a::ConformationOutput, option = "mde")
 	mol = a.molecules
 	num = a.number
-	if option == "lde"
-		vlde = zeros(num)
+	if option == "mde"
+		vmde = zeros(num)
 
 		for i=1:num
-			vlde[i]=mol[i].lde
+			vmde[i]=mol[i].mde
 		end
-		return minimum(vlde)
+		return minimum(vmde)
 	end
 	if option == "xyz"
 		nl = length(a.molecules[1].atoms)
@@ -562,7 +562,7 @@ function Base.copy(M::MoleculeType)
 	for i=1:nl
 		vm[i]=copy(M.atoms[i])
 	end
-	return MoleculeType(vm,M.lde)
+	return MoleculeType(vm,M.mde)
 end
 
 function Base.:≈(A::MoleculeType,B::MoleculeType)

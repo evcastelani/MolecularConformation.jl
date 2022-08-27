@@ -15,7 +15,7 @@ function Base.show(io::IO, c::ConformationOutput)
 	print(io,  " ✔ Solutions \n")	
 	n = length(c.molecules[1].atoms)
 	for k=1:c.number
-		print(io,"   ↳ Molecule $(k) with LDE = $(c.molecules[k].lde) \n")
+		print(io,"   ↳ Molecule $(k) with MDE = $(c.molecules[k].mde) \n")
 		for i=1:5
 			print(io,"    ( $(c.molecules[k].atoms[i].x) , $(c.molecules[k].atoms[i].y) ,  $(c.molecules[k].atoms[i].z) ) \n")
 		end

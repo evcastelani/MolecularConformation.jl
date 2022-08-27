@@ -53,14 +53,14 @@ function perform(limit_time,opwrite::String="a",f::Function=median;list_of_probl
 	\t\\toprule
 	\t\\multicolumn{1}{c}{\$\\begin{array}{c}
 	\\text{Problem}\\\\ \\text{Size}
-	\\end{array}\$} & Method & \\multicolumn{1}{c}{LDE} & \\multicolumn{1}{c}{RMSD} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
+	\\end{array}\$} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endfirsthead
 	\t\\caption{Results - continued}\\\\
 	\t\\toprule
 	\t\\multicolumn{1}{c}{\$\\begin{array}{c}
 	\\text{Problem}\\\\ \\text{Size}
-	\\end{array}\$} & Method & \\multicolumn{1}{c}{LDE} & \\multicolumn{1}{c}{RMSD} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
+	\\end{array}\$} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endhead")
 
@@ -84,14 +84,14 @@ function perform(limit_time,opwrite::String="a",f::Function=median;list_of_probl
 		print(" 🕐 Running benchmark using QuaternionBP... \n")
 		bchq = @benchmark conformation($(data),$(optq))
 		print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
-		LDEq = outputfilter(solq,"lde")
+		MDEq = outputfilter(solq,"mde")
 		PTq = f(bchq).time*c
  
 		print(" 🕞 Running benchmark using ClassicBP... \n")
 		bchc = @benchmark conformation($(data),$(optc))
 		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
 		print(" \n")
-		LDEc = outputfilter(solc,"lde")
+		MDEc = outputfilter(solc,"mde")
 		PTc = f(bchc).time*c
 		
 		improv = (-1.0+PTc/PTq)*100
@@ -99,8 +99,8 @@ function perform(limit_time,opwrite::String="a",f::Function=median;list_of_probl
 
         println(ioperf,"$(prob) , $(PTc), $(PTq) ")
 
-		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",LDEc)) &  & $(@sprintf("%.4e",PTc)) & \\\\")
-		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",LDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-6} \\addlinespace")
+		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",MDEc)) &  & $(@sprintf("%.4e",PTc)) & \\\\")
+		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-6} \\addlinespace")
 	end
 
 	println(iogen, "\\end{xltabular}")
@@ -128,12 +128,12 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]cS[table-format=1.4e+2]S[table-format=-1.5]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
 	\t\\toprule
-	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{LDE} & \\multicolumn{1}{c}{RMSD} & Sol & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
+	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & Sol & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endfirsthead
 	\t\\caption{Results - continued}\\\\
 	\t\\toprule
-	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{LDE} & \\multicolumn{1}{c}{RMSD} & Sol & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
+	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & Sol & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endhead")
 	
@@ -156,7 +156,7 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		print(" 🕐 Running benchmark using QuaternionBP... \n")
 		bchq = @benchmark conformation($(data),$(optq))
 		print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
-		LDEq = outputfilter(solq,"lde")
+		MDEq = outputfilter(solq,"mde")
 		PTq = f(bchq).time*c
  
 		originalcoord = originalxyz(prob)
@@ -171,7 +171,7 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		bchc = @benchmark conformation($(data),$(optc))
 		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
 		print(" \n")
-		LDEc = outputfilter(solc,"lde")
+		MDEc = outputfilter(solc,"mde")
 		PTc = f(bchc).time*c
 
 		coordsolc = outputfilter(solc,"xyz")
@@ -182,8 +182,8 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		
 		improv = (-1.0+PTc/PTq)*100
 		
-		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",LDEc)) & $(@sprintf("%.4e",minimum(rmsdvalc))) & $(argmin(rmsdvalc)) & $(@sprintf("%.4e",PTc)) & \\\\")
-		println(iogen,"& Quaternion & $(@sprintf("%.3e",LDEq)) & $(@sprintf("%.4e",minimum(rmsdvalq))) & $(argmin(rmsdvalq)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-7} \\addlinespace")
+		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",MDEc)) & $(@sprintf("%.4e",minimum(rmsdvalc))) & $(argmin(rmsdvalc)) & $(@sprintf("%.4e",PTc)) & \\\\")
+		println(iogen,"& Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",minimum(rmsdvalq))) & $(argmin(rmsdvalq)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-7} \\addlinespace")
 		
         println(ioperf,"$(prob) , $(minimum(rmsdvalc)), $(argmin(rmsdvalc)), $(minimum(rmsdvalq)), $(argmin(rmsdvalq)) ")
 		#rmsd = evalrmsd(solc,solq)[2]
@@ -214,9 +214,9 @@ function performoneRMSD(prob, bpall=false, limit_time=Second(120.0); ε=1.0e-8, 
 		return
     end
     print(" 🔔 The problem $(prob) can be solved within the timeout. \n")
-    LDEc = outputfilter(solc, "lde")
+    MDEc = outputfilter(solc, "mde")
 
-	@show LDEc
+	@show MDEc
 
     originalcoord = originalxyz(prob)
     coordsol = outputfilter(solc, "xyz")

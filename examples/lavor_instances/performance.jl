@@ -68,10 +68,10 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 
 """
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
-function perform(ndiag,allsolutions=false,LDE=false)
+function perform(ndiag,allsolutions=false,MDE=false)
 	#initialization
-	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,LDE)
-	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,LDE)
+	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,MDE)
+	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,MDE)
 	data = preprocessing("toyinstance.nmr")
 	solq = conformation(data,opt_quaternion)
 	solc = conformation(data,opt_classic)

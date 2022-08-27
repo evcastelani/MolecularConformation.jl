@@ -22,7 +22,7 @@ julia> perform(allsolutions=true)
 
 Or what aspect of the table given by output we want highlighted:
 julia> perform(highlight="PT") # for best processing time
-julia> perform(highlight="LDE") #for best LDE
+julia> perform(highlight="MDE") #for best MDE
 
 Changing writefile="html" and output.html file is provided.
 
@@ -43,7 +43,7 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 #	list_of_problems = ["pdb1a03","pdb1a57","pdb1a7f","pdb1acz","pdb2l2g","pdb2l2i","pdb2l3b","pdb2l3d","pdb2l32","pdb2l33","pdb1bct","pdb2jmy","pdb2kxa"]
 #	list_of_problems = ["pdb1a03"]
 	list_of_problems = ["pdb2kxa","pdb2jmy","pdb1a57"] # Prolina free list
-	table_header = ["problem", "method", "LDE", "PT ", "Num. sol","rmsd","Improv"]
+	table_header = ["problem", "method", "MDE", "PT ", "Num. sol","rmsd","Improv"]
 	table_header2 = ["problem", "method", " [ +- , / , √ ] node", " [+- , / , √ ] virtual path"," [ +- , / , √ ] ddf ", " Num. Branch ", " Num. Pru ", "Improv. nop", "Improv. tot"]
 	# defing array to storage table 
 	content = Array{Any,2}(undef,2*length(list_of_problems),7)
@@ -56,7 +56,7 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 		bch = @benchmark conformation($(data),$(opt_quaternion))
 		content[k,1] = prob
 		content[k,2] = "quaternionBP" 
-		content[k,3] = outputfilter(solq,"lde")
+		content[k,3] = outputfilter(solq,"mde")
 		content[k,4] = f(bch).time*c
 		content[k,5] = solq.number
 		content[k,6] = " - " 
@@ -75,7 +75,7 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 		solc = conformation(data,opt_classic)
 		bch = @benchmark conformation($(data),$(opt_classic))
 		content[k,1] = prob
-		content[k,3] = outputfilter(solc,"lde")
+		content[k,3] = outputfilter(solc,"mde")
 		content[k,4] = f(bch).time*c
 		content[k,5] = solc.number
 		content[k,6] = evalrmsd2(solc,solq)[2]
@@ -99,7 +99,7 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 	#bch = @benchmark conformation($(data),$(opt_classic))
 	#content[k,1] = prob
 	#content[k,2] = "quaternionBP" 
-	#content[k,3] = outputfilter(sol,"lde")
+	#content[k,3] = outputfilter(sol,"mde")
 	#content[k,4] = f(bch).time*c
 	#content[k,5] = sol.number
 	#content[k,6] = evalrmsd(sol,"$(prob).xyz")[2]
@@ -117,7 +117,7 @@ function perform(f::Function=median;writefile=:latex,allsolutions=false,highligh
 	#if highlight == "PT"
 	#	H1 = Highlighter((content,i,j)->isodd(i)&&content[i,4]==minimum(content[i:i+1,4]), Crayon(foreground = color))
 	#	H2 = Highlighter((content,i,j)->!isodd(i)&&content[i,4]==minimum(content[i-1:i,4]), Crayon(foreground = color))
-	#elseif	highlight == "LDE"
+	#elseif	highlight == "MDE"
 	#	H1 = Highlighter((content,i,j)->isodd(i)&&content[i,3]==minimum(content[i:i+1,3]), Crayon(foreground = color))
 	#	H2 = Highlighter((content,i,j)->!isodd(i)&&content[i,3]==minimum(content[i-1:i,3]), Crayon(foreground = color))
 	#elseif highlight == "NOP"
