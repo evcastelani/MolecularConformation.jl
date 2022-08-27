@@ -75,7 +75,7 @@ function perform(ndiag,allsolutions=false,MDE=false)
 	data = preprocessing("toyinstance.nmr")
 	solq = conformation(data,opt_quaternion)
 	solc = conformation(data,opt_classic)
-	folders = ["10","100","200","300","400","500","600","700","800","900","1000"]#,"2000","3000"]
+	folders = ["10","100","200","300","400","500","600","700","800","900","1000","2000","3000"]
 	prob = parse.(Int,folders)
 	tquat = zeros(length(folders),4)
 	tclass = zeros(length(folders),4)
@@ -101,7 +101,7 @@ function perform(ndiag,allsolutions=false,MDE=false)
 		cd("..")
 		print(" 🎉 Benchmarks using nd = $(ndiag) and the problem with $(psize) atoms were done!\n")
 	#	display(df)
-	#	write_results(df)
+		write_results(df)
 	end
 	CSV.write("$(ndiag).csv", df;delim=";")
 	plot_results(df)
