@@ -38,11 +38,6 @@ function write_results(df::DataFrame)
 	improv_median = sum(improv.(gdf[2].median,gdf[1].median))/n
 	improv_minimum = sum(improv.(gdf[2].minimum,gdf[1].minimum))/n
 	improv_maximum = sum(improv.(gdf[2].maximum,gdf[1].maximum))/n
-	# percentual improvement in number of operations for each problem
-	nop = [improv.( stringtovec(gdf[2].nop[1]),stringtovec(gdf[1].nop[1]))]
-	for k=2:n
-		push!(nop,improv.(stringtovec(gdf[2].nop[k]),stringtovec(gdf[1].nop[k])))
-	end
 	io = open("improvs_$(df.ref[1]).txt", "w");
 	write(io, "Remark: Analysis of improvements from quaternion to classic \n")
 	write(io, "Average of improvements in processing time (%)\n")
@@ -50,10 +45,6 @@ function write_results(df::DataFrame)
 	write(io, "median -> $(improv_median) \n");
 	write(io, "minimum -> $(improv_minimum) \n");
 	write(io, "maximum -> $(improv_maximum) \n");
-	write(io, "Average of improvements in number of operations for each problem (%)\n")
-	for k=1:n
-		write(io, "$(nop[k])\n")
-	end
 	close(io)
 end
 
@@ -80,7 +71,7 @@ function perform(ndiag,allsolutions=false,MDE=false)
 	tquat = zeros(length(folders),4)
 	tclass = zeros(length(folders),4)
 	c = 10.0^(-9)
-	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[],nop=Vector{Int}[],ddf=Vector{Int}[])
+	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[])
 	print(" 🔔 Starting perform with nd = $(ndiag). Did you set up the stack limit of your OS ? I hope so!\n")
 	for foldername in folders
 		cd(foldername)
@@ -92,11 +83,11 @@ function perform(ndiag,allsolutions=false,MDE=false)
 		end
 		bch  = @benchmark conformation($(data),$(opt_classic))
 		solc =  conformation(data,opt_classic)
-		push!(df,[ndiag,"classicBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,solc.nop.node,solc.nop.ddf])
+		push!(df,[ndiag,"classicBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c])
 
 		bch = @benchmark conformation($(data),$(opt_quaternion))
 		solq = conformation(data,opt_quaternion)
-		push!(df,[ndiag,"quaternionBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,solq.nop.node,solq.nop.ddf])
+		push!(df,[ndiag,"quaternionBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c])
 		
 		cd("..")
 		print(" 🎉 Benchmarks using nd = $(ndiag) and the problem with $(psize) atoms were done!\n")
