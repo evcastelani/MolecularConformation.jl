@@ -1,6 +1,5 @@
 # Ignore build subfolder from docs
 docs/build/*
-examples/real_instances/statprof/
 # ignore folder with big size
 examples/lavor_instances/100
 examples/lavor_instances/200
@@ -52,4 +51,8 @@ examples/real_instances/list.txt
 **/tex/*.synctex.gz
 **/tex/*.log
 **/tex/*.aux
+**/*.fdb_latexmk
+**/*.fls
 
+# profiling
+examples/real_instances/statprof/
