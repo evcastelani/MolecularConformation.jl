@@ -51,14 +51,14 @@ function perform(limit_time,opwrite::String="a",f::Function=median;list_of_probl
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.5]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
 	\t\\toprule
-	\t\\multicolumn{1}{c}{\$\\begin{array}{c}
+	\t\\multicolumn{1}{c}{\$\\begin{array}{r}
 	\\text{Problem}\\\\ \\text{Size}
 	\\end{array}\$} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endfirsthead
 	\t\\caption{Results - continued}\\\\
 	\t\\toprule
-	\t\\multicolumn{1}{c}{\$\\begin{array}{c}
+	\t\\multicolumn{1}{c}{\$\\begin{array}{r}
 	\\text{Problem}\\\\ \\text{Size}
 	\\end{array}\$} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
@@ -125,15 +125,27 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 	iogen = open("table_general.tex",opwrite)
     ioperf = open("resultsRMSD.csv",opwrite)
 
-	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]cS[table-format=1.4e+2]S[table-format=-1.5]}
+	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rcS[table-format=1.4e+2]cS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
 	\t\\toprule
-	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & Sol & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
+	\t\\multicolumn{1}{c}{\$\\begin{array}{r}
+	\\text{Problem}\\\\ \\text{Size}
+	\\end{array}\$} & Method & \$|\\mathcal{X}|\$ & \\multicolumn{1}{c}{\$\\begin{array}{c}
+	\\min\\limits_{\\mathbf{x}\\in \\mathcal{X}} \\text{RMSD}(\\mathbf{x},\\mathbf{x}_o)
+	\\end{array}\$} & \$i : \\mathbf{x_i} \\sim \\mathbf{x}_o\$ & \\multicolumn{1}{c}{\$\\begin{array}{c}
+	\\text{MDE}(\\mathbf{x}\$_i\$)
+	\\end{array}\$} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endfirsthead
 	\t\\caption{Results - continued}\\\\
 	\t\\toprule
-	\t\\multicolumn{1}{c}{Problem} & Method & \\multicolumn{1}{c}{MDE} & \\multicolumn{1}{c}{RMSD} & Sol & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
+	\t\\multicolumn{1}{c}{\$\\begin{array}{r}
+	\\text{Problem}\\\\ \\text{Size}
+	\\end{array}\$} & Method & \$|\\mathcal{X}|\$ & \\multicolumn{1}{c}{\$\\begin{array}{c}
+	\\min\\limits_{\\mathbf{x}\\in \\mathcal{X}} \\text{RMSD}(\\mathbf{x},\\mathbf{x}_o)
+	\\end{array}\$} & \$i : \\mathbf{x_i} \\sim \\mathbf{x}_o\$ & \\multicolumn{1}{c}{\$\\begin{array}{c}
+	\\text{MDE}(\\mathbf{x}\$_i\$)
+	\\end{array}\$} & \\multicolumn{1}{c}{Time} & \\multicolumn{1}{c}{Improv time} \\\\
 	\t\\midrule
 	\t\\endhead")
 	
@@ -156,7 +168,6 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		print(" 🕐 Running benchmark using QuaternionBP... \n")
 		bchq = @benchmark conformation($(data),$(optq))
 		print(" 🏁 The benchmark using QuaternionBP in $(prob) was done!\n")
-		MDEq = outputfilter(solq,"mde")
 		PTq = f(bchq).time*c
  
 		originalcoord = originalxyz(prob)
@@ -166,27 +177,27 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median)
 		for i = 1:size(coordsolq)[2]
 			rmsdvalq[i] = rmsd(vec2array(coordsolq[:,i]),originalcoord)[2]
 		end
+		MDEq = solq.molecules[argmin(rmsdvalq)].mde
 
 		print(" 🕞 Running benchmark using ClassicBP... \n")
 		bchc = @benchmark conformation($(data),$(optc))
 		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
 		print(" \n")
-		MDEc = outputfilter(solc,"mde")
 		PTc = f(bchc).time*c
-
+		
 		coordsolc = outputfilter(solc,"xyz")
 		rmsdvalc = Array{Float64,1}(undef,size(coordsolc)[2])
 		for i = 1:size(coordsolc)[2]
 			rmsdvalc[i] = rmsd(vec2array(coordsolc[:,i]),originalcoord)[2]
 		end
+		MDEc = solc.molecules[argmin(rmsdvalc)].mde
 		
 		improv = (-1.0+PTc/PTq)*100
 		
-		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",MDEc)) & $(@sprintf("%.4e",minimum(rmsdvalc))) & $(argmin(rmsdvalc)) & $(@sprintf("%.4e",PTc)) & \\\\")
-		println(iogen,"& Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",minimum(rmsdvalq))) & $(argmin(rmsdvalq)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-7} \\addlinespace")
+		println(iogen,"$(prob) & ClassicAll & $(solc.number) & $(@sprintf("%.4e",minimum(rmsdvalc))) & $(argmin(rmsdvalc)) & $(@sprintf("%.3e",MDEc)) & $(@sprintf("%.4e",PTc)) & \\\\")
+		println(iogen,"$(data.dim) & QuaternionAll & $(solq.number) & $(@sprintf("%.4e",minimum(rmsdvalq))) & $(argmin(rmsdvalq)) & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.3f",improv))\\\\ \\cline{2-8} \\addlinespace")
 		
         println(ioperf,"$(prob) , $(minimum(rmsdvalc)), $(argmin(rmsdvalc)), $(minimum(rmsdvalq)), $(argmin(rmsdvalq)) ")
-		#rmsd = evalrmsd(solc,solq)[2]
 	end
 
 	println(iogen, "\\end{xltabular}")
@@ -203,8 +214,6 @@ function performoneRMSD(prob, bpall=false, limit_time=Second(120.0); ε=1.0e-8, 
     global solc = conformation(data, optc, limit_time)
     
 	c = 1e-9
-    # before make the benchmark we need to verify if is possible solve the problem
-    # considering the limit_time
     data = preprocessing(string("HCProtInsctances/", string(prob, ".nmr")))
     try
         solc = conformation(data, optc, limit_time)
@@ -214,7 +223,7 @@ function performoneRMSD(prob, bpall=false, limit_time=Second(120.0); ε=1.0e-8, 
 		return
     end
     print(" 🔔 The problem $(prob) can be solved within the timeout. \n")
-    MDEc = outputfilter(solc, "mde")
+    MDEc = solc.molecules[argmin(rmsdvalc)].mde
 
 	@show MDEc
 
