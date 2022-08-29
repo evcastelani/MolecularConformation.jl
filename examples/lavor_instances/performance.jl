@@ -14,6 +14,13 @@ function plot_results(df::DataFrame)
 	end
 end
 
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000])
+	for diag in ndiag
+		df = CSV.read("results/$(diag).csv",DataFrame)
+		plot_results(df)
+	end
+end
+
 function stringtovec(s::Union{String,Array{Int64,1}})
 	if typeof(s)==Array{Int64,1}
 		return s
