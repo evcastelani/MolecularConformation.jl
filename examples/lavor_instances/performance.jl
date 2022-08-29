@@ -7,9 +7,10 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 function plot_results(df::DataFrame)
 	gdf = groupby(df,:method)
 	for info in [:mean,:median,:minimum,:maximum]
-		plot(gdf[2].size,gdf[2][!,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Average of mean processing time (s)"), label = "QuaternionBP")
-		plot!(gdf[1].size,gdf[1][!,info],color = [:black],label = "ClassicBP")
-		png("perf_$(info)_$(df.ref[1])");
+		plot(gdf[2].size,gdf[2][!,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Average of mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific);
+		plot!(gdf[1].size,gdf[1][!,info],color = [:black],label = "ClassicBP");
+		savefig(string("perf_$(info)_$(df.ref[1])",".pdf"));
+		#png("perf_$(info)_$(df.ref[1])");
 	end
 end
 
@@ -61,8 +62,8 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
 function perform(ndiag,allsolutions=false,MDE=false)
 	#initialization
-	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,MDE)
-	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,MDE)
+	opt_classic = ConformationSetup(1.0e-8,classicBP,allsolutions,MDE,1.0e-8)
+	opt_quaternion = ConformationSetup(1.0e-8,quaternionBP,allsolutions,MDE,1.0e-8)
 	data = preprocessing("toyinstance.nmr")
 	solq = conformation(data,opt_quaternion)
 	solc = conformation(data,opt_classic)
