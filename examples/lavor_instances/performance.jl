@@ -9,8 +9,8 @@ function plot_results(df::DataFrame)
 	for info in [:mean,:median,:minimum,:maximum]
 		plot(gdf[2].size,gdf[2][!,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Average of mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific);
 		plot!(gdf[1].size,gdf[1][!,info],color = [:black],label = "ClassicBP");
-		savefig(string("perf_$(info)_$(df.ref[1])",".pdf"));
-		#png("perf_$(info)_$(df.ref[1])");
+		savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
+		#png("results/figures/perf_$(info)_$(df.ref[1])");
 	end
 end
 
@@ -39,7 +39,7 @@ function write_results(df::DataFrame)
 	improv_median = sum(improv.(gdf[2].median,gdf[1].median))/n
 	improv_minimum = sum(improv.(gdf[2].minimum,gdf[1].minimum))/n
 	improv_maximum = sum(improv.(gdf[2].maximum,gdf[1].maximum))/n
-	io = open("improvs_$(df.ref[1]).txt", "w");
+	io = open("results/improvs_$(df.ref[1]).txt", "w");
 	write(io, "Remark: Analysis of improvements from quaternion to classic \n")
 	write(io, "Average of improvements in processing time (%)\n")
 	write(io, "mean -> $(improv_mean) \n");
@@ -68,9 +68,6 @@ function perform(ndiag,allsolutions=false,MDE=false)
 	solq = conformation(data,opt_quaternion)
 	solc = conformation(data,opt_classic)
 	folders = ["10","100","200","300","400","500","600","700","800","900","1000","2000","3000"]
-	prob = parse.(Int,folders)
-	tquat = zeros(length(folders),4)
-	tclass = zeros(length(folders),4)
 	c = 10.0^(-9)
 	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[])
 	print(" 🔔 Starting perform with nd = $(ndiag). Did you set up the stack limit of your OS ? I hope so!\n")
@@ -95,7 +92,7 @@ function perform(ndiag,allsolutions=false,MDE=false)
 	#	display(df)
 		write_results(df)
 	end
-	CSV.write("$(ndiag).csv", df;delim=";")
+	CSV.write("results/$(ndiag).csv", df;delim=";")
 	plot_results(df)
 	write_results(df)
 end
