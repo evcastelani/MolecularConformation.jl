@@ -48,7 +48,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
     ioperf = open("results.csv",opwrite)
 	iogen = open("table_general.tex",opwrite)
 	
-	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.5]}
+	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
 	\t\\toprule
 	\t\\multicolumn{1}{c}{\$\\begin{array}{r}
@@ -100,7 +100,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
         println(ioperf,"$(prob) , $(PTc), $(PTq) ")
 
 		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",MDEc)) &  & $(@sprintf("%.4e",PTc)) & \\\\")
-		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.5f",improv))\\\\ \\cline{2-6} \\addlinespace")
+		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.3f",improv))\\\\ \\cline{2-6} \\addlinespace")
 	end
 
 	println(iogen, "\\end{xltabular}")
