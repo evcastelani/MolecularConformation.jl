@@ -511,7 +511,7 @@ function outputfilter(a::ConformationOutput, option = "mde")
 		for i=1:num
 			vmde[i]=mol[i].mde
 		end
-		return minimum(vmde)
+		return maximum(vmde)
 	end
 	if option == "xyz"
 		nl = length(a.molecules[1].atoms)
