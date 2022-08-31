@@ -491,7 +491,7 @@ function classicBP(NMRdata :: NMRType,
 	end
 
 	virtual_ε² = virtual_ε*virtual_ε 
-	ϵₛ = sqrt(ε)
+	ϵₛ = ε
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 
@@ -658,7 +658,7 @@ function quaternionBP(NMRdata :: NMRType,
 	end
 
 	virtual_ε² = virtual_ε*virtual_ε 
-	ϵₛ = sqrt(ε)
+	ϵₛ = ε
 	nsol = 0
 	storage_mol = Dict{Int64,MoleculeType}()
 	

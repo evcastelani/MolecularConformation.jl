@@ -456,8 +456,8 @@ function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64) :: Bool
 	atoms = v.atoms
 	additional_distance_index = D.additional_distance[i]
 	for j in additional_distance_index
-		dij =  (atom.x-atoms[j].x)^2+(atom.y-atoms[j].y)^2 +(atom.z-atoms[j].z)^2
-		if abs(D.info[i,j].dist*D.info[i,j].dist -dij) > ε
+		dij =  sqrt((atom.x-atoms[j].x)^2+(atom.y-atoms[j].y)^2 +(atom.z-atoms[j].z)^2)
+		if abs(D.info[i,j].dist - dij) > ε
 			@debug "result of prunning false"
 			return false
 		end
