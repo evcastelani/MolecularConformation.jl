@@ -100,8 +100,8 @@ function createtableimprov(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1
 				")
 	write(io, "        \$n_d\$ & $(headerText) \\\\\n");
 	write(io, "        \\hline\n");
-	write(io, "        C & $(geometric_mean1Text) \\\\\n");
-	write(io, "        Q & $(geometric_mean2Text) \\\\\n");
+	write(io, "        Classic & $(geometric_mean1Text) \\\\\n");
+	write(io, "        Quater. & $(geometric_mean2Text) \\\\\n");
 	write(io, "        Improv & $(improvText) \\\\\n");
 	write(io, "        \\hline
 	\\end{tabular}}

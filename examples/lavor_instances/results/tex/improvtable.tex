@@ -1,14 +1,15 @@
+
 	\begin{table}[h]
         \centering
         {\footnotesize
         
-        \begin{tabular}{||r |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] | S[table-format=1.2e+2]||}
+        \begin{tabular}{||r |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] | S[table-format=1.2e+2]||}
                 \hline
-				        $n_d$ & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{4} & \multicolumn{1}{c|}{5} & \multicolumn{1}{c|}{10} & \multicolumn{1}{c|}{100} & \multicolumn{1}{c|}{200} & \multicolumn{1}{c|}{300} & \multicolumn{1}{c|}{400} & \multicolumn{1}{c|}{500} & \multicolumn{1}{c|}{600} & \multicolumn{1}{c|}{700} & \multicolumn{1}{c|}{800} & \multicolumn{1}{c|}{900} & \multicolumn{1}{c|}{1000} \\
+				        $n_d$ & \multicolumn{1}{c|}{3} & \multicolumn{1}{c|}{10} & \multicolumn{1}{c|}{100} & \multicolumn{1}{c|}{500} & \multicolumn{1}{c|}{1000} \\
         \hline
-        C & 2.05e-04 & 2.77e-04 & 2.94e-04 & 3.86e-04 & 1.63e-03 & 3.74e-03 & 3.26e-03 & 3.37e-03 & 3.30e-03 & 2.98e-03 & 2.88e-03 & 2.80e-03 & 2.96e-03 & 2.82e-03 \\
-        Q & 1.11e-04 & 1.60e-04 & 1.70e-04 & 2.54e-04 & 1.45e-03 & 3.42e-03 & 2.99e-03 & 3.07e-03 & 3.02e-03 & 2.72e-03 & 2.62e-03 & 2.54e-03 & 2.68e-03 & 2.54e-03 \\
-        Improv & \multicolumn{1}{c|}{85.32\%} & \multicolumn{1}{c|}{72.69\%} & \multicolumn{1}{c|}{72.39\%} & \multicolumn{1}{c|}{51.95\%} & \multicolumn{1}{c|}{12.24\%} & \multicolumn{1}{c|}{9.32\%} & \multicolumn{1}{c|}{9.09\%} & \multicolumn{1}{c|}{9.66\%} & \multicolumn{1}{c|}{9.19\%} & \multicolumn{1}{c|}{9.59\%} & \multicolumn{1}{c|}{9.89\%} & \multicolumn{1}{c|}{10.19\%} & \multicolumn{1}{c|}{10.28\%} & \multicolumn{1}{c|}{11.08\%} \\
+        Classic & 2.05e-04 & 3.86e-04 & 1.63e-03 & 3.30e-03 & 2.82e-03 \\
+        Quater. & 1.11e-04 & 2.54e-04 & 1.45e-03 & 3.02e-03 & 2.54e-03 \\
+        Improv & \multicolumn{1}{c|}{85.32\%} & \multicolumn{1}{c|}{51.95\%} & \multicolumn{1}{c|}{12.24\%} & \multicolumn{1}{c|}{9.19\%} & \multicolumn{1}{c|}{11.08\%} \\
         \hline
 	\end{tabular}}
 	\caption{Improvement percentage in geometric means of \texttt{QuaternionBP} in relation to \texttt{ClassicBP} considering results of the benchmark.}
