@@ -1,504 +1,356 @@
-\begin{xltabular}{\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
+\begin{xltabular}{\textwidth}{r|rcS[table-format=1.4e+2]cS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 		\caption{Results} \label{tab:genResults}\\
 		\toprule
 		\multicolumn{1}{c}{$\begin{array}{r}
 	\text{Problem}\\ \text{Size}
-	\end{array}$} & Method & \multicolumn{1}{c}{MDE} & \multicolumn{1}{c}{RMSD} & \multicolumn{1}{c}{Time} & \multicolumn{1}{c}{Improv time} \\
+	\end{array}$} & Method & $|\mathcal{X}|$ & \multicolumn{1}{c}{$\begin{array}{c}
+	\min\limits_{\mathbf{x}\in \mathcal{X}} \text{RMSD}(\mathbf{x},\mathbf{x}_o)
+	\end{array}$} & $i : \mathbf{x_i} \sim \mathbf{x}_o$ & \multicolumn{1}{c}{$\begin{array}{c}
+	\text{MDE}(\mathbf{x}_i)
+	\end{array}$} & \multicolumn{1}{c}{Time} & \multicolumn{1}{c}{Improv time} \\
 		\midrule
 		\endfirsthead
 		\caption{Results - continued}\\
 		\toprule
 		\multicolumn{1}{c}{$\begin{array}{r}
 	\text{Problem}\\ \text{Size}
-	\end{array}$} & Method & \multicolumn{1}{c}{MDE} & \multicolumn{1}{c}{RMSD} & \multicolumn{1}{c}{Time} & \multicolumn{1}{c}{Improv time} \\
+	\end{array}$} & Method & $|\mathcal{X}|$ & \multicolumn{1}{c}{$\begin{array}{c}
+	\min\limits_{\mathbf{x}\in \mathcal{X}} \text{RMSD}(\mathbf{x},\mathbf{x}_o)
+	\end{array}$} & $i : \mathbf{x_i} \sim \mathbf{x}_o$ & \multicolumn{1}{c}{$\begin{array}{c}
+	\text{MDE}(\mathbf{x}_i)
+	\end{array}$} & \multicolumn{1}{c}{Time} & \multicolumn{1}{c}{Improv time} \\
 		\midrule
 		\endhead
-pdb1a57 & Classic & 2.096e-11 &  & 3.0976e-03 & \\
-698 & Quaternion & 2.092e-11 & 1.8861e-12 & 1.7823e-03 & 73.793\\ \cline{2-6} \addlinespace
-pdb1b4c & Classic & 1.203e-09 &  & 7.4621e-03 & \\
-1108 & Quaternion & 1.203e-09 & 1.0756e-12 & 4.1287e-03 & 80.736\\ \cline{2-6} \addlinespace
-pdb1ba5 & Classic & 9.359e-13 &  & 6.8990e-04 & \\
-320 & Quaternion & 1.070e-12 & 4.1376e-12 & 4.0837e-04 & 68.940\\ \cline{2-6} \addlinespace
-pdb1d1n & Classic & 1.005e-11 &  & 1.0929e-03 & \\
-594 & Quaternion & 9.672e-12 & 1.2689e-12 & 6.7787e-04 & 61.219\\ \cline{2-6} \addlinespace
-pdb1dp3 & Classic & 7.704e-13 &  & 5.6310e-04 & \\
-332 & Quaternion & 8.939e-13 & 1.4697e-12 & 3.3737e-04 & 66.908\\ \cline{2-6} \addlinespace
-pdb1du1 & Classic & 8.225e-13 &  & 1.9252e-04 & \\
-122 & Quaternion & 1.258e-12 & 1.2376e-12 & 1.1494e-04 & 67.491\\ \cline{2-6} \addlinespace
-pdb1eii & Classic & 1.393e-11 &  & 1.5097e-03 & \\
-806 & Quaternion & 1.365e-11 & 1.1331e-11 & 9.4273e-04 & 60.141\\ \cline{2-6} \addlinespace
-pdb1fcl & Classic & 4.542e-12 &  & 1.0476e-03 & \\
-338 & Quaternion & 4.515e-12 & 8.0786e-13 & 6.0299e-04 & 73.727\\ \cline{2-6} \addlinespace
-pdb1fd6 & Classic & 3.182e-12 &  & 6.4084e-04 & \\
-344 & Quaternion & 3.193e-12 & 3.3846e-13 & 3.8581e-04 & 66.100\\ \cline{2-6} \addlinespace
-pdb1hf9 & Classic & 1.157e-11 &  & 1.8820e-02 & \\
-496 & Quaternion & 1.180e-11 & 3.9332e-12 & 9.6796e-03 & 94.428\\ \cline{2-6} \addlinespace
-pdb1i2u & Classic & 5.562e-13 &  & 4.7375e-04 & \\
-266 & Quaternion & 5.607e-13 & 1.5136e-13 & 2.9057e-04 & 63.039\\ \cline{2-6} \addlinespace
-pdb1i2v & Classic & 2.418e-13 &  & 5.2014e-04 & \\
-266 & Quaternion & 2.519e-13 & 6.9127e-14 & 3.1558e-04 & 64.818\\ \cline{2-6} \addlinespace
-pdb1ijc & Classic & 1.408e-11 &  & 1.2715e-03 & \\
-380 & Quaternion & 1.426e-11 & 2.4877e-12 & 7.2579e-04 & 75.194\\ \cline{2-6} \addlinespace
-pdb1jlz & Classic & 5.594e-13 &  & 2.3380e-04 & \\
-140 & Quaternion & 5.965e-13 & 1.3105e-12 & 1.4010e-04 & 66.879\\ \cline{2-6} \addlinespace
-pdb1jw3 & Classic & 5.936e-13 &  & 1.6047e-03 & \\
-842 & Quaternion & 5.897e-13 & 3.9013e-13 & 9.8738e-04 & 62.524\\ \cline{2-6} \addlinespace
-pdb1k0v & Classic & 1.893e-13 &  & 8.5383e-04 & \\
-440 & Quaternion & 1.894e-13 & 1.3433e-13 & 5.2827e-04 & 61.626\\ \cline{2-6} \addlinespace
-pdb1k2h & Classic & 5.491e-13 &  & 5.5528e-03 & \\
-1120 & Quaternion & 5.199e-13 & 2.2039e-13 & 3.0967e-03 & 79.316\\ \cline{2-6} \addlinespace
-pdb1k36 & Classic & 8.820e-12 &  & 4.9160e-04 & \\
-278 & Quaternion & 1.081e-11 & 2.8981e-11 & 2.9538e-04 & 66.432\\ \cline{2-6} \addlinespace
-pdb1k37 & Classic & 4.711e-13 &  & 7.0791e-04 & \\
-278 & Quaternion & 4.988e-13 & 1.5479e-13 & 4.0780e-04 & 73.594\\ \cline{2-6} \addlinespace
-pdb1kuw & Classic & 9.229e-14 &  & 1.1029e-04 & \\
-62 & Quaternion & 1.130e-13 & 7.3457e-14 & 6.9041e-05 & 59.738\\ \cline{2-6} \addlinespace
-pdb1kz0 & Classic & 4.404e-14 &  & 1.6827e-04 & \\
-98 & Quaternion & 5.880e-14 & 2.4335e-13 & 1.0204e-04 & 64.899\\ \cline{2-6} \addlinespace
-pdb1kz2 & Classic & 2.119e-14 &  & 1.7994e-04 & \\
-98 & Quaternion & 2.886e-14 & 2.6112e-14 & 1.0816e-04 & 66.368\\ \cline{2-6} \addlinespace
-pdb1kz5 & Classic & 4.081e-14 &  & 1.3192e-04 & \\
-74 & Quaternion & 4.738e-14 & 4.8348e-14 & 7.9587e-05 & 65.755\\ \cline{2-6} \addlinespace
-pdb1lvz & Classic & 6.336e-14 &  & 1.1593e-04 & \\
-68 & Quaternion & 7.315e-14 & 7.3919e-14 & 7.1658e-05 & 61.775\\ \cline{2-6} \addlinespace
-pdb1m4e & Classic & 5.949e-13 &  & 2.0824e-04 & \\
-122 & Quaternion & 5.972e-13 & 1.1702e-13 & 1.2763e-04 & 63.160\\ \cline{2-6} \addlinespace
-pdb1ma2 & Classic & 8.695e-12 &  & 3.3335e-04 & \\
-104 & Quaternion & 8.758e-12 & 4.7062e-13 & 1.8821e-04 & 77.116\\ \cline{2-6} \addlinespace
-pdb1ma4 & Classic & 7.247e-14 &  & 4.7621e-04 & \\
-104 & Quaternion & 7.981e-14 & 1.8851e-13 & 2.6268e-04 & 81.292\\ \cline{2-6} \addlinespace
-pdb1ma5 & Classic & 8.169e-13 &  & 1.7736e-04 & \\
-104 & Quaternion & 9.044e-13 & 5.0234e-13 & 1.0790e-04 & 64.377\\ \cline{2-6} \addlinespace
-pdb1ma6 & Classic & 6.283e-13 &  & 1.6624e-04 & \\
-104 & Quaternion & 8.522e-13 & 3.3052e-12 & 1.0178e-04 & 63.331\\ \cline{2-6} \addlinespace
-pdb1mpe & Classic & 2.617e-11 &  & 1.1122e-02 & \\
-1352 & Quaternion & 2.624e-11 & 7.1261e-13 & 5.2959e-03 & 110.009\\ \cline{2-6} \addlinespace
-pdb1nd9 & Classic & 3.026e-13 &  & 5.2690e-04 & \\
-296 & Quaternion & 3.845e-13 & 4.7137e-13 & 3.2032e-04 & 64.492\\ \cline{2-6} \addlinespace
-pdb1ne5 & Classic & 1.214e-12 &  & 4.2922e-04 & \\
-254 & Quaternion & 1.384e-12 & 7.5582e-13 & 2.6058e-04 & 64.720\\ \cline{2-6} \addlinespace
-pdb1nmj & Classic & 1.237e-14 &  & 3.1806e-04 & \\
-170 & Quaternion & 1.424e-14 & 1.3921e-14 & 1.8918e-04 & 68.123\\ \cline{2-6} \addlinespace
-pdb1o53 & Classic & 3.999e-13 &  & 1.7284e-04 & \\
-92 & Quaternion & 4.545e-13 & 6.5350e-13 & 1.0322e-04 & 67.441\\ \cline{2-6} \addlinespace
-pdb1oqp & Classic & 7.045e-14 &  & 3.5369e-03 & \\
-580 & Quaternion & 8.315e-14 & 9.0066e-14 & 1.9445e-03 & 81.894\\ \cline{2-6} \addlinespace
-pdb1plw & Classic & 2.830e-14 &  & 5.2910e-05 & \\
-32 & Quaternion & 3.122e-14 & 4.9118e-14 & 3.2956e-05 & 60.547\\ \cline{2-6} \addlinespace
-pdb1plx & Classic & 1.574e-13 &  & 5.0472e-05 & \\
-32 & Quaternion & 2.060e-13 & 1.7973e-13 & 3.1212e-05 & 61.703\\ \cline{2-6} \addlinespace
-pdb1pv0 & Classic & 2.409e-13 &  & 5.0669e-04 & \\
-278 & Quaternion & 2.723e-13 & 1.0662e-13 & 3.0314e-04 & 67.148\\ \cline{2-6} \addlinespace
-pdb1pzr & Classic & 5.644e-12 &  & 7.6149e-03 & \\
-724 & Quaternion & 5.871e-12 & 9.9935e-12 & 4.0347e-03 & 88.735\\ \cline{2-6} \addlinespace
-pdb1qlk & Classic & 9.019e-10 &  & 1.4342e-02 & \\
-1108 & Quaternion & 9.019e-10 & 1.3287e-12 & 6.7851e-03 & 111.378\\ \cline{2-6} \addlinespace
-pdb1r57 & Classic & 1.847e-13 &  & 1.1411e-03 & \\
-614 & Quaternion & 2.054e-13 & 1.4866e-13 & 7.0420e-04 & 62.037\\ \cline{2-6} \addlinespace
-pdb1ry3 & Classic & 2.023e-09 &  & 7.4381e-04 & \\
-386 & Quaternion & 2.023e-09 & 6.0848e-13 & 4.4093e-04 & 68.692\\ \cline{2-6} \addlinespace
-pdb1s4h & Classic & 4.300e-09 &  & 1.2325e-04 & \\
-80 & Quaternion & 4.300e-09 & 1.1103e-12 & 7.4755e-05 & 64.875\\ \cline{2-6} \addlinespace
-pdb1s4j & Classic & 1.520e-13 &  & 1.4820e-04 & \\
-80 & Quaternion & 2.230e-13 & 1.6407e-13 & 8.7809e-05 & 68.774\\ \cline{2-6} \addlinespace
-pdb1s6j & Classic & 6.073e-13 &  & 9.8509e-04 & \\
-524 & Quaternion & 7.660e-13 & 5.9201e-13 & 6.0143e-04 & 63.793\\ \cline{2-6} \addlinespace
-pdb1sa8 & Classic & 9.340e-13 &  & 1.1572e-03 & \\
-638 & Quaternion & 1.034e-12 & 1.0370e-12 & 7.1893e-04 & 60.961\\ \cline{2-6} \addlinespace
-pdb1t2y & Classic & 1.887e-13 &  & 2.7047e-04 & \\
-152 & Quaternion & 2.396e-13 & 2.3861e-13 & 1.6200e-04 & 66.956\\ \cline{2-6} \addlinespace
-pdb1t5q & Classic & 3.877e-14 &  & 2.9179e-04 & \\
-180 & Quaternion & 5.093e-14 & 5.3231e-14 & 1.7432e-04 & 67.387\\ \cline{2-6} \addlinespace
-pdb1tot & Classic & 6.148e-14 &  & 5.9893e-04 & \\
-314 & Quaternion & 6.853e-14 & 2.8392e-14 & 3.6195e-04 & 65.476\\ \cline{2-6} \addlinespace
-pdb1v6r & Classic & 6.835e-13 &  & 2.2214e-04 & \\
-128 & Quaternion & 6.970e-13 & 3.1917e-13 & 1.3132e-04 & 69.158\\ \cline{2-6} \addlinespace
-pdb1v92 & Classic & 1.463e-13 &  & 5.0297e-04 & \\
-278 & Quaternion & 1.630e-13 & 5.6062e-14 & 3.0211e-04 & 66.488\\ \cline{2-6} \addlinespace
-pdb1vd7 & Classic & 3.741e-09 &  & 2.3736e-04 & \\
-140 & Quaternion & 3.741e-09 & 5.8433e-13 & 1.4185e-04 & 67.336\\ \cline{2-6} \addlinespace
-pdb1vd9 & Classic & 1.290e-12 &  & 2.8409e-04 & \\
-140 & Quaternion & 1.554e-12 & 9.0327e-13 & 1.6418e-04 & 73.031\\ \cline{2-6} \addlinespace
-pdb1vdb & Classic & 9.108e-13 &  & 2.3160e-04 & \\
-140 & Quaternion & 1.083e-12 & 3.8641e-13 & 1.3750e-04 & 68.435\\ \cline{2-6} \addlinespace
-pdb1vpc & Classic & 8.500e-15 &  & 4.9897e-04 & \\
-272 & Quaternion & 1.002e-14 & 8.5436e-15 & 2.9585e-04 & 68.654\\ \cline{2-6} \addlinespace
-pdb1wnk & Classic & 4.112e-12 &  & 2.3846e-04 & \\
-140 & Quaternion & 4.632e-12 & 2.2335e-11 & 1.4109e-04 & 69.012\\ \cline{2-6} \addlinespace
-pdb1wo4 & Classic & 9.957e-13 &  & 2.6937e-04 & \\
-152 & Quaternion & 9.639e-13 & 2.3523e-12 & 1.5887e-04 & 69.559\\ \cline{2-6} \addlinespace
-pdb1wo5 & Classic & 5.257e-09 &  & 2.7336e-04 & \\
-152 & Quaternion & 5.258e-09 & 4.9063e-12 & 1.6144e-04 & 69.331\\ \cline{2-6} \addlinespace
-pdb1x60 & Classic & 1.076e-12 &  & 9.1535e-04 & \\
-476 & Quaternion & 1.179e-12 & 3.9684e-13 & 5.6004e-04 & 63.443\\ \cline{2-6} \addlinespace
-pdb1x9v & Classic & 8.975e-13 &  & 3.5175e-02 & \\
-544 & Quaternion & 9.632e-13 & 1.3900e-13 & 1.7070e-02 & 106.060\\ \cline{2-6} \addlinespace
-pdb1y5c & Classic & 8.980e-09 &  & 1.1371e-04 & \\
-68 & Quaternion & 8.980e-09 & 2.9085e-13 & 6.7656e-05 & 68.065\\ \cline{2-6} \addlinespace
-pdb1yx7 & Classic & 8.116e-10 &  & 1.3509e-03 & \\
-500 & Quaternion & 8.125e-10 & 7.6614e-12 & 8.0485e-04 & 67.843\\ \cline{2-6} \addlinespace
-pdb1yx8 & Classic & 7.276e-12 &  & 1.1170e-03 & \\
-500 & Quaternion & 8.217e-12 & 1.0819e-11 & 6.7507e-04 & 65.465\\ \cline{2-6} \addlinespace
-pdb1yxr & Classic & 5.838e-10 &  & 7.9996e-04 & \\
-464 & Quaternion & 5.839e-10 & 2.5240e-13 & 4.8615e-04 & 64.549\\ \cline{2-6} \addlinespace
-pdb2a2y & Classic & 1.150e-12 &  & 4.2045e-02 & \\
-1072 & Quaternion & 1.151e-12 & 3.7416e-13 & 1.9662e-02 & 113.837\\ \cline{2-6} \addlinespace
-pdb2a4j & Classic & 2.085e-14 &  & 1.2252e-03 & \\
-580 & Quaternion & 2.727e-14 & 1.4394e-14 & 7.3214e-04 & 67.345\\ \cline{2-6} \addlinespace
-pdb2adl & Classic & 1.752e-11 &  & 8.2112e-02 & \\
-868 & Quaternion & 1.787e-11 & 3.0093e-12 & 3.9071e-02 & 110.163\\ \cline{2-6} \addlinespace
-pdb2adn & Classic & 6.693e-12 &  & 2.2276e-03 & \\
-868 & Quaternion & 6.465e-12 & 2.4957e-12 & 1.3179e-03 & 69.029\\ \cline{2-6} \addlinespace
-pdb2ajj & Classic & 5.641e-14 &  & 2.9880e-04 & \\
-170 & Quaternion & 6.584e-14 & 1.2744e-13 & 1.7762e-04 & 68.222\\ \cline{2-6} \addlinespace
-pdb2ajm & Classic & 1.183e-13 &  & 3.2395e-04 & \\
-170 & Quaternion & 1.555e-13 & 8.9439e-13 & 1.9204e-04 & 68.683\\ \cline{2-6} \addlinespace
-pdb2ajn & Classic & 1.076e-13 &  & 3.2165e-04 & \\
-170 & Quaternion & 1.217e-13 & 1.5981e-13 & 1.8963e-04 & 69.622\\ \cline{2-6} \addlinespace
-pdb2ajo & Classic & 1.183e-13 &  & 3.2775e-04 & \\
-170 & Quaternion & 1.555e-13 & 8.9439e-13 & 1.9338e-04 & 69.485\\ \cline{2-6} \addlinespace
-pdb2akk & Classic & 1.288e-13 &  & 1.6710e-03 & \\
-446 & Quaternion & 1.270e-13 & 1.1725e-13 & 9.6313e-04 & 73.493\\ \cline{2-6} \addlinespace
-pdb2bzb & Classic & 9.365e-14 &  & 1.7992e-02 & \\
-748 & Quaternion & 1.224e-13 & 1.5097e-13 & 8.9140e-03 & 101.835\\ \cline{2-6} \addlinespace
-pdb2c0s & Classic & 3.028e-13 &  & 7.6036e-04 & \\
-386 & Quaternion & 3.379e-13 & 7.2067e-13 & 4.5065e-04 & 68.726\\ \cline{2-6} \addlinespace
-pdb2dci & Classic & 2.366e-14 &  & 1.9867e-04 & \\
-120 & Quaternion & 2.950e-14 & 1.3479e-13 & 1.2036e-04 & 65.057\\ \cline{2-6} \addlinespace
-pdb2eem & Classic & 5.190e-13 &  & 4.2055e-04 & \\
-206 & Quaternion & 5.461e-13 & 4.0208e-13 & 2.4688e-04 & 70.346\\ \cline{2-6} \addlinespace
-pdb2fva & Classic & 1.047e-12 &  & 1.1894e-03 & \\
-494 & Quaternion & 1.194e-12 & 1.5803e-12 & 7.0053e-04 & 69.778\\ \cline{2-6} \addlinespace
-pdb2fvf & Classic & 3.106e-13 &  & 8.6869e-04 & \\
-494 & Quaternion & 3.445e-13 & 2.8750e-13 & 5.3047e-04 & 63.761\\ \cline{2-6} \addlinespace
-pdb2fxz & Classic & 1.489e-12 &  & 1.4156e-04 & \\
-80 & Quaternion & 1.749e-12 & 2.0430e-12 & 8.5176e-05 & 66.192\\ \cline{2-6} \addlinespace
-pdb2g9j & Classic & 3.282e-12 &  & 6.9865e-02 & \\
-848 & Quaternion & 3.535e-12 & 2.1668e-12 & 3.3825e-02 & 106.550\\ \cline{2-6} \addlinespace
-pdb2g9l & Classic & 6.366e-14 &  & 4.0967e-04 & \\
-224 & Quaternion & 8.672e-14 & 2.8081e-13 & 2.4369e-04 & 68.114\\ \cline{2-6} \addlinespace
-pdb2h5m & Classic & 9.692e-13 &  & 1.1547e-03 & \\
-614 & Quaternion & 1.032e-12 & 4.1376e-12 & 7.0883e-04 & 62.906\\ \cline{2-6} \addlinespace
-pdb2hep & Classic & 1.191e-12 &  & 4.5969e-04 & \\
-252 & Quaternion & 1.268e-12 & 5.5848e-13 & 2.7321e-04 & 68.253\\ \cline{2-6} \addlinespace
-pdb2j0z & Classic & 3.192e-10 &  & 9.1996e-01 & \\
-752 & Quaternion & 3.197e-10 & 4.5324e-12 & 4.6878e-01 & 96.246\\ \cline{2-6} \addlinespace
-pdb2j10 & Classic & 5.870e-10 &  & 1.0201e-02 & \\
-752 & Quaternion & 5.873e-10 & 9.5552e-13 & 4.7414e-03 & 115.140\\ \cline{2-6} \addlinespace
-pdb2j11 & Classic & 7.191e-10 &  & 5.6798e-03 & \\
-752 & Quaternion & 7.194e-10 & 1.6970e-12 & 3.0700e-03 & 85.010\\ \cline{2-6} \addlinespace
-pdb2jmy & Classic & 9.834e-13 &  & 1.6610e-04 & \\
-92 & Quaternion & 9.967e-13 & 5.0812e-13 & 1.0081e-04 & 64.760\\ \cline{2-6} \addlinespace
-pdb2jn5 & Classic & 3.147e-09 &  & 1.1912e-04 & \\
-74 & Quaternion & 3.160e-09 & 1.4394e-11 & 7.1769e-05 & 65.978\\ \cline{2-6} \addlinespace
-pdb2jnk & Classic & 4.387e-10 &  & 1.5827e-03 & \\
-842 & Quaternion & 4.388e-10 & 3.9471e-13 & 9.7676e-04 & 62.035\\ \cline{2-6} \addlinespace
-pdb2jpn & Classic & 6.730e-14 &  & 1.4019e-03 & \\
-476 & Quaternion & 6.983e-14 & 1.9605e-13 & 8.1153e-04 & 72.749\\ \cline{2-6} \addlinespace
-pdb2jua & Classic & 1.740e-11 &  & 1.1801e-03 & \\
-614 & Quaternion & 1.882e-11 & 1.4391e-11 & 7.1352e-04 & 65.395\\ \cline{2-6} \addlinespace
-pdb2jvd & Classic & 3.339e-14 &  & 5.4928e-04 & \\
-288 & Quaternion & 3.898e-14 & 2.1712e-14 & 3.2538e-04 & 68.811\\ \cline{2-6} \addlinespace
-pdb2jwe & Classic & 2.695e-11 &  & 1.9337e-03 & \\
-984 & Quaternion & 2.734e-11 & 1.0970e-12 & 1.1859e-03 & 63.063\\ \cline{2-6} \addlinespace
-pdb2jws & Classic & 1.251e-13 &  & 6.7258e-04 & \\
-338 & Quaternion & 1.543e-13 & 2.8647e-13 & 4.0128e-04 & 67.609\\ \cline{2-6} \addlinespace
-pdb2jwu & Classic & 4.421e-12 &  & 9.6054e-04 & \\
-338 & Quaternion & 4.373e-12 & 6.2322e-13 & 5.5692e-04 & 72.473\\ \cline{2-6} \addlinespace
-pdb2jxf & Classic & 1.399e-13 &  & 3.2684e-04 & \\
-182 & Quaternion & 1.734e-13 & 5.8450e-13 & 1.9441e-04 & 68.117\\ \cline{2-6} \addlinespace
-pdb2jz5 & Classic & 2.860e-13 &  & 1.1526e-03 & \\
-548 & Quaternion & 2.854e-13 & 1.7635e-13 & 6.8667e-04 & 67.853\\ \cline{2-6} \addlinespace
-pdb2k2a & Classic & 3.798e-14 &  & 8.5215e-04 & \\
-422 & Quaternion & 5.134e-14 & 1.3435e-13 & 5.1852e-04 & 64.344\\ \cline{2-6} \addlinespace
-pdb2k2f & Classic & 2.639e-13 &  & 5.5618e+00 & \\
-1268 & Quaternion & 2.818e-13 & 7.2949e-14 & 2.7437e+00 & 102.709\\ \cline{2-6} \addlinespace
-pdb2k36 & Classic & 1.922e-13 &  & 1.6390e-03 & \\
-896 & Quaternion & 2.045e-13 & 1.2563e-13 & 1.0102e-03 & 62.234\\ \cline{2-6} \addlinespace
-pdb2k37 & Classic & 1.921e-13 &  & 6.7804e-04 & \\
-356 & Quaternion & 2.525e-13 & 4.0204e-13 & 4.0601e-04 & 67.001\\ \cline{2-6} \addlinespace
-pdb2k3i & Classic & 3.810e-13 &  & 1.7156e-03 & \\
-656 & Quaternion & 4.009e-13 & 2.4790e-13 & 1.0131e-03 & 69.337\\ \cline{2-6} \addlinespace
-pdb2k6s & Classic & 2.100e-13 &  & 1.4756e-03 & \\
-494 & Quaternion & 2.651e-13 & 4.8726e-13 & 8.5355e-04 & 72.881\\ \cline{2-6} \addlinespace
-pdb2k7o & Classic & 1.279e-13 &  & 5.8539e-03 & \\
-1096 & Quaternion & 1.416e-13 & 4.6393e-13 & 3.2148e-03 & 82.091\\ \cline{2-6} \addlinespace
-pdb2kbm & Classic & 2.165e-13 &  & 2.2705e+00 & \\
-1268 & Quaternion & 2.230e-13 & 2.6963e-13 & 1.1026e+00 & 105.931\\ \cline{2-6} \addlinespace
-pdb2kdh & Classic & 1.947e-11 &  & 1.0571e-03 & \\
-434 & Quaternion & 2.228e-11 & 7.6317e-11 & 6.1648e-04 & 71.476\\ \cline{2-6} \addlinespace
-pdb2kdl & Classic & 2.301e-13 &  & 6.5074e-04 & \\
-338 & Quaternion & 2.927e-13 & 3.1526e-13 & 3.8122e-04 & 70.700\\ \cline{2-6} \addlinespace
-pdb2kdm & Classic & 3.191e-12 &  & 6.2356e-04 & \\
-338 & Quaternion & 3.284e-12 & 9.9439e-13 & 3.7254e-04 & 67.380\\ \cline{2-6} \addlinespace
-pdb2kdp & Classic & 2.621e-13 &  & 7.8929e-04 & \\
-428 & Quaternion & 2.865e-13 & 1.0772e-13 & 4.7470e-04 & 66.271\\ \cline{2-6} \addlinespace
-pdb2kdr & Classic & 6.617e-14 &  & 3.0911e-04 & \\
-170 & Quaternion & 8.490e-14 & 6.1679e-14 & 1.8284e-04 & 69.062\\ \cline{2-6} \addlinespace
-pdb2kes & Classic & 4.468e-14 &  & 5.8171e-04 & \\
-290 & Quaternion & 5.425e-14 & 2.3286e-14 & 3.3944e-04 & 71.374\\ \cline{2-6} \addlinespace
-pdb2kib & Classic & 2.533e-12 &  & 7.2366e-03 & \\
-352 & Quaternion & 2.539e-12 & 1.3388e-12 & 3.8448e-03 & 88.216\\ \cline{2-6} \addlinespace
-pdb2kjn & Classic & 1.125e-09 &  & 2.8140e-04 & \\
-158 & Quaternion & 1.125e-09 & 1.3817e-13 & 1.6715e-04 & 68.354\\ \cline{2-6} \addlinespace
-pdb2kjo & Classic & 2.284e-13 &  & 2.6832e-04 & \\
-158 & Quaternion & 2.421e-13 & 6.7185e-14 & 1.5813e-04 & 69.683\\ \cline{2-6} \addlinespace
-pdb2kjr & Classic & 3.247e-12 &  & 1.6800e-03 & \\
-572 & Quaternion & 3.251e-12 & 4.0637e-13 & 9.6766e-04 & 73.615\\ \cline{2-6} \addlinespace
-pdb2kko & Classic & 1.191e-13 &  & 1.1699e-02 & \\
-1300 & Quaternion & 1.285e-13 & 2.9766e-14 & 5.5240e-03 & 111.775\\ \cline{2-6} \addlinespace
-pdb2kl5 & Classic & 1.820e-13 &  & 1.1961e-03 & \\
-662 & Quaternion & 2.020e-13 & 1.3796e-13 & 7.3436e-04 & 62.875\\ \cline{2-6} \addlinespace
-pdb2klz & Classic & 3.439e-14 &  & 5.4274e-04 & \\
-276 & Quaternion & 4.443e-14 & 6.4874e-14 & 3.1961e-04 & 69.812\\ \cline{2-6} \addlinespace
-pdb2ko1 & Classic & 1.150e-12 &  & 1.6266e-02 & \\
-1060 & Quaternion & 1.151e-12 & 7.8450e-13 & 7.9917e-03 & 103.542\\ \cline{2-6} \addlinespace
-pdb2koz & Classic & 1.075e-09 &  & 3.5634e-04 & \\
-200 & Quaternion & 1.075e-09 & 8.8024e-13 & 2.1746e-04 & 63.868\\ \cline{2-6} \addlinespace
-pdb2kp0 & Classic & 4.893e-12 &  & 3.8609e-04 & \\
-200 & Quaternion & 5.588e-12 & 4.2756e-12 & 2.2883e-04 & 68.725\\ \cline{2-6} \addlinespace
-pdb2ksg & Classic & 3.215e-14 &  & 5.0165e-04 & \\
-290 & Quaternion & 3.967e-14 & 2.4678e-14 & 3.0087e-04 & 66.735\\ \cline{2-6} \addlinespace
-pdb2kt8 & Classic & 3.314e-12 &  & 8.1917e-04 & \\
-458 & Quaternion & 3.535e-12 & 7.1394e-13 & 4.9979e-04 & 63.902\\ \cline{2-6} \addlinespace
-pdb2kuh & Classic & 2.016e-14 &  & 8.1677e-04 & \\
-404 & Quaternion & 2.492e-14 & 4.0485e-14 & 4.8875e-04 & 67.112\\ \cline{2-6} \addlinespace
-pdb2kwh & Classic & 1.408e-13 &  & 6.1089e-04 & \\
-338 & Quaternion & 1.825e-13 & 2.9549e-13 & 3.6200e-04 & 68.755\\ \cline{2-6} \addlinespace
-pdb2kxa & Classic & 1.325e-12 &  & 2.4662e-04 & \\
-144 & Quaternion & 1.351e-12 & 3.5240e-13 & 1.4976e-04 & 64.678\\ \cline{2-6} \addlinespace
-pdb2kyb & Classic & 1.999e-08 &  & 1.8716e-03 & \\
-362 & Quaternion & 1.999e-08 & 2.6711e-12 & 1.0255e-03 & 82.494\\ \cline{2-6} \addlinespace
-pdb2l3m & Classic & 1.028e-12 &  & 7.6908e-04 & \\
-428 & Quaternion & 9.340e-13 & 6.9725e-13 & 4.7017e-04 & 63.576\\ \cline{2-6} \addlinespace
-pdb2l3n & Classic & 3.025e-14 &  & 4.6848e-03 & \\
-626 & Quaternion & 3.634e-14 & 4.4517e-14 & 2.5642e-03 & 82.701\\ \cline{2-6} \addlinespace
-pdb2l45 & Classic & 2.236e-14 &  & 2.0701e-04 & \\
-116 & Quaternion & 3.033e-14 & 8.5325e-14 & 1.2400e-04 & 66.941\\ \cline{2-6} \addlinespace
-pdb2l5r & Classic & 3.529e-14 &  & 2.7825e-04 & \\
-138 & Quaternion & 4.432e-14 & 1.4398e-14 & 1.6525e-04 & 68.384\\ \cline{2-6} \addlinespace
-pdb2l6q & Classic & 9.260e-09 &  & 6.4635e-04 & \\
-374 & Quaternion & 1.043e-08 & 1.7792e-08 & 3.9001e-04 & 65.724\\ \cline{2-6} \addlinespace
-pdb2l6r & Classic & 7.323e-10 &  & 7.0087e-04 & \\
-374 & Quaternion & 7.325e-10 & 2.4265e-11 & 4.1723e-04 & 67.984\\ \cline{2-6} \addlinespace
-pdb2l98 & Classic & 3.273e-13 &  & 8.3874e-04 & \\
-434 & Quaternion & 3.638e-13 & 8.9102e-13 & 5.0306e-04 & 66.729\\ \cline{2-6} \addlinespace
-pdb2lci & Classic & 2.579e-13 &  & 1.4929e-03 & \\
-806 & Quaternion & 2.404e-13 & 8.2767e-14 & 9.1240e-04 & 63.628\\ \cline{2-6} \addlinespace
-pdb2lde & Classic & 3.153e-14 &  & 2.5673e-04 & \\
-152 & Quaternion & 3.762e-14 & 4.1691e-14 & 1.5228e-04 & 68.588\\ \cline{2-6} \addlinespace
-pdb2le2 & Classic & 2.064e-13 &  & 1.5739e-02 & \\
-676 & Quaternion & 2.042e-13 & 7.7661e-14 & 7.7061e-03 & 104.236\\ \cline{2-6} \addlinespace
-pdb2le7 & Classic & 2.112e-14 &  & 2.0940e-04 & \\
-122 & Quaternion & 2.749e-14 & 3.9789e-14 & 1.2460e-04 & 68.050\\ \cline{2-6} \addlinespace
-pdb2ler & Classic & 1.315e-14 &  & 1.1173e-04 & \\
-68 & Quaternion & 1.532e-14 & 2.1465e-14 & 6.7438e-05 & 65.686\\ \cline{2-6} \addlinespace
-pdb2lgi & Classic & 1.068e-12 &  & 6.1992e-04 & \\
-338 & Quaternion & 1.052e-12 & 1.8917e-13 & 3.7533e-04 & 65.166\\ \cline{2-6} \addlinespace
-pdb2lhc & Classic & 5.829e-10 &  & 6.6583e-04 & \\
-338 & Quaternion & 5.830e-10 & 2.1362e-12 & 3.9156e-04 & 70.047\\ \cline{2-6} \addlinespace
-pdb2lhd & Classic & 1.930e-12 &  & 8.3015e-04 & \\
-338 & Quaternion & 2.033e-12 & 2.3902e-12 & 4.8651e-04 & 70.634\\ \cline{2-6} \addlinespace
-pdb2lhe & Classic & 4.963e-11 &  & 8.0811e-04 & \\
-338 & Quaternion & 4.967e-11 & 4.8488e-13 & 4.7411e-04 & 70.446\\ \cline{2-6} \addlinespace
-pdb2lhg & Classic & 6.459e-14 &  & 6.3823e-04 & \\
-338 & Quaternion & 7.322e-14 & 5.9754e-14 & 3.8844e-04 & 64.307\\ \cline{2-6} \addlinespace
-pdb2lix & Classic & 4.842e-14 &  & 2.9096e-04 & \\
-162 & Quaternion & 5.614e-14 & 7.8975e-14 & 1.7375e-04 & 67.456\\ \cline{2-6} \addlinespace
-pdb2lld & Classic & 1.937e-13 &  & 4.5370e-04 & \\
-242 & Quaternion & 2.214e-13 & 2.2642e-13 & 2.7515e-04 & 64.891\\ \cline{2-6} \addlinespace
-pdb2lm9 & Classic & 6.254e-14 &  & 1.0492e-03 & \\
-578 & Quaternion & 7.713e-14 & 1.5079e-13 & 6.3970e-04 & 64.015\\ \cline{2-6} \addlinespace
-pdb2lmf & Classic & 1.282e-13 &  & 2.3083e-04 & \\
-140 & Quaternion & 1.462e-13 & 7.9808e-14 & 1.3926e-04 & 65.752\\ \cline{2-6} \addlinespace
-pdb2ln3 & Classic & 1.292e-13 &  & 9.3536e-04 & \\
-500 & Quaternion & 1.359e-13 & 8.4114e-14 & 5.6557e-04 & 65.384\\ \cline{2-6} \addlinespace
-pdb2lo2 & Classic & 2.068e-14 &  & 4.0432e-04 & \\
-230 & Quaternion & 2.571e-14 & 3.6944e-14 & 2.4260e-04 & 66.662\\ \cline{2-6} \addlinespace
-pdb2lqp & Classic & 2.950e-13 &  & 7.7901e-04 & \\
-428 & Quaternion & 3.085e-13 & 4.7561e-13 & 4.7042e-04 & 65.597\\ \cline{2-6} \addlinespace
-pdb2lr0 & Classic & 3.549e-12 &  & 1.5532e-03 & \\
-806 & Quaternion & 3.440e-12 & 6.0485e-13 & 9.4880e-04 & 63.703\\ \cline{2-6} \addlinespace
-pdb2lrh & Classic & 5.631e-13 &  & 1.5159e-03 & \\
-806 & Quaternion & 6.564e-13 & 3.2048e-13 & 9.2155e-04 & 64.495\\ \cline{2-6} \addlinespace
-pdb2ls9 & Classic & 1.122e-13 &  & 2.4594e-04 & \\
-152 & Quaternion & 1.471e-13 & 3.7128e-13 & 1.4448e-04 & 70.218\\ \cline{2-6} \addlinespace
-pdb2lsa & Classic & 5.235e-14 &  & 2.3979e-04 & \\
-140 & Quaternion & 7.034e-14 & 1.5385e-13 & 1.4364e-04 & 66.931\\ \cline{2-6} \addlinespace
-pdb2lss & Classic & 1.230e-13 &  & 7.6231e-04 & \\
-422 & Quaternion & 1.455e-13 & 1.6926e-13 & 4.7314e-04 & 61.118\\ \cline{2-6} \addlinespace
-pdb2lt3 & Classic & 7.245e-14 &  & 1.2685e-03 & \\
-680 & Quaternion & 7.760e-14 & 5.2634e-14 & 7.8110e-04 & 62.394\\ \cline{2-6} \addlinespace
-pdb2lu6 & Classic & 5.356e-15 &  & 1.4900e-04 & \\
-86 & Quaternion & 6.922e-15 & 4.1890e-15 & 8.8744e-05 & 67.894\\ \cline{2-6} \addlinespace
-pdb2lwa & Classic & 3.615e-13 &  & 7.7691e-04 & \\
-432 & Quaternion & 4.427e-13 & 9.3395e-13 & 4.6823e-04 & 65.925\\ \cline{2-6} \addlinespace
-pdb2lx0 & Classic & 1.940e-09 &  & 3.5896e-04 & \\
-194 & Quaternion & 1.940e-09 & 2.0923e-13 & 2.1216e-04 & 69.189\\ \cline{2-6} \addlinespace
-pdb2lxb & Classic & 1.542e-13 &  & 2.1294e-03 & \\
-892 & Quaternion & 1.585e-13 & 1.6837e-13 & 1.2487e-03 & 70.520\\ \cline{2-6} \addlinespace
-pdb2lxy & Classic & 9.313e-13 &  & 9.5943e-04 & \\
-404 & Quaternion & 1.025e-12 & 1.6618e-12 & 5.6012e-04 & 71.291\\ \cline{2-6} \addlinespace
-pdb2lxz & Classic & 2.371e-12 &  & 3.6134e-04 & \\
-194 & Quaternion & 2.792e-12 & 1.9895e-12 & 2.2092e-04 & 63.560\\ \cline{2-6} \addlinespace
-pdb2lzf & Classic & 3.217e-14 &  & 5.1288e-02 & \\
-820 & Quaternion & 3.957e-14 & 1.2991e-13 & 2.4186e-02 & 112.060\\ \cline{2-6} \addlinespace
-pdb2m1a & Classic & 6.346e-15 &  & 3.3309e-04 & \\
-158 & Quaternion & 7.612e-15 & 6.5801e-15 & 1.9226e-04 & 73.250\\ \cline{2-6} \addlinespace
-pdb2m1j & Classic & 1.865e-14 &  & 3.3657e-04 & \\
-182 & Quaternion & 2.212e-14 & 6.6915e-14 & 1.9839e-04 & 69.656\\ \cline{2-6} \addlinespace
-pdb2m2y & Classic & 2.699e-13 &  & 1.9285e-04 & \\
-110 & Quaternion & 2.808e-13 & 1.4386e-13 & 1.1677e-04 & 65.155\\ \cline{2-6} \addlinespace
-pdb2m3f & Classic & 3.629e-14 &  & 2.2175e-04 & \\
-134 & Quaternion & 4.641e-14 & 5.8107e-14 & 1.3272e-04 & 67.078\\ \cline{2-6} \addlinespace
-pdb2m4j & Classic & 1.463e-11 &  & 4.0490e-02 & \\
-2178 & Quaternion & 1.455e-11 & 1.8385e-13 & 2.0078e-02 & 101.660\\ \cline{2-6} \addlinespace
-pdb2m8m & Classic & 2.407e-14 &  & 2.8771e-04 & \\
-170 & Quaternion & 3.023e-14 & 1.1738e-13 & 1.7320e-04 & 66.112\\ \cline{2-6} \addlinespace
-pdb2m8o & Classic & 1.672e-14 &  & 2.8012e-04 & \\
-170 & Quaternion & 2.039e-14 & 2.4755e-14 & 1.6968e-04 & 65.082\\ \cline{2-6} \addlinespace
-pdb2m97 & Classic & 4.646e-14 &  & 7.6185e-04 & \\
-416 & Quaternion & 5.841e-14 & 2.0639e-13 & 4.6302e-04 & 64.541\\ \cline{2-6} \addlinespace
-pdb2m9g & Classic & 2.939e-13 &  & 2.1131e-03 & \\
-1108 & Quaternion & 3.170e-13 & 5.8913e-13 & 1.2866e-03 & 64.236\\ \cline{2-6} \addlinespace
-pdb2m9r & Classic & 3.537e-14 &  & 4.4036e-04 & \\
-242 & Quaternion & 4.406e-14 & 1.6694e-13 & 2.5345e-04 & 73.750\\ \cline{2-6} \addlinespace
-pdb2mdv & Classic & 3.178e-12 &  & 2.1606e-03 & \\
-460 & Quaternion & 3.178e-12 & 3.0402e-13 & 1.2140e-03 & 77.977\\ \cline{2-6} \addlinespace
-pdb2me1 & Classic & 1.886e-13 &  & 2.7545e-04 & \\
-164 & Quaternion & 2.208e-13 & 1.6579e-13 & 1.6458e-04 & 67.365\\ \cline{2-6} \addlinespace
-pdb2me2 & Classic & 3.667e-13 &  & 2.9364e-04 & \\
-164 & Quaternion & 5.098e-13 & 1.1486e-12 & 1.7475e-04 & 68.033\\ \cline{2-6} \addlinespace
-pdb2me3 & Classic & 2.593e-09 &  & 2.6866e-04 & \\
-164 & Quaternion & 2.593e-09 & 9.2137e-14 & 1.6228e-04 & 65.552\\ \cline{2-6} \addlinespace
-pdb2me4 & Classic & 2.854e-09 &  & 3.1834e-04 & \\
-164 & Quaternion & 2.854e-09 & 9.9945e-13 & 1.8627e-04 & 70.898\\ \cline{2-6} \addlinespace
-pdb2mg1 & Classic & 4.398e-14 &  & 2.7731e-04 & \\
-164 & Quaternion & 5.374e-14 & 1.5805e-13 & 1.6771e-04 & 65.344\\ \cline{2-6} \addlinespace
-pdb2mg2 & Classic & 1.829e-14 &  & 2.8400e-04 & \\
-170 & Quaternion & 2.480e-14 & 2.5921e-14 & 1.7221e-04 & 64.911\\ \cline{2-6} \addlinespace
-pdb2mg3 & Classic & 3.541e-14 &  & 2.9721e-04 & \\
-170 & Quaternion & 4.461e-14 & 2.4798e-13 & 1.7953e-04 & 65.546\\ \cline{2-6} \addlinespace
-pdb2mh8 & Classic & 1.547e-13 &  & 6.5303e-04 & \\
-338 & Quaternion & 1.883e-13 & 2.9903e-13 & 3.9018e-04 & 67.369\\ \cline{2-6} \addlinespace
-pdb2mhw & Classic & 6.229e-14 &  & 2.8854e-04 & \\
-164 & Quaternion & 7.129e-14 & 4.9718e-13 & 1.7429e-04 & 65.551\\ \cline{2-6} \addlinespace
-pdb2mi1 & Classic & 1.827e-12 &  & 1.5367e-04 & \\
-84 & Quaternion & 2.052e-12 & 1.5687e-12 & 9.3477e-05 & 64.394\\ \cline{2-6} \addlinespace
-pdb2mi7 & Classic & 6.022e-13 &  & 6.6453e-04 & \\
-404 & Quaternion & 6.817e-13 & 1.3690e-12 & 4.0193e-04 & 65.336\\ \cline{2-6} \addlinespace
-pdb2mij & Classic & 1.244e-13 &  & 3.8460e-04 & \\
-224 & Quaternion & 1.522e-13 & 2.8681e-13 & 2.2978e-04 & 67.374\\ \cline{2-6} \addlinespace
-pdb2mix & Classic & 4.816e-14 &  & 2.1401e-04 & \\
-128 & Quaternion & 4.684e-14 & 3.7348e-14 & 1.3111e-04 & 63.229\\ \cline{2-6} \addlinespace
-pdb2mj1 & Classic & 1.309e-13 &  & 1.9921e-04 & \\
-110 & Quaternion & 1.646e-13 & 2.3819e-13 & 1.1923e-04 & 67.083\\ \cline{2-6} \addlinespace
-pdb2mj2 & Classic & 9.775e-14 &  & 3.8883e-04 & \\
-218 & Quaternion & 1.196e-13 & 8.8713e-14 & 2.2862e-04 & 70.078\\ \cline{2-6} \addlinespace
-pdb2mjg & Classic & 5.503e-14 &  & 2.4581e-03 & \\
-556 & Quaternion & 6.580e-14 & 7.0670e-14 & 1.3846e-03 & 77.528\\ \cline{2-6} \addlinespace
-pdb2mji & Classic & 3.207e-12 &  & 1.4269e-03 & \\
-788 & Quaternion & 3.247e-12 & 2.7336e-13 & 8.8351e-04 & 61.505\\ \cline{2-6} \addlinespace
-pdb2mle & Classic & 1.491e-13 &  & 8.1574e-04 & \\
-434 & Quaternion & 1.535e-13 & 3.1271e-13 & 4.8696e-04 & 67.517\\ \cline{2-6} \addlinespace
-pdb2mlf & Classic & 9.918e-14 &  & 8.1616e-04 & \\
-434 & Quaternion & 1.128e-13 & 9.2903e-14 & 4.8863e-04 & 67.031\\ \cline{2-6} \addlinespace
-pdb2mo5 & Classic & 2.527e-10 &  & 1.6060e-03 & \\
-854 & Quaternion & 2.527e-10 & 1.0204e-12 & 9.8152e-04 & 63.620\\ \cline{2-6} \addlinespace
-pdb2mpu & Classic & 9.785e-14 &  & 1.0429e-03 & \\
-554 & Quaternion & 1.016e-13 & 1.0352e-13 & 6.3907e-04 & 63.198\\ \cline{2-6} \addlinespace
-pdb2mra & Classic & 2.632e-13 &  & 1.6160e-03 & \\
-704 & Quaternion & 2.768e-13 & 1.2867e-13 & 9.6089e-04 & 68.176\\ \cline{2-6} \addlinespace
-pdb2msu & Classic & 7.813e-14 &  & 2.2737e-04 & \\
-122 & Quaternion & 8.765e-14 & 3.7025e-14 & 1.3399e-04 & 69.685\\ \cline{2-6} \addlinespace
-pdb2mty & Classic & 1.849e-14 &  & 2.4839e-04 & \\
-120 & Quaternion & 2.364e-14 & 9.1457e-14 & 1.4472e-04 & 71.636\\ \cline{2-6} \addlinespace
-pdb2muh & Classic & 2.008e-13 &  & 1.6404e-04 & \\
-98 & Quaternion & 2.251e-13 & 1.4292e-13 & 9.8978e-05 & 65.737\\ \cline{2-6} \addlinespace
-pdb2mvj & Classic & 1.534e-13 &  & 2.7486e-04 & \\
-156 & Quaternion & 1.647e-13 & 5.5998e-14 & 1.6300e-04 & 68.625\\ \cline{2-6} \addlinespace
-pdb2mvt & Classic & 6.053e-12 &  & 6.5595e-04 & \\
-284 & Quaternion & 6.226e-12 & 3.1969e-12 & 3.8272e-04 & 71.392\\ \cline{2-6} \addlinespace
-pdb2mvx & Classic & 4.728e-09 &  & 3.6926e-02 & \\
-2360 & Quaternion & 4.729e-09 & 3.7181e-11 & 1.8364e-02 & 101.080\\ \cline{2-6} \addlinespace
-pdb2mz6 & Classic & 4.129e-08 &  & 9.7106e-02 & \\
-220 & Quaternion & 4.129e-08 & 4.4231e-13 & 4.6765e-02 & 107.647\\ \cline{2-6} \addlinespace
-pdb2n00 & Classic & 2.703e-13 &  & 9.0193e-04 & \\
-572 & Quaternion & 3.467e-13 & 7.3499e-13 & 5.6160e-04 & 60.599\\ \cline{2-6} \addlinespace
-pdb2n0b & Classic & 7.104e-13 &  & 1.0505e-04 & \\
-60 & Quaternion & 9.458e-13 & 8.9441e-13 & 6.2945e-05 & 66.899\\ \cline{2-6} \addlinespace
-pdb2n0c & Classic & 1.293e-13 &  & 1.0017e-04 & \\
-60 & Quaternion & 1.682e-13 & 2.8483e-13 & 6.0318e-05 & 66.076\\ \cline{2-6} \addlinespace
-pdb2n0d & Classic & 1.925e-09 &  & 1.0091e-04 & \\
-60 & Quaternion & 1.926e-09 & 1.6149e-11 & 6.1599e-05 & 63.820\\ \cline{2-6} \addlinespace
-pdb2n0e & Classic & 3.314e-12 &  & 1.0495e-04 & \\
-60 & Quaternion & 4.286e-12 & 8.3573e-12 & 6.3857e-05 & 64.356\\ \cline{2-6} \addlinespace
-pdb2n0f & Classic & 8.103e-09 &  & 9.6344e-05 & \\
-60 & Quaternion & 8.103e-09 & 5.8011e-13 & 5.9130e-05 & 62.936\\ \cline{2-6} \addlinespace
-pdb2n0g & Classic & 8.315e-13 &  & 1.1529e-04 & \\
-60 & Quaternion & 9.618e-13 & 1.3124e-13 & 6.8230e-05 & 68.973\\ \cline{2-6} \addlinespace
-pdb2n0h & Classic & 7.690e-13 &  & 1.0711e-04 & \\
-60 & Quaternion & 8.730e-13 & 1.8191e-13 & 6.5045e-05 & 64.669\\ \cline{2-6} \addlinespace
-pdb2n35 & Classic & 3.541e-14 &  & 5.9116e-04 & \\
-314 & Quaternion & 4.466e-14 & 1.0752e-13 & 3.5242e-04 & 67.745\\ \cline{2-6} \addlinespace
-pdb2n3a & Classic & 8.761e-14 &  & 2.1481e-02 & \\
-574 & Quaternion & 1.049e-13 & 1.0149e-13 & 1.0667e-02 & 101.389\\ \cline{2-6} \addlinespace
-pdb2n41 & Classic & 1.812e-13 &  & 1.2289e-03 & \\
-638 & Quaternion & 1.836e-13 & 8.2539e-14 & 7.4603e-04 & 64.727\\ \cline{2-6} \addlinespace
-pdb2n4e & Classic & 1.494e-13 &  & 1.2242e-03 & \\
-638 & Quaternion & 1.687e-13 & 1.8433e-13 & 7.4537e-04 & 64.236\\ \cline{2-6} \addlinespace
-pdb2n5q & Classic & 1.732e-12 &  & 2.9292e-04 & \\
-164 & Quaternion & 1.745e-12 & 1.7589e-12 & 1.7609e-04 & 66.347\\ \cline{2-6} \addlinespace
-pdb2n67 & Classic & 4.443e-13 &  & 1.0532e-03 & \\
-566 & Quaternion & 4.465e-13 & 6.3487e-14 & 6.3944e-04 & 64.711\\ \cline{2-6} \addlinespace
-pdb2n6n & Classic & 4.139e-08 &  & 3.5655e-04 & \\
-192 & Quaternion & 4.139e-08 & 5.0670e-13 & 2.1480e-04 & 65.993\\ \cline{2-6} \addlinespace
-pdb2n7i & Classic & 9.212e-13 &  & 3.9687e-04 & \\
-224 & Quaternion & 1.126e-12 & 3.0537e-12 & 2.3813e-04 & 66.659\\ \cline{2-6} \addlinespace
-pdb2n7j & Classic & 5.969e-13 &  & 6.4266e-04 & \\
-336 & Quaternion & 6.094e-13 & 1.5144e-13 & 3.8517e-04 & 66.850\\ \cline{2-6} \addlinespace
-pdb2n9b & Classic & 1.196e-12 &  & 1.0148e-02 & \\
-832 & Quaternion & 1.238e-12 & 1.1231e-12 & 4.6870e-03 & 116.516\\ \cline{2-6} \addlinespace
-pdb2na9 & Classic & 5.440e-14 &  & 4.5576e-04 & \\
-266 & Quaternion & 6.690e-14 & 5.4544e-14 & 2.7289e-04 & 67.013\\ \cline{2-6} \addlinespace
-pdb2ndc & Classic & 3.365e-14 &  & 1.9448e-04 & \\
-110 & Quaternion & 4.479e-14 & 5.1916e-14 & 1.1717e-04 & 65.979\\ \cline{2-6} \addlinespace
-pdb2nde & Classic & 7.022e-14 &  & 1.7506e-04 & \\
-110 & Quaternion & 8.868e-14 & 2.5156e-13 & 1.0517e-04 & 66.462\\ \cline{2-6} \addlinespace
-pdb2ndk & Classic & 5.022e-13 &  & 5.0744e-04 & \\
-290 & Quaternion & 6.279e-13 & 2.0516e-12 & 3.0391e-04 & 66.972\\ \cline{2-6} \addlinespace
-pdb2nvj & Classic & 2.082e-14 &  & 2.4046e-04 & \\
-152 & Quaternion & 2.293e-14 & 1.4035e-14 & 1.4516e-04 & 65.649\\ \cline{2-6} \addlinespace
-pdb2p6j & Classic & 4.795e-14 &  & 5.6852e-04 & \\
-314 & Quaternion & 6.389e-14 & 1.1404e-13 & 3.3960e-04 & 67.410\\ \cline{2-6} \addlinespace
-pdb2p81 & Classic & 7.881e-13 &  & 4.6013e-04 & \\
-266 & Quaternion & 8.250e-13 & 4.3715e-13 & 2.7420e-04 & 67.810\\ \cline{2-6} \addlinespace
-pdb2pqe & Classic & 6.484e-10 &  & 2.0226e-03 & \\
-896 & Quaternion & 6.496e-10 & 8.5673e-12 & 1.2157e-03 & 66.379\\ \cline{2-6} \addlinespace
-pdb2rlg & Classic & 5.501e-14 &  & 1.9394e-04 & \\
-108 & Quaternion & 6.973e-14 & 6.8873e-14 & 1.1632e-04 & 66.728\\ \cline{2-6} \addlinespace
-pdb2rlh & Classic & 4.772e-14 &  & 2.1222e-04 & \\
-108 & Quaternion & 5.801e-14 & 3.9131e-14 & 1.2709e-04 & 66.986\\ \cline{2-6} \addlinespace
-pdb2rmy & Classic & 1.872e-13 &  & 3.6903e-04 & \\
-206 & Quaternion & 2.498e-13 & 3.6453e-13 & 2.2054e-04 & 67.331\\ \cline{2-6} \addlinespace
-pdb2rnd & Classic & 2.626e-13 &  & 3.5529e-04 & \\
-206 & Quaternion & 3.581e-13 & 4.9979e-13 & 2.1300e-04 & 66.803\\ \cline{2-6} \addlinespace
-pdb2roo & Classic & 2.933e-12 &  & 1.0981e-03 & \\
-260 & Quaternion & 3.525e-12 & 3.5927e-12 & 6.2520e-04 & 75.634\\ \cline{2-6} \addlinespace
-pdb2rql & Classic & 2.345e-12 &  & 1.4835e-03 & \\
-572 & Quaternion & 2.496e-12 & 8.7086e-13 & 8.7444e-04 & 69.649\\ \cline{2-6} \addlinespace
-pdb2rut & Classic & 4.389e-14 &  & 3.8246e-04 & \\
-218 & Quaternion & 5.014e-14 & 3.5338e-13 & 2.2594e-04 & 69.276\\ \cline{2-6} \addlinespace
-pdb2ruv & Classic & 5.776e-14 &  & 3.9747e-04 & \\
-224 & Quaternion & 7.408e-14 & 1.2473e-13 & 2.3649e-04 & 68.075\\ \cline{2-6} \addlinespace
-pdb2rux & Classic & 2.671e-14 &  & 3.9917e-04 & \\
-218 & Quaternion & 3.016e-14 & 6.2140e-14 & 2.3739e-04 & 68.145\\ \cline{2-6} \addlinespace
-pdb2ruy & Classic & 1.968e-14 &  & 3.9857e-04 & \\
-224 & Quaternion & 2.387e-14 & 6.4254e-14 & 2.3720e-04 & 68.031\\ \cline{2-6} \addlinespace
-pdb2rv3 & Classic & 3.656e-14 &  & 4.1040e-04 & \\
-218 & Quaternion & 4.118e-14 & 6.3794e-14 & 2.4052e-04 & 70.635\\ \cline{2-6} \addlinespace
-pdb2rv5 & Classic & 1.145e-14 &  & 3.7833e-04 & \\
-212 & Quaternion & 1.338e-14 & 1.6010e-14 & 2.2573e-04 & 67.603\\ \cline{2-6} \addlinespace
-pdb2y4q & Classic & 1.410e-12 &  & 8.2746e-04 & \\
-476 & Quaternion & 1.451e-12 & 2.0648e-13 & 5.0601e-04 & 63.525\\ \cline{2-6} \addlinespace
+pdb1ba5 & ClassicAll & 16384 & 3.5079e-02 & 10070 & 7.453e-07 & 5.5325e+00 & \\
+320 & QuaternionAll & 16384 & 3.5079e-02 & 10070 & 7.453e-07 & 4.7959e+00 & 15.359\\ \cline{2-8} \addlinespace
+pdb1d1n & ClassicAll & 5376 & 2.9766e-11 & 1707 & 1.005e-11 & 1.0156e+01 & \\
+594 & QuaternionAll & 5376 & 2.9311e-11 & 1707 & 9.672e-12 & 5.6835e+00 & 78.694\\ \cline{2-8} \addlinespace
+pdb1du1 & ClassicAll & 212992 & 6.6600e-13 & 45549 & 8.225e-13 & 2.5062e+01 & \\
+122 & QuaternionAll & 212992 & 1.6576e-12 & 45549 & 1.258e-12 & 2.5012e+01 & 0.201\\ \cline{2-8} \addlinespace
+pdb1i2u & ClassicAll & 48 & 1.1301e-03 & 22 & 5.676e-07 & 1.0456e-01 & \\
+266 & QuaternionAll & 48 & 1.1301e-03 & 22 & 5.676e-07 & 5.2997e-02 & 97.300\\ \cline{2-8} \addlinespace
+pdb1i2v & ClassicAll & 8 & 8.9125e-13 & 5 & 2.422e-13 & 1.5406e-02 & \\
+266 & QuaternionAll & 8 & 8.8206e-13 & 5 & 2.525e-13 & 7.3820e-03 & 108.701\\ \cline{2-8} \addlinespace
+pdb1jlz & ClassicAll & 256 & 1.2003e-04 & 73 & 3.238e-07 & 3.0876e-02 & \\
+140 & QuaternionAll & 256 & 1.2003e-04 & 73 & 3.238e-07 & 2.0054e-02 & 53.970\\ \cline{2-8} \addlinespace
+pdb1k0v & ClassicAll & 8 & 8.3940e-05 & 2 & 1.893e-13 & 4.1180e-03 & \\
+440 & QuaternionAll & 8 & 8.3940e-05 & 2 & 1.894e-13 & 2.5508e-03 & 61.436\\ \cline{2-8} \addlinespace
+pdb1k2h & ClassicAll & 64 & 1.9334e-04 & 6 & 4.671e-07 & 1.9235e+00 & \\
+1120 & QuaternionAll & 64 & 1.9334e-04 & 6 & 4.671e-07 & 8.8912e-01 & 116.338\\ \cline{2-8} \addlinespace
+pdb1k37 & ClassicAll & 224 & 2.1407e-12 & 30 & 4.711e-13 & 2.9754e+01 & \\
+278 & QuaternionAll & 224 & 2.0318e-12 & 30 & 4.988e-13 & 1.4785e+01 & 101.243\\ \cline{2-8} \addlinespace
+pdb1kuw & ClassicAll & 16 & 1.8706e-04 & 1 & 9.229e-14 & 1.1271e-03 & \\
+62 & QuaternionAll & 16 & 1.8706e-04 & 1 & 1.130e-13 & 6.9661e-04 & 61.798\\ \cline{2-8} \addlinespace
+pdb1kz0 & ClassicAll & 16 & 6.7512e-13 & 1 & 4.404e-14 & 9.1368e-04 & \\
+98 & QuaternionAll & 16 & 6.2568e-13 & 1 & 5.880e-14 & 6.4383e-04 & 41.913\\ \cline{2-8} \addlinespace
+pdb1kz2 & ClassicAll & 16 & 3.1076e-06 & 5 & 2.119e-14 & 1.0205e-03 & \\
+98 & QuaternionAll & 16 & 3.1076e-06 & 5 & 2.886e-14 & 7.0401e-04 & 44.959\\ \cline{2-8} \addlinespace
+pdb1kz5 & ClassicAll & 16 & 4.8094e-13 & 1 & 4.081e-14 & 1.0049e-03 & \\
+74 & QuaternionAll & 16 & 5.2716e-13 & 1 & 4.738e-14 & 6.4642e-04 & 55.449\\ \cline{2-8} \addlinespace
+pdb1lvz & ClassicAll & 16 & 1.1842e-03 & 1 & 6.483e-08 & 6.1571e-04 & \\
+68 & QuaternionAll & 16 & 1.1842e-03 & 1 & 6.483e-08 & 4.4316e-04 & 38.938\\ \cline{2-8} \addlinespace
+pdb1m4e & ClassicAll & 384 & 5.4966e-12 & 25 & 5.949e-13 & 3.5242e-02 & \\
+122 & QuaternionAll & 384 & 5.5048e-12 & 25 & 5.972e-13 & 2.3349e-02 & 50.933\\ \cline{2-8} \addlinespace
+pdb1ma4 & ClassicAll & 192 & 5.0392e-04 & 54 & 7.441e-07 & 3.1803e-02 & \\
+104 & QuaternionAll & 192 & 5.0392e-04 & 54 & 7.441e-07 & 1.8756e-02 & 69.565\\ \cline{2-8} \addlinespace
+pdb1ma5 & ClassicAll & 4608 & 6.1895e-05 & 1665 & 7.863e-07 & 3.0799e-01 & \\
+104 & QuaternionAll & 4608 & 6.1895e-05 & 1665 & 7.863e-07 & 2.9139e-01 & 5.694\\ \cline{2-8} \addlinespace
+pdb1ma6 & ClassicAll & 24576 & 1.2440e-11 & 5094 & 6.283e-13 & 2.0697e+00 & \\
+104 & QuaternionAll & 24576 & 1.4288e-11 & 5094 & 8.487e-13 & 2.3901e+00 & -13.406\\ \cline{2-8} \addlinespace
+pdb1nd9 & ClassicAll & 512 & 1.0508e-12 & 2 & 3.026e-13 & 8.4278e-01 & \\
+296 & QuaternionAll & 512 & 8.9082e-13 & 2 & 3.845e-13 & 4.6467e-01 & 81.372\\ \cline{2-8} \addlinespace
+pdb1nmj & ClassicAll & 8 & 2.3883e-13 & 7 & 1.236e-14 & 1.2173e-03 & \\
+170 & QuaternionAll & 8 & 2.3832e-13 & 7 & 1.422e-14 & 7.6976e-04 & 58.144\\ \cline{2-8} \addlinespace
+pdb1o53 & ClassicAll & 294912 & 1.0887e-11 & 69346 & 3.999e-13 & 7.7107e+01 & \\
+92 & QuaternionAll & 294912 & 1.1252e-11 & 69346 & 4.527e-13 & 2.7689e+01 & 178.470\\ \cline{2-8} \addlinespace
+pdb1oqp & ClassicAll & 8 & 2.9348e-03 & 2 & 7.045e-14 & 2.7797e-02 & \\
+580 & QuaternionAll & 8 & 2.9348e-03 & 2 & 8.314e-14 & 1.3325e-02 & 108.609\\ \cline{2-8} \addlinespace
+pdb1plw & ClassicAll & 64 & 3.0310e-13 & 26 & 2.830e-14 & 9.2563e-04 & \\
+32 & QuaternionAll & 64 & 3.2973e-13 & 26 & 3.112e-14 & 6.9320e-04 & 33.530\\ \cline{2-8} \addlinespace
+pdb1plx & ClassicAll & 256 & 1.8321e-04 & 105 & 2.751e-06 & 2.2670e-03 & \\
+32 & QuaternionAll & 256 & 1.8321e-04 & 105 & 2.751e-06 & 2.0063e-03 & 12.992\\ \cline{2-8} \addlinespace
+pdb1r57 & ClassicAll & 64 & 4.1216e-03 & 6 & 2.080e-09 & 5.1769e-02 & \\
+614 & QuaternionAll & 64 & 4.1216e-03 & 6 & 2.080e-09 & 3.0150e-02 & 71.703\\ \cline{2-8} \addlinespace
+pdb1s4h & ClassicAll & 393216 & 3.7288e-06 & 114246 & 1.026e-06 & 1.4783e+02 & \\
+80 & QuaternionAll & 393216 & 3.7288e-06 & 114246 & 1.026e-06 & 1.2240e+02 & 20.775\\ \cline{2-8} \addlinespace
+pdb1s4j & ClassicAll & 512 & 5.8507e-12 & 106 & 1.520e-13 & 1.4515e-02 & \\
+80 & QuaternionAll & 512 & 5.8479e-12 & 106 & 2.083e-13 & 1.3990e-02 & 3.753\\ \cline{2-8} \addlinespace
+pdb1sa8 & ClassicAll & 8 & 1.7170e-03 & 1 & 9.340e-13 & 2.4228e-02 & \\
+638 & QuaternionAll & 8 & 1.7170e-03 & 1 & 1.034e-12 & 1.2110e-02 & 100.076\\ \cline{2-8} \addlinespace
+pdb1t2y & ClassicAll & 384 & 2.2800e-04 & 169 & 5.096e-07 & 2.8234e-02 & \\
+152 & QuaternionAll & 384 & 2.2800e-04 & 169 & 5.096e-07 & 2.1943e-02 & 28.667\\ \cline{2-8} \addlinespace
+pdb1t5q & ClassicAll & 2 & 1.0265e-12 & 1 & 3.877e-14 & 9.9171e-04 & \\
+180 & QuaternionAll & 2 & 1.0480e-12 & 1 & 5.093e-14 & 5.4202e-04 & 82.966\\ \cline{2-8} \addlinespace
+pdb1tot & ClassicAll & 8 & 3.4218e-03 & 5 & 6.151e-14 & 2.3885e-03 & \\
+314 & QuaternionAll & 8 & 3.4218e-03 & 5 & 6.855e-14 & 1.5272e-03 & 56.400\\ \cline{2-8} \addlinespace
+pdb1v6r & ClassicAll & 448 & 7.3125e-05 & 122 & 1.648e-06 & 7.7798e-02 & \\
+128 & QuaternionAll & 448 & 7.3125e-05 & 122 & 1.648e-06 & 4.7831e-02 & 62.652\\ \cline{2-8} \addlinespace
+pdb1v92 & ClassicAll & 25600 & 2.3012e-05 & 9449 & 1.890e-06 & 6.3087e+00 & \\
+278 & QuaternionAll & 25600 & 2.3012e-05 & 9449 & 1.890e-06 & 5.5854e+00 & 12.949\\ \cline{2-8} \addlinespace
+pdb1vpc & ClassicAll & 16 & 4.3482e-04 & 14 & 8.510e-15 & 3.8676e-03 & \\
+272 & QuaternionAll & 16 & 4.3482e-04 & 14 & 1.002e-14 & 2.4373e-03 & 58.683\\ \cline{2-8} \addlinespace
+pdb1wnk & ClassicAll & 24576 & 2.2292e-10 & 2433 & 4.112e-12 & 2.5894e+00 & \\
+140 & QuaternionAll & 24576 & 2.2177e-10 & 2433 & 4.632e-12 & 2.3474e+00 & 10.310\\ \cline{2-8} \addlinespace
+pdb1wo4 & ClassicAll & 62720 & 1.0961e-05 & 20998 & 2.477e-06 & 1.3822e+01 & \\
+152 & QuaternionAll & 62720 & 1.0961e-05 & 20998 & 2.477e-06 & 1.1665e+01 & 18.488\\ \cline{2-8} \addlinespace
+pdb1y5c & ClassicAll & 8192 & 8.7435e-13 & 2929 & 7.693e-14 & 2.0069e-01 & \\
+68 & QuaternionAll & 8192 & 8.2242e-13 & 2929 & 9.383e-14 & 2.8012e-01 & -28.353\\ \cline{2-8} \addlinespace
+pdb2a4j & ClassicAll & 16 & 1.0516e-04 & 2 & 2.085e-14 & 1.4460e-02 & \\
+580 & QuaternionAll & 16 & 1.0516e-04 & 2 & 2.727e-14 & 7.6298e-03 & 89.524\\ \cline{2-8} \addlinespace
+pdb2ajj & ClassicAll & 640 & 7.2549e-05 & 121 & 1.229e-06 & 4.6544e-02 & \\
+170 & QuaternionAll & 640 & 7.2549e-05 & 121 & 1.229e-06 & 4.2916e-02 & 8.453\\ \cline{2-8} \addlinespace
+pdb2ajm & ClassicAll & 12288 & 2.4063e-12 & 1074 & 1.183e-13 & 1.4240e+00 & \\
+170 & QuaternionAll & 12288 & 2.7001e-12 & 1074 & 1.555e-13 & 1.3003e+00 & 9.517\\ \cline{2-8} \addlinespace
+pdb2ajn & ClassicAll & 53760 & 3.7478e-04 & 15665 & 2.380e-06 & 9.4979e+00 & \\
+170 & QuaternionAll & 53760 & 3.7478e-04 & 15665 & 2.380e-06 & 7.9646e+00 & 19.252\\ \cline{2-8} \addlinespace
+pdb2ajo & ClassicAll & 12288 & 2.4063e-12 & 1074 & 1.183e-13 & 1.4322e+00 & \\
+170 & QuaternionAll & 12288 & 2.7001e-12 & 1074 & 1.555e-13 & 1.3043e+00 & 9.805\\ \cline{2-8} \addlinespace
+pdb2akk & ClassicAll & 8 & 3.0416e-03 & 2 & 1.289e-13 & 1.0365e-01 & \\
+446 & QuaternionAll & 8 & 3.0416e-03 & 2 & 1.279e-13 & 5.1613e-02 & 100.826\\ \cline{2-8} \addlinespace
+pdb2bzb & ClassicAll & 32 & 4.6498e-13 & 29 & 9.361e-14 & 3.2063e-01 & \\
+748 & QuaternionAll & 32 & 6.0113e-13 & 29 & 1.224e-13 & 1.5661e-01 & 104.728\\ \cline{2-8} \addlinespace
+pdb2c0s & ClassicAll & 8 & 1.0793e-02 & 6 & 3.028e-13 & 3.8909e-03 & \\
+386 & QuaternionAll & 8 & 1.0793e-02 & 6 & 3.380e-13 & 2.3555e-03 & 65.184\\ \cline{2-8} \addlinespace
+pdb2dci & ClassicAll & 2 & 2.0907e-13 & 1 & 2.366e-14 & 6.6909e-04 & \\
+120 & QuaternionAll & 2 & 3.3732e-13 & 1 & 2.950e-14 & 3.7298e-04 & 79.389\\ \cline{2-8} \addlinespace
+pdb2eem & ClassicAll & 128 & 9.5324e-12 & 29 & 5.190e-13 & 4.5197e-01 & \\
+206 & QuaternionAll & 128 & 9.5866e-12 & 29 & 5.461e-13 & 2.3134e-01 & 95.375\\ \cline{2-8} \addlinespace
+pdb2fxz & ClassicAll & 41472 & 4.2293e-12 & 13441 & 1.489e-12 & 2.7845e+00 & \\
+80 & QuaternionAll & 41472 & 5.3169e-12 & 13441 & 1.749e-12 & 2.7597e+00 & 0.900\\ \cline{2-8} \addlinespace
+pdb2g9j & ClassicAll & 16 & 5.8011e-04 & 2 & 3.282e-12 & 8.6313e-01 & \\
+848 & QuaternionAll & 16 & 5.8011e-04 & 2 & 3.535e-12 & 4.2753e-01 & 101.888\\ \cline{2-8} \addlinespace
+pdb2g9l & ClassicAll & 8 & 1.0333e-04 & 2 & 6.365e-14 & 1.6101e-03 & \\
+224 & QuaternionAll & 8 & 1.0333e-04 & 2 & 8.666e-14 & 1.0247e-03 & 57.122\\ \cline{2-8} \addlinespace
+pdb2h5m & ClassicAll & 128 & 1.2260e-03 & 21 & 2.131e-07 & 1.1055e-01 & \\
+614 & QuaternionAll & 128 & 1.2260e-03 & 21 & 2.131e-07 & 6.8655e-02 & 61.026\\ \cline{2-8} \addlinespace
+pdb2hep & ClassicAll & 676 & 2.1758e-11 & 224 & 1.191e-12 & 3.2206e+00 & \\
+252 & QuaternionAll & 676 & 2.2038e-11 & 224 & 1.268e-12 & 1.6251e+00 & 98.178\\ \cline{2-8} \addlinespace
+pdb2jmy & ClassicAll & 24 & 2.4695e-05 & 9 & 3.958e-06 & 1.5905e-03 & \\
+92 & QuaternionAll & 24 & 2.4695e-05 & 9 & 3.958e-06 & 1.0839e-03 & 46.738\\ \cline{2-8} \addlinespace
+pdb2jn5 & ClassicAll & 96 & 6.6339e-12 & 45 & 1.104e-11 & 3.1163e-03 & \\
+74 & QuaternionAll & 96 & 2.0459e-11 & 45 & 2.456e-11 & 2.3617e-03 & 31.954\\ \cline{2-8} \addlinespace
+pdb2jpn & ClassicAll & 8 & 6.4192e-12 & 2 & 6.730e-14 & 4.7008e-03 & \\
+476 & QuaternionAll & 8 & 6.5904e-12 & 2 & 6.984e-14 & 2.8260e-03 & 66.341\\ \cline{2-8} \addlinespace
+pdb2jvd & ClassicAll & 16 & 9.4244e-13 & 6 & 3.339e-14 & 5.0341e-03 & \\
+288 & QuaternionAll & 16 & 9.4969e-13 & 6 & 3.898e-14 & 3.0724e-03 & 63.848\\ \cline{2-8} \addlinespace
+pdb2jxf & ClassicAll & 2048 & 1.1644e-04 & 305 & 1.841e-06 & 1.2165e-01 & \\
+182 & QuaternionAll & 2048 & 1.1644e-04 & 305 & 1.841e-06 & 1.2608e-01 & -3.510\\ \cline{2-8} \addlinespace
+pdb2jz5 & ClassicAll & 64 & 1.7154e-03 & 5 & 1.691e-07 & 7.6168e+00 & \\
+548 & QuaternionAll & 64 & 1.7154e-03 & 5 & 1.691e-07 & 3.6348e+00 & 109.551\\ \cline{2-8} \addlinespace
+pdb2k2a & ClassicAll & 8 & 4.7195e-03 & 5 & 3.810e-14 & 4.2185e-03 & \\
+422 & QuaternionAll & 8 & 4.7195e-03 & 5 & 5.148e-14 & 2.5402e-03 & 66.069\\ \cline{2-8} \addlinespace
+pdb2k36 & ClassicAll & 32 & 1.6972e-12 & 13 & 1.922e-13 & 3.5895e-02 & \\
+896 & QuaternionAll & 32 & 1.6007e-12 & 13 & 2.045e-13 & 2.2363e-02 & 60.512\\ \cline{2-8} \addlinespace
+pdb2k37 & ClassicAll & 192 & 3.7147e-12 & 45 & 1.921e-13 & 3.2952e-02 & \\
+356 & QuaternionAll & 192 & 3.6176e-12 & 45 & 2.525e-13 & 2.5747e-02 & 27.985\\ \cline{2-8} \addlinespace
+pdb2k3i & ClassicAll & 1024 & 2.8710e-03 & 393 & 6.869e-07 & 1.4346e+01 & \\
+656 & QuaternionAll & 1024 & 2.8710e-03 & 393 & 6.869e-07 & 6.7963e+00 & 111.093\\ \cline{2-8} \addlinespace
+pdb2k6s & ClassicAll & 256 & 8.2998e-12 & 114 & 2.100e-13 & 1.1219e+00 & \\
+494 & QuaternionAll & 256 & 8.4519e-12 & 114 & 2.651e-13 & 5.6482e-01 & 98.633\\ \cline{2-8} \addlinespace
+pdb2kdp & ClassicAll & 128 & 3.0283e-12 & 5 & 2.621e-13 & 4.8129e-02 & \\
+428 & QuaternionAll & 128 & 3.0741e-12 & 5 & 2.865e-13 & 3.0679e-02 & 56.876\\ \cline{2-8} \addlinespace
+pdb2kdr & ClassicAll & 192 & 6.3024e-05 & 86 & 6.618e-14 & 1.1125e-02 & \\
+170 & QuaternionAll & 192 & 6.3024e-05 & 86 & 8.490e-14 & 8.3046e-03 & 33.968\\ \cline{2-8} \addlinespace
+pdb2kes & ClassicAll & 64 & 1.7403e-04 & 43 & 1.149e-06 & 1.1603e-02 & \\
+290 & QuaternionAll & 64 & 1.7403e-04 & 43 & 1.149e-06 & 6.8773e-03 & 68.711\\ \cline{2-8} \addlinespace
+pdb2kjn & ClassicAll & 4608 & 1.9764e-12 & 1194 & 9.827e-14 & 5.4626e-01 & \\
+158 & QuaternionAll & 4608 & 1.9265e-12 & 1194 & 1.174e-13 & 4.8765e-01 & 12.019\\ \cline{2-8} \addlinespace
+pdb2kjo & ClassicAll & 384 & 1.2876e-11 & 165 & 2.284e-13 & 2.4887e-02 & \\
+158 & QuaternionAll & 384 & 1.2921e-11 & 165 & 2.421e-13 & 2.0677e-02 & 20.361\\ \cline{2-8} \addlinespace
+pdb2kko & ClassicAll & 32 & 6.9298e-04 & 10 & 1.852e-07 & 2.0477e+00 & \\
+1300 & QuaternionAll & 32 & 6.9298e-04 & 10 & 1.852e-07 & 1.0247e+00 & 99.835\\ \cline{2-8} \addlinespace
+pdb2kl5 & ClassicAll & 96 & 2.4505e-12 & 5 & 1.820e-13 & 6.3858e-02 & \\
+662 & QuaternionAll & 96 & 2.5206e-12 & 5 & 2.020e-13 & 4.0071e-02 & 59.361\\ \cline{2-8} \addlinespace
+pdb2klz & ClassicAll & 24 & 3.9786e-13 & 9 & 3.439e-14 & 6.3768e-03 & \\
+276 & QuaternionAll & 24 & 3.7834e-13 & 9 & 4.443e-14 & 3.9236e-03 & 62.523\\ \cline{2-8} \addlinespace
+pdb2ko1 & ClassicAll & 128 & 7.9853e-04 & 46 & 7.782e-08 & 4.6840e+00 & \\
+1060 & QuaternionAll & 128 & 7.9853e-04 & 46 & 7.782e-08 & 2.2980e+00 & 103.828\\ \cline{2-8} \addlinespace
+pdb2ksg & ClassicAll & 8 & 9.2027e-13 & 1 & 3.215e-14 & 1.9936e-03 & \\
+290 & QuaternionAll & 8 & 9.2208e-13 & 1 & 3.967e-14 & 1.2568e-03 & 58.626\\ \cline{2-8} \addlinespace
+pdb2kuh & ClassicAll & 8 & 1.1667e-03 & 6 & 2.015e-14 & 2.8811e-03 & \\
+404 & QuaternionAll & 8 & 1.1667e-03 & 6 & 2.491e-14 & 1.8443e-03 & 56.215\\ \cline{2-8} \addlinespace
+pdb2kwh & ClassicAll & 16 & 2.0587e-03 & 6 & 1.408e-13 & 5.4492e-03 & \\
+338 & QuaternionAll & 16 & 2.0587e-03 & 6 & 1.825e-13 & 3.3426e-03 & 63.020\\ \cline{2-8} \addlinespace
+pdb2kxa & ClassicAll & 16 & 3.9712e-12 & 8 & 1.325e-12 & 1.3758e-03 & \\
+144 & QuaternionAll & 16 & 3.7392e-12 & 8 & 1.351e-12 & 9.7643e-04 & 40.899\\ \cline{2-8} \addlinespace
+pdb2l3m & ClassicAll & 8 & 1.5178e-03 & 1 & 1.028e-12 & 9.4920e-03 & \\
+428 & QuaternionAll & 8 & 1.5178e-03 & 1 & 9.340e-13 & 4.5640e-03 & 107.977\\ \cline{2-8} \addlinespace
+pdb2l3n & ClassicAll & 128 & 3.5629e-04 & 109 & 2.376e-07 & 1.7057e+00 & \\
+626 & QuaternionAll & 128 & 3.5629e-04 & 109 & 2.376e-07 & 8.2475e-01 & 106.816\\ \cline{2-8} \addlinespace
+pdb2l45 & ClassicAll & 8 & 5.9466e-13 & 1 & 2.236e-14 & 9.4055e-04 & \\
+116 & QuaternionAll & 8 & 6.7808e-13 & 1 & 3.033e-14 & 5.8855e-04 & 59.808\\ \cline{2-8} \addlinespace
+pdb2l5r & ClassicAll & 2 & 3.0491e-13 & 2 & 3.535e-14 & 7.5098e-04 & \\
+138 & QuaternionAll & 2 & 3.0031e-13 & 2 & 4.436e-14 & 4.2098e-04 & 78.388\\ \cline{2-8} \addlinespace
+pdb2l98 & ClassicAll & 608 & 5.6413e-12 & 154 & 3.273e-13 & 1.0512e+00 & \\
+434 & QuaternionAll & 608 & 6.2089e-12 & 154 & 3.637e-13 & 5.6327e-01 & 86.629\\ \cline{2-8} \addlinespace
+pdb2lci & ClassicAll & 128 & 1.2015e-12 & 29 & 2.579e-13 & 1.1149e-01 & \\
+806 & QuaternionAll & 128 & 1.1830e-12 & 29 & 2.404e-13 & 7.1232e-02 & 56.511\\ \cline{2-8} \addlinespace
+pdb2lde & ClassicAll & 32 & 6.0282e-03 & 14 & 3.047e-07 & 2.6048e-03 & \\
+152 & QuaternionAll & 32 & 6.0282e-03 & 14 & 3.047e-07 & 1.8393e-03 & 41.618\\ \cline{2-8} \addlinespace
+pdb2le2 & ClassicAll & 16 & 1.5317e-12 & 2 & 2.064e-13 & 4.2776e-01 & \\
+676 & QuaternionAll & 16 & 1.4989e-12 & 2 & 2.042e-13 & 2.0895e-01 & 104.716\\ \cline{2-8} \addlinespace
+pdb2le7 & ClassicAll & 8 & 8.8940e-14 & 2 & 2.111e-14 & 7.9459e-04 & \\
+122 & QuaternionAll & 8 & 1.1008e-13 & 2 & 2.749e-14 & 5.1307e-04 & 54.868\\ \cline{2-8} \addlinespace
+pdb2ler & ClassicAll & 8 & 5.1096e-14 & 2 & 1.314e-14 & 4.2740e-04 & \\
+68 & QuaternionAll & 8 & 6.2001e-14 & 2 & 1.532e-14 & 2.7520e-04 & 55.305\\ \cline{2-8} \addlinespace
+pdb2lgi & ClassicAll & 16 & 9.7255e-12 & 6 & 1.068e-12 & 4.1270e-02 & \\
+338 & QuaternionAll & 16 & 9.6518e-12 & 6 & 1.052e-12 & 2.1800e-02 & 89.307\\ \cline{2-8} \addlinespace
+pdb2lhe & ClassicAll & 704 & 9.7862e-10 & 54 & 4.963e-11 & 1.8045e+01 & \\
+338 & QuaternionAll & 704 & 9.7867e-10 & 54 & 4.967e-11 & 8.6584e+00 & 108.405\\ \cline{2-8} \addlinespace
+pdb2lhg & ClassicAll & 16 & 5.0995e-13 & 14 & 6.485e-14 & 3.1087e-03 & \\
+338 & QuaternionAll & 16 & 5.4683e-13 & 14 & 7.343e-14 & 2.1955e-03 & 41.590\\ \cline{2-8} \addlinespace
+pdb2lix & ClassicAll & 2 & 4.9988e-13 & 1 & 4.842e-14 & 1.4134e-03 & \\
+162 & QuaternionAll & 2 & 5.1517e-13 & 1 & 5.614e-14 & 7.7418e-04 & 82.565\\ \cline{2-8} \addlinespace
+pdb2lld & ClassicAll & 16 & 3.3970e-03 & 9 & 4.630e-07 & 4.5922e-03 & \\
+242 & QuaternionAll & 16 & 3.3970e-03 & 9 & 4.630e-07 & 2.8003e-03 & 63.990\\ \cline{2-8} \addlinespace
+pdb2lm9 & ClassicAll & 8 & 2.2967e-03 & 2 & 6.254e-14 & 4.0805e-03 & \\
+578 & QuaternionAll & 8 & 2.2967e-03 & 2 & 7.713e-14 & 2.6141e-03 & 56.093\\ \cline{2-8} \addlinespace
+pdb2lmf & ClassicAll & 5376 & 1.3912e-05 & 1613 & 2.554e-06 & 4.4378e-01 & \\
+140 & QuaternionAll & 5376 & 1.3912e-05 & 1613 & 2.554e-06 & 4.4877e-01 & -1.112\\ \cline{2-8} \addlinespace
+pdb2ln3 & ClassicAll & 8 & 2.5821e-13 & 1 & 1.292e-13 & 6.6050e-03 & \\
+500 & QuaternionAll & 8 & 2.9987e-13 & 1 & 1.359e-13 & 3.8591e-03 & 71.152\\ \cline{2-8} \addlinespace
+pdb2lo2 & ClassicAll & 64 & 1.4016e-02 & 26 & 1.353e-07 & 1.3196e-02 & \\
+230 & QuaternionAll & 64 & 1.4016e-02 & 26 & 1.353e-07 & 7.4255e-03 & 77.715\\ \cline{2-8} \addlinespace
+pdb2lqp & ClassicAll & 2304 & 5.7598e-04 & 222 & 8.247e-08 & 6.5259e-01 & \\
+428 & QuaternionAll & 2304 & 5.7598e-04 & 222 & 8.247e-08 & 5.9247e-01 & 10.149\\ \cline{2-8} \addlinespace
+pdb2lr0 & ClassicAll & 16 & 1.2202e-11 & 5 & 3.549e-12 & 3.2315e-01 & \\
+806 & QuaternionAll & 16 & 1.1747e-11 & 5 & 3.440e-12 & 1.6220e-01 & 99.236\\ \cline{2-8} \addlinespace
+pdb2lrh & ClassicAll & 384 & 2.9721e-12 & 189 & 5.631e-13 & 8.9441e-01 & \\
+806 & QuaternionAll & 384 & 2.9099e-12 & 189 & 6.564e-13 & 4.8708e-01 & 83.629\\ \cline{2-8} \addlinespace
+pdb2ls9 & ClassicAll & 16 & 2.7045e-12 & 5 & 1.122e-13 & 1.6481e-03 & \\
+152 & QuaternionAll & 16 & 3.0425e-12 & 5 & 1.471e-13 & 1.1036e-03 & 49.336\\ \cline{2-8} \addlinespace
+pdb2lsa & ClassicAll & 8 & 2.5535e-03 & 2 & 5.235e-14 & 9.4580e-04 & \\
+140 & QuaternionAll & 8 & 2.5535e-03 & 2 & 6.998e-14 & 6.1781e-04 & 53.090\\ \cline{2-8} \addlinespace
+pdb2lss & ClassicAll & 8 & 1.2372e-03 & 1 & 1.230e-13 & 5.1730e-03 & \\
+422 & QuaternionAll & 8 & 1.2372e-03 & 1 & 1.455e-13 & 3.0589e-03 & 69.115\\ \cline{2-8} \addlinespace
+pdb2lt3 & ClassicAll & 8 & 9.6961e-13 & 6 & 7.245e-14 & 6.6260e-03 & \\
+680 & QuaternionAll & 8 & 1.0253e-12 & 6 & 7.760e-14 & 3.9988e-03 & 65.699\\ \cline{2-8} \addlinespace
+pdb2lu6 & ClassicAll & 8 & 7.7550e-03 & 1 & 5.356e-15 & 5.3252e-04 & \\
+86 & QuaternionAll & 8 & 7.7550e-03 & 1 & 6.922e-15 & 3.4349e-04 & 55.034\\ \cline{2-8} \addlinespace
+pdb2lx0 & ClassicAll & 24576 & 7.4851e-12 & 3285 & 3.569e-13 & 3.7916e+00 & \\
+194 & QuaternionAll & 24576 & 7.5304e-12 & 3285 & 4.035e-13 & 3.4710e+00 & 9.238\\ \cline{2-8} \addlinespace
+pdb2lxb & ClassicAll & 16 & 9.0172e-13 & 5 & 1.542e-13 & 2.6833e-02 & \\
+892 & QuaternionAll & 16 & 8.6577e-13 & 5 & 1.585e-13 & 1.3296e-02 & 101.818\\ \cline{2-8} \addlinespace
+pdb2lzf & ClassicAll & 8 & 5.9653e-04 & 2 & 3.217e-14 & 8.1541e-01 & \\
+820 & QuaternionAll & 8 & 5.9653e-04 & 2 & 3.959e-14 & 3.9900e-01 & 104.361\\ \cline{2-8} \addlinespace
+pdb2m1a & ClassicAll & 8 & 9.1771e-14 & 1 & 6.346e-15 & 1.0487e-03 & \\
+158 & QuaternionAll & 8 & 9.0451e-14 & 1 & 7.612e-15 & 6.7610e-04 & 55.111\\ \cline{2-8} \addlinespace
+pdb2m1j & ClassicAll & 32 & 1.5890e-13 & 10 & 1.865e-14 & 4.6872e-03 & \\
+182 & QuaternionAll & 32 & 1.6894e-13 & 10 & 2.212e-14 & 3.0380e-03 & 54.286\\ \cline{2-8} \addlinespace
+pdb2m2y & ClassicAll & 8 & 1.8177e-03 & 1 & 2.699e-13 & 9.8928e-04 & \\
+110 & QuaternionAll & 8 & 1.8177e-03 & 1 & 2.808e-13 & 6.0391e-04 & 63.811\\ \cline{2-8} \addlinespace
+pdb2m3f & ClassicAll & 16 & 9.5240e-14 & 5 & 3.629e-14 & 1.1373e-03 & \\
+134 & QuaternionAll & 16 & 5.7597e-14 & 5 & 4.641e-14 & 8.1308e-04 & 39.873\\ \cline{2-8} \addlinespace
+pdb2m8m & ClassicAll & 8 & 6.9769e-03 & 5 & 2.424e-14 & 1.1476e-03 & \\
+170 & QuaternionAll & 8 & 6.9769e-03 & 5 & 3.058e-14 & 7.3245e-04 & 56.679\\ \cline{2-8} \addlinespace
+pdb2m8o & ClassicAll & 16 & 4.6389e-03 & 9 & 1.337e-07 & 1.4163e-03 & \\
+170 & QuaternionAll & 16 & 4.6389e-03 & 9 & 1.337e-07 & 1.0138e-03 & 39.702\\ \cline{2-8} \addlinespace
+pdb2m97 & ClassicAll & 8 & 2.4560e-12 & 6 & 4.654e-14 & 2.9164e-03 & \\
+416 & QuaternionAll & 8 & 2.4592e-12 & 6 & 5.847e-14 & 1.8606e-03 & 56.747\\ \cline{2-8} \addlinespace
+pdb2m9g & ClassicAll & 24 & 4.9692e-12 & 9 & 2.939e-13 & 4.0916e-02 & \\
+1108 & QuaternionAll & 24 & 4.9567e-12 & 9 & 3.170e-13 & 2.4525e-02 & 66.833\\ \cline{2-8} \addlinespace
+pdb2m9r & ClassicAll & 65536 & 3.7505e-12 & 7301 & 3.537e-14 & 3.1853e+01 & \\
+242 & QuaternionAll & 65536 & 3.6480e-12 & 7301 & 4.406e-14 & 2.3239e+01 & 37.069\\ \cline{2-8} \addlinespace
+pdb2mdv & ClassicAll & 16 & 4.7210e-04 & 6 & 3.178e-12 & 2.7738e-01 & \\
+460 & QuaternionAll & 16 & 4.7210e-04 & 6 & 3.178e-12 & 1.3787e-01 & 101.182\\ \cline{2-8} \addlinespace
+pdb2me1 & ClassicAll & 30720 & 2.7384e-05 & 14030 & 1.477e-06 & 4.8603e+00 & \\
+164 & QuaternionAll & 30720 & 2.7384e-05 & 14030 & 1.477e-06 & 4.4062e+00 & 10.305\\ \cline{2-8} \addlinespace
+pdb2me3 & ClassicAll & 8192 & 1.1059e-05 & 2542 & 2.347e-07 & 8.2984e-01 & \\
+164 & QuaternionAll & 8192 & 1.1059e-05 & 2542 & 2.347e-07 & 7.6690e-01 & 8.206\\ \cline{2-8} \addlinespace
+pdb2me4 & ClassicAll & 32768 & 2.9241e-05 & 854 & 2.758e-07 & 4.9982e+00 & \\
+164 & QuaternionAll & 32768 & 2.9241e-05 & 854 & 2.758e-07 & 4.2398e+00 & 17.888\\ \cline{2-8} \addlinespace
+pdb2mg1 & ClassicAll & 8 & 4.4954e-13 & 6 & 4.400e-14 & 1.1133e-03 & \\
+164 & QuaternionAll & 8 & 5.4976e-13 & 6 & 5.374e-14 & 7.1597e-04 & 55.501\\ \cline{2-8} \addlinespace
+pdb2mg2 & ClassicAll & 16 & 1.0745e-03 & 10 & 1.831e-14 & 1.5972e-03 & \\
+170 & QuaternionAll & 16 & 1.0745e-03 & 10 & 2.481e-14 & 1.1089e-03 & 44.026\\ \cline{2-8} \addlinespace
+pdb2mg3 & ClassicAll & 16 & 6.2977e-13 & 14 & 3.542e-14 & 1.9385e-03 & \\
+170 & QuaternionAll & 16 & 6.7812e-13 & 14 & 4.459e-14 & 1.2821e-03 & 51.199\\ \cline{2-8} \addlinespace
+pdb2mh8 & ClassicAll & 40 & 4.2246e-12 & 26 & 1.547e-13 & 5.3693e-03 & \\
+338 & QuaternionAll & 40 & 4.0208e-12 & 26 & 1.883e-13 & 4.2367e-03 & 26.731\\ \cline{2-8} \addlinespace
+pdb2mhw & ClassicAll & 8 & 3.6932e-03 & 2 & 6.229e-14 & 1.1186e-03 & \\
+164 & QuaternionAll & 8 & 3.6932e-03 & 2 & 7.130e-14 & 7.2620e-04 & 54.037\\ \cline{2-8} \addlinespace
+pdb2mij & ClassicAll & 16 & 1.2077e-12 & 1 & 1.244e-13 & 5.3586e-03 & \\
+224 & QuaternionAll & 16 & 1.2294e-12 & 1 & 1.522e-13 & 3.1245e-03 & 71.501\\ \cline{2-8} \addlinespace
+pdb2mix & ClassicAll & 8 & 3.7545e-13 & 1 & 4.816e-14 & 1.4998e-03 & \\
+128 & QuaternionAll & 8 & 3.4098e-13 & 1 & 4.684e-14 & 8.7949e-04 & 70.536\\ \cline{2-8} \addlinespace
+pdb2mj1 & ClassicAll & 168 & 8.6589e-04 & 45 & 4.712e-07 & 7.9187e-03 & \\
+110 & QuaternionAll & 168 & 8.6589e-04 & 45 & 4.712e-07 & 6.1154e-03 & 29.487\\ \cline{2-8} \addlinespace
+pdb2mj2 & ClassicAll & 32 & 3.7278e-03 & 2 & 1.591e-07 & 3.2246e-03 & \\
+218 & QuaternionAll & 32 & 3.7278e-03 & 2 & 1.591e-07 & 2.3628e-03 & 36.475\\ \cline{2-8} \addlinespace
+pdb2mjg & ClassicAll & 256 & 1.4274e-03 & 94 & 9.193e-09 & 7.6677e-01 & \\
+556 & QuaternionAll & 256 & 1.4274e-03 & 94 & 9.193e-09 & 4.0430e-01 & 89.651\\ \cline{2-8} \addlinespace
+pdb2mle & ClassicAll & 16 & 1.6719e-03 & 6 & 1.491e-13 & 1.0910e-01 & \\
+434 & QuaternionAll & 16 & 1.6719e-03 & 6 & 1.535e-13 & 5.2413e-02 & 108.158\\ \cline{2-8} \addlinespace
+pdb2mlf & ClassicAll & 16 & 8.3036e-13 & 6 & 9.918e-14 & 7.1563e-03 & \\
+434 & QuaternionAll & 16 & 8.8493e-13 & 6 & 1.127e-13 & 4.3921e-03 & 62.937\\ \cline{2-8} \addlinespace
+pdb2mpu & ClassicAll & 8 & 2.5305e-12 & 1 & 9.785e-14 & 1.7354e-02 & \\
+554 & QuaternionAll & 8 & 2.5592e-12 & 1 & 1.016e-13 & 8.5980e-03 & 101.834\\ \cline{2-8} \addlinespace
+pdb2mra & ClassicAll & 40 & 4.3616e-12 & 9 & 2.632e-13 & 8.2104e-02 & \\
+704 & QuaternionAll & 40 & 4.3117e-12 & 9 & 2.768e-13 & 4.3431e-02 & 89.047\\ \cline{2-8} \addlinespace
+pdb2msu & ClassicAll & 1152 & 3.6237e-12 & 29 & 7.813e-14 & 7.9977e-02 & \\
+122 & QuaternionAll & 1152 & 3.6441e-12 & 29 & 8.765e-14 & 6.5515e-02 & 22.074\\ \cline{2-8} \addlinespace
+pdb2mty & ClassicAll & 16 & 5.1232e-12 & 16 & 1.848e-14 & 1.7035e-03 & \\
+120 & QuaternionAll & 16 & 5.2129e-12 & 16 & 2.363e-14 & 1.0728e-03 & 58.793\\ \cline{2-8} \addlinespace
+pdb2muh & ClassicAll & 18432 & 1.3995e-05 & 5070 & 4.190e-07 & 1.5133e+01 & \\
+98 & QuaternionAll & 18432 & 1.3995e-05 & 5070 & 4.190e-07 & 8.1914e+00 & 84.741\\ \cline{2-8} \addlinespace
+pdb2mvj & ClassicAll & 64 & 6.1752e-12 & 3 & 1.534e-13 & 6.0424e-03 & \\
+156 & QuaternionAll & 64 & 6.1858e-12 & 3 & 1.647e-13 & 4.1485e-03 & 45.652\\ \cline{2-8} \addlinespace
+pdb2n00 & ClassicAll & 1024 & 9.6419e-05 & 342 & 3.910e-07 & 1.0703e+00 & \\
+572 & QuaternionAll & 1024 & 9.6419e-05 & 342 & 3.910e-07 & 7.0664e-01 & 51.460\\ \cline{2-8} \addlinespace
+pdb2n0b & ClassicAll & 573440 & 1.0219e-11 & 516662 & 7.123e-13 & 1.3982e+02 & \\
+60 & QuaternionAll & 573440 & 1.0781e-11 & 516662 & 9.477e-13 & 1.1558e+02 & 20.970\\ \cline{2-8} \addlinespace
+pdb2n0c & ClassicAll & 409600 & 1.0471e-12 & 136912 & 1.293e-13 & 8.1007e+01 & \\
+60 & QuaternionAll & 409600 & 9.1394e-13 & 136912 & 1.682e-13 & 6.7311e+01 & 20.347\\ \cline{2-8} \addlinespace
+pdb2n0d & ClassicAll & 73728 & 5.2061e-11 & 61516 & 3.639e-12 & 5.1307e+00 & \\
+60 & QuaternionAll & 73728 & 5.7645e-11 & 61516 & 4.540e-12 & 4.5411e+00 & 12.983\\ \cline{2-8} \addlinespace
+pdb2n0e & ClassicAll & 448 & 1.1503e-11 & 250 & 3.314e-12 & 2.2131e-02 & \\
+60 & QuaternionAll & 448 & 1.8786e-11 & 250 & 4.286e-12 & 1.2801e-02 & 72.891\\ \cline{2-8} \addlinespace
+pdb2n0f & ClassicAll & 24 & 2.2697e-12 & 8 & 3.185e-13 & 2.3725e-03 & \\
+60 & QuaternionAll & 24 & 2.7490e-12 & 8 & 4.023e-13 & 1.3768e-03 & 72.326\\ \cline{2-8} \addlinespace
+pdb2n0g & ClassicAll & 2048 & 1.4896e-11 & 1022 & 8.315e-13 & 5.8145e-02 & \\
+60 & QuaternionAll & 2048 & 1.4974e-11 & 1022 & 9.618e-13 & 5.7030e-02 & 1.955\\ \cline{2-8} \addlinespace
+pdb2n0h & ClassicAll & 2048 & 4.1935e-12 & 2022 & 7.716e-13 & 5.1485e-02 & \\
+60 & QuaternionAll & 2048 & 4.1379e-12 & 2022 & 8.755e-13 & 5.4972e-02 & -6.344\\ \cline{2-8} \addlinespace
+pdb2n35 & ClassicAll & 256 & 1.4234e-04 & 202 & 4.067e-08 & 3.9782e-02 & \\
+314 & QuaternionAll & 256 & 1.4234e-04 & 202 & 4.067e-08 & 2.9834e-02 & 33.346\\ \cline{2-8} \addlinespace
+pdb2n3a & ClassicAll & 64 & 2.1457e-03 & 45 & 8.770e-14 & 6.4307e-01 & \\
+574 & QuaternionAll & 64 & 2.1457e-03 & 45 & 1.049e-13 & 3.1953e-01 & 101.256\\ \cline{2-8} \addlinespace
+pdb2n41 & ClassicAll & 384 & 3.6179e-03 & 374 & 1.067e-07 & 4.6591e-01 & \\
+638 & QuaternionAll & 384 & 3.6179e-03 & 374 & 1.067e-07 & 2.6788e-01 & 73.925\\ \cline{2-8} \addlinespace
+pdb2n4e & ClassicAll & 64 & 4.6757e-03 & 18 & 1.081e-07 & 5.5445e-02 & \\
+638 & QuaternionAll & 64 & 4.6757e-03 & 18 & 1.081e-07 & 3.2210e-02 & 72.139\\ \cline{2-8} \addlinespace
+pdb2n67 & ClassicAll & 16 & 2.0736e-12 & 1 & 4.443e-13 & 7.6106e-03 & \\
+566 & QuaternionAll & 16 & 2.0936e-12 & 1 & 4.465e-13 & 4.8955e-03 & 55.460\\ \cline{2-8} \addlinespace
+pdb2n7j & ClassicAll & 2 & 2.5110e-12 & 1 & 5.969e-13 & 9.3849e-02 & \\
+336 & QuaternionAll & 2 & 2.6436e-12 & 1 & 6.094e-13 & 4.3939e-02 & 113.589\\ \cline{2-8} \addlinespace
+pdb2na9 & ClassicAll & 96 & 2.3390e-12 & 33 & 5.440e-14 & 2.0714e-02 & \\
+266 & QuaternionAll & 96 & 2.3721e-12 & 33 & 6.690e-14 & 1.2074e-02 & 71.554\\ \cline{2-8} \addlinespace
+pdb2ndc & ClassicAll & 8 & 3.1313e-03 & 2 & 3.365e-14 & 7.2414e-04 & \\
+110 & QuaternionAll & 8 & 3.1313e-03 & 2 & 4.481e-14 & 4.7306e-04 & 53.077\\ \cline{2-8} \addlinespace
+pdb2nde & ClassicAll & 8 & 8.5286e-05 & 2 & 7.022e-14 & 7.2508e-04 & \\
+110 & QuaternionAll & 8 & 8.5286e-05 & 2 & 8.855e-14 & 4.6803e-04 & 54.924\\ \cline{2-8} \addlinespace
+pdb2nvj & ClassicAll & 8 & 6.7520e-03 & 7 & 2.082e-14 & 1.0214e-03 & \\
+152 & QuaternionAll & 8 & 6.7520e-03 & 7 & 2.293e-14 & 6.6588e-04 & 53.387\\ \cline{2-8} \addlinespace
+pdb2p6j & ClassicAll & 8 & 3.2640e-13 & 1 & 4.795e-14 & 2.1989e-03 & \\
+314 & QuaternionAll & 8 & 3.5480e-13 & 1 & 6.389e-14 & 1.4052e-03 & 56.475\\ \cline{2-8} \addlinespace
+pdb2rlg & ClassicAll & 8 & 4.8140e-13 & 2 & 5.501e-14 & 2.2010e-03 & \\
+108 & QuaternionAll & 8 & 5.3066e-13 & 2 & 6.973e-14 & 1.2342e-03 & 78.342\\ \cline{2-8} \addlinespace
+pdb2rlh & ClassicAll & 8 & 1.0750e-12 & 3 & 4.772e-14 & 1.5218e-03 & \\
+108 & QuaternionAll & 8 & 1.0423e-12 & 3 & 5.801e-14 & 8.8788e-04 & 71.391\\ \cline{2-8} \addlinespace
+pdb2rmy & ClassicAll & 10240 & 1.1655e-04 & 2805 & 1.609e-07 & 1.5063e+00 & \\
+206 & QuaternionAll & 10240 & 1.1655e-04 & 2805 & 1.609e-07 & 1.3421e+00 & 12.235\\ \cline{2-8} \addlinespace
+pdb2roo & ClassicAll & 16 & 3.0591e-04 & 14 & 3.610e-06 & 4.2128e-02 & \\
+260 & QuaternionAll & 16 & 3.0591e-04 & 14 & 3.610e-06 & 2.2029e-02 & 91.237\\ \cline{2-8} \addlinespace
+pdb2rut & ClassicAll & 96 & 2.0579e-13 & 26 & 4.389e-14 & 1.9890e-02 & \\
+218 & QuaternionAll & 96 & 4.0546e-13 & 26 & 5.013e-14 & 1.1147e-02 & 78.435\\ \cline{2-8} \addlinespace
+pdb2ruv & ClassicAll & 32 & 5.4278e-13 & 6 & 5.775e-14 & 4.8844e-03 & \\
+224 & QuaternionAll & 32 & 6.5510e-13 & 6 & 7.404e-14 & 3.2191e-03 & 51.730\\ \cline{2-8} \addlinespace
+pdb2rux & ClassicAll & 192 & 3.4373e-03 & 49 & 3.717e-07 & 2.7441e-02 & \\
+218 & QuaternionAll & 192 & 3.4373e-03 & 49 & 3.717e-07 & 1.9435e-02 & 41.195\\ \cline{2-8} \addlinespace
+pdb2ruy & ClassicAll & 384 & 4.1535e-13 & 17 & 1.968e-14 & 2.8761e-02 & \\
+224 & QuaternionAll & 384 & 3.5904e-13 & 17 & 2.387e-14 & 2.5472e-02 & 12.910\\ \cline{2-8} \addlinespace
+pdb2rv3 & ClassicAll & 16 & 3.0630e-04 & 5 & 3.656e-14 & 3.3604e-03 & \\
+218 & QuaternionAll & 16 & 3.0630e-04 & 5 & 4.118e-14 & 2.0977e-03 & 60.197\\ \cline{2-8} \addlinespace
+pdb2rv5 & ClassicAll & 192 & 7.5780e-04 & 29 & 1.857e-07 & 3.7516e-02 & \\
+212 & QuaternionAll & 192 & 7.5780e-04 & 29 & 1.857e-07 & 2.3951e-02 & 56.635\\ \cline{2-8} \addlinespace
 \end{xltabular}
