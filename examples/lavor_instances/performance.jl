@@ -1,4 +1,4 @@
-using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV
+using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV, Printf
 
 gr()
 
@@ -7,7 +7,7 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 function plot_results(df::DataFrame)
 	gdf = groupby(df,:method)
 	for info in [:mean,:median,:minimum,:maximum]
-		plot(gdf[2].size[1:end-2],gdf[2][1:end-2,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Average of mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific);
+		plot(gdf[2].size[1:end-2],gdf[2][1:end-2,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific);
 		plot!(gdf[1].size[1:end-2],gdf[1][1:end-2,info],color = [:black],label = "ClassicBP");
 		savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
 		#png("results/figures/perf_$(info)_$(df.ref[1])");
@@ -42,6 +42,7 @@ function write_results(df::DataFrame)
 	gdf = groupby(df,:method)
 	n = length(gdf[1].mean)
 	# average percentual imṕrovement in processing time
+	improv_geometric_mean = improv((prod(gdf[2].mean))^(1/n),(prod(gdf[1].mean))^(1/n))
 	improv_mean = sum(improv.(gdf[2].mean,gdf[1].mean))/n
 	improv_median = sum(improv.(gdf[2].median,gdf[1].median))/n
 	improv_minimum = sum(improv.(gdf[2].minimum,gdf[1].minimum))/n
@@ -53,9 +54,64 @@ function write_results(df::DataFrame)
 	write(io, "median -> $(improv_median) \n");
 	write(io, "minimum -> $(improv_minimum) \n");
 	write(io, "maximum -> $(improv_maximum) \n");
+	write(io, "geometric mean over means -> $(improv_geometric_mean) \n");
 	close(io)
 end
 
+function rewrite(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000])
+	for diag in ndiag
+		df = CSV.read("results/$(diag).csv",DataFrame)
+		write_results(df)
+	end
+end
+
+function createtableimprov(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000])
+	headerText = ""
+	geometric_mean1Text = ""
+	geometric_mean2Text = ""
+	improvText = ""
+	improv(q,c) = (c/q -1.0)*100
+	comma = ""
+	for diag in ndiag
+		headerText = string(headerText, comma, "\\multicolumn{1}{c|}{$(diag)}")
+		
+		gdf = groupby(CSV.read("results/$(diag).csv",DataFrame),:method)
+		n = length(gdf[1].mean)
+		
+		geometric_mean1 = (prod(gdf[1].mean))^(1/n)
+		geometric_mean1Text = string(geometric_mean1Text, comma, @sprintf("%.2e", geometric_mean1))
+		
+		geometric_mean2 = (prod(gdf[2].mean))^(1/n)
+		geometric_mean2Text = string(geometric_mean2Text, comma, @sprintf("%.2e", geometric_mean2))
+		
+		improvText = string(improvText,comma, "\\multicolumn{1}{c|}{",@sprintf("%.2f", improv(geometric_mean2,geometric_mean1)),"\\%}")
+		
+		comma == "" && (comma = " & ")
+	end
+	io = open("results/tex/improvtable.tex", "w");
+
+	write(io, "
+	\\begin{table}[H]
+        \\centering
+        {\\footnotesize
+        
+        \\begin{tabular}{||r |$(repeat("S[table-format=1.2e+2] |", length(ndiag)-1)) S[table-format=1.2e+2]||}
+                \\hline
+				")
+	write(io, "        \$n_d\$ & $(headerText) \\\\\n");
+	write(io, "        \\hline\n");
+	write(io, "        C & $(geometric_mean1Text) \\\\\n");
+	write(io, "        Q & $(geometric_mean2Text) \\\\\n");
+	write(io, "        Improv & $(improvText) \\\\\n");
+	write(io, "        \\hline
+	\\end{tabular}}
+	\\caption{Improvement percentage in geometric means of \\texttt{QuaternionBP} in relation to \\texttt{ClassicBP} considering results of the benchmark.}
+	\\label{table:improvlavor}
+\\end{table}");
+
+
+	close(io)
+end
 
 """
 This function was created to make tests in order to perform our algorithms. Essentially, 
