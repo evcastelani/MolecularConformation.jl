@@ -2,7 +2,7 @@ using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV
 
 gr()
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 5
 
 function plot_results(df::DataFrame)
 	gdf = groupby(df,:method)
@@ -67,7 +67,7 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 
 """
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
-function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-3, virtual_ε=1.0e-8)
+function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-8)
 	#initialization
 	opt_classic = ConformationSetup(ε,classicBP,allsolutions,MDE,virtual_ε)
 	opt_quaternion = ConformationSetup(ε,quaternionBP,allsolutions,MDE,virtual_ε)
@@ -117,8 +117,8 @@ julia> runperf()
 ```
 some graphs will be saved in current folder. 
 """
-function runperf()
+function runperf(;ε=1.0e-4, virtual_ε=1.0e-8)
 	for ndiag in [3,4,5,10,100,200,300,400,500,600,700,800,900,1000] # [3,10,100,400,800] 
-		perform(ndiag)
+		perform(ndiag, ε=1.0e-4, virtual_ε=1.0e-8)
 	end
 end
