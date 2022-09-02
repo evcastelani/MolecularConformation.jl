@@ -1,7 +1,7 @@
 Remark: Analysis of improvements from quaternion to classic 
 Average of improvements in processing time (%)
-mean -> 10.312514160288721 
-median -> 6.346563846465407 
-minimum -> 7.335772927773127 
-maximum -> 0.5424483789055117 
-geometric mean over means -> 9.585847174352624 
+mean -> 6.846186250792986 
+median -> 7.121972911352592 
+minimum -> 7.853265143607474 
+maximum -> 6.949942479641501 
+geometric mean over means -> 6.575834230791333 

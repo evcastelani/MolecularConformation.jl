@@ -31,10 +31,10 @@ julia> perform(Minute(2)) # to timeout of 2 minutes
 ```
 
 """
-function perform(limit_time,opwrite::String="a",f::Function=median; list_of_problems="")
-	# setup 
-	optq = ConformationSetup(1.0e-8,quaternionBP,false,true,1.0e-8)
-	optc = ConformationSetup(1.0e-8,classicBP,false,true,1.0e-8)
+function perform(limit_time,opwrite::String="a",f::Function=median; list_of_problems="", ε=1.0e-3, virtual_ε=1.0e-8)
+        # setup 
+        optq = ConformationSetup(ε,quaternionBP,false,true,virtual_ε)
+        optc = ConformationSetup(ε,classicBP,false,true,virtual_ε)
 	data = preprocessing("toyinstance.nmr")
 	# first run (to optimize)
 	solq = conformation(data,optq,limit_time)
@@ -110,10 +110,10 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
 	close(iogen)
 end
 
-function performRMSD(limit_time,opwrite::String="a",f::Function=median; list_of_problems="")
+function performRMSD(limit_time,opwrite::String="a",f::Function=median; list_of_problems="", ε=1.0e-3, virtual_ε=1.0e-8)
 	# setup 
-	optq = ConformationSetup(1.0e-8,quaternionBP,true,true,1.0e-8)
-	optc = ConformationSetup(1.0e-8,classicBP,true,true,1.0e-8)
+	optq = ConformationSetup(ε,quaternionBP,true,true,virtual_ε)
+	optc = ConformationSetup(ε,classicBP,true,true,virtual_ε)
 	data = preprocessing("toyinstance.nmr")
 	# first run (to optimize)
 	solq = conformation(data,optq,limit_time)
@@ -210,8 +210,8 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median; list_of_
 	close(ioperf)
 end
 
-function performoneRMSD(prob, bpall=false, limit_time=Second(120.0); ε=1.0e-8, ε_virtual=1.0e-8)
-    optc = ConformationSetup(ε, classicBP, bpall, true, ε_virtual)
+function performoneRMSD(prob, bpall=false, limit_time=Second(120.0); ε=1.0e-3, virtual_ε=1.0e-8)
+    optc = ConformationSetup(ε, classicBP, bpall, true, virtual_ε)
     data = preprocessing("toyinstance.nmr")
 
     global solc = conformation(data, optc, limit_time)
