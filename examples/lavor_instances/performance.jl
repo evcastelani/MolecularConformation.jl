@@ -7,7 +7,7 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 5
 function plot_results(df::DataFrame)
 	gdf = groupby(df,:method)
 	for info in [:mean,:median,:minimum,:maximum]
-		plot(gdf[2].size[1:end],gdf[2][1:end,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific);
+		plot(gdf[2].size[1:end],gdf[2][1:end,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft);
 		plot!(gdf[1].size[1:end],gdf[1][1:end,info],color = [:black],label = "ClassicBP");
 		savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
 		#png("results/figures/perf_$(info)_$(df.ref[1])");
