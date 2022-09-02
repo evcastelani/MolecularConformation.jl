@@ -4,20 +4,20 @@ gr()
 
 BenchmarkTools.DEFAULT_PARAMETERS.samples = 5
 
-function plot_results(df::DataFrame)
+function plot_results(df::DataFrame;kargs...)
 	gdf = groupby(df,:method)
 	for info in [:mean,:median,:minimum,:maximum]
-		plot(gdf[2].size[1:end],gdf[2][1:end,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft);
+		plot(gdf[2].size[1:end],gdf[2][1:end,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
 		plot!(gdf[1].size[1:end],gdf[1][1:end,info],color = [:black],label = "ClassicBP");
 		savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
 		#png("results/figures/perf_$(info)_$(df.ref[1])");
 	end
 end
 
-function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000])
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000];kargs...)
 	for diag in ndiag
 		df = CSV.read("results/$(diag).csv",DataFrame)
-		plot_results(df)
+		plot_results(df; kargs...)
 	end
 end
 
