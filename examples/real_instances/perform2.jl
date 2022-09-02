@@ -47,7 +47,9 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
 	io = open("not_solved.csv",opwrite)
     ioperf = open("results.csv",opwrite)
 	iogen = open("table_general.tex",opwrite)
-	
+		
+	println(ioperf,"problem, \"classicBP processing time\", \"quaternionBP processing time\"")
+
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
 	\t\\toprule
@@ -127,6 +129,8 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median; list_of_
 	io = open("not_solved.csv",opwrite)
 	iogen = open("table_general.tex",opwrite)
     ioperf = open("resultsRMSD.csv",opwrite)
+
+	println(ioperf,"problem, \"min RMSD in classicBP\", \"index of min RMSD in classicBP\", \"min RMSD in quaternionBP\", \"index of min RMSD in quaternionBP\"")
 
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rcS[table-format=1.4e+2]cS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
