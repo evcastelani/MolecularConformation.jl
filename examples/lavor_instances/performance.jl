@@ -24,8 +24,9 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000];isfixe
 
 		for i in 1:2:length(gdf)	
 			for info in [:mean,:median,:minimum,:maximum]
-				plot(gdf[i+1].ref[1:end],log10.(gdf[i+1][1:end,:mean]),color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft);
-				plot!(gdf[i].ref[1:end],gdf[i][1:end,:mean],color = [:black],label = "ClassicBP");
+				index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
+				plot(gdf[i+1].ref[index],gdf[i+1][index,:mean],color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft);
+				plot!(gdf[i].ref[index],gdf[i][index,:mean],color = [:black],label = "ClassicBP");
 				savefig("results/figures/perf_$(info)_size$(gdf[i].size[1]).pdf");
 			end
 		end
