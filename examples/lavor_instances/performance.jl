@@ -2,7 +2,7 @@ using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV, Printf
 
 gr()
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 5
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
 function plot_results(df::DataFrame;kargs...)
 	gdf = groupby(df,:method)
@@ -14,10 +14,26 @@ function plot_results(df::DataFrame;kargs...)
 	end
 end
 
-function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000];kargs...)
-	for diag in ndiag
-		df = CSV.read("results/$(diag).csv",DataFrame)
-		plot_results(df; kargs...)
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000];isfixedsize=false, kargs...)
+	if isfixedsize
+		df = DataFrame()
+		for diag in ndiag
+			df = vcat(df, CSV.read("results/$(diag).csv",DataFrame))
+		end
+		gdf = groupby(df,[:size,:method])
+
+		for i in 1:2:length(gdf)	
+			for info in [:mean,:median,:minimum,:maximum]
+				plot(gdf[i+1].ref[1:end],log10.(gdf[i+1][1:end,:mean]),color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft);
+				plot!(gdf[i].ref[1:end],gdf[i][1:end,:mean],color = [:black],label = "ClassicBP");
+				savefig("results/figures/perf_$(info)_size$(gdf[i].size[1]).pdf");
+			end
+		end
+	else
+		for diag in ndiag
+			df = CSV.read("results/$(diag).csv",DataFrame)
+			plot_results(df; kargs...)
+		end	
 	end
 end
 
