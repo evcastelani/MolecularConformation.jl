@@ -13,33 +13,6 @@ examples/lavor_instances/900
 examples/lavor_instances/1000
 examples/lavor_instances/2000
 examples/lavor_instances/3000
-examples/lavor_instances/perf_maximum_200.png
-examples/lavor_instances/perf_maximum_300.png
-examples/lavor_instances/perf_maximum_400.png
-examples/lavor_instances/perf_maximum_600.png
-examples/lavor_instances/perf_maximum_700.png
-examples/lavor_instances/perf_maximum_800.png
-examples/lavor_instances/perf_mean_200.png
-examples/lavor_instances/perf_mean_300.png
-examples/lavor_instances/perf_mean_400.png
-examples/lavor_instances/perf_mean_600.png
-examples/lavor_instances/perf_mean_700.png
-examples/lavor_instances/perf_mean_800.png
-examples/lavor_instances/perf_median_200.png
-examples/lavor_instances/perf_median_300.png
-examples/lavor_instances/perf_median_400.png
-examples/lavor_instances/perf_median_600.png
-examples/lavor_instances/perf_median_700.png
-examples/lavor_instances/perf_median_800.png
-examples/lavor_instances/perf_minimum_200.png
-examples/lavor_instances/perf_minimum_300.png
-examples/lavor_instances/perf_minimum_400.png
-examples/lavor_instances/perf_minimum_600.png
-examples/lavor_instances/perf_minimum_700.png
-examples/lavor_instances/perf_minimum_800.png
-examples/lavor_instances/perfomance.aux
-examples/lavor_instances/perfomance.log
-examples/lavor_instances/perfomance.pdf
  
 # list of real instances
 examples/real_instances/list.txt
