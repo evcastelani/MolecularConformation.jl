@@ -7,6 +7,7 @@ BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 function plot_results(df::DataFrame;kargs...)
 	gdf = groupby(df,:method)
 	for info in [:mean,:median,:minimum,:maximum]
+		#index = [j for j in 1:length(gdf[1].ref) if gdf[1].size[j]<=gdf[i].size[1]]
 		plot(gdf[2].size[1:end],gdf[2][1:end,info],color = [:black],line = (:dot,1),xaxis= ("Size of problems"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
 		plot!(gdf[1].size[1:end],gdf[1][1:end,info],color = [:black],label = "ClassicBP");
 		savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
@@ -14,20 +15,29 @@ function plot_results(df::DataFrame;kargs...)
 	end
 end
 
-function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000];isfixedsize=false, kargs...)
-	if isfixedsize
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixedsize=false, fixedindex=false, improv=false, kargs...)
+	if fixedsize
 		df = DataFrame()
 		for diag in ndiag
 			df = vcat(df, CSV.read("results/$(diag).csv",DataFrame))
 		end
 		gdf = groupby(df,[:size,:method])
-
+		
 		for i in 1:2:length(gdf)	
 			for info in [:mean,:median,:minimum,:maximum]
-				index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
-				plot(gdf[i+1].ref[index],gdf[i+1][index,:mean],color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft);
-				plot!(gdf[i].ref[index],gdf[i][index,:mean],color = [:black],label = "ClassicBP");
-				savefig("results/figures/perf_$(info)_size$(gdf[i].size[1]).pdf");
+				if fixedindex 
+					index = 1:length(gdf[i].ref)
+				else
+					index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
+				end
+				if improv
+					plot(gdf[i].ref[index],map((x,y) -> (y/x -1.0)*100, gdf[i+1][index,:mean], gdf[i][index,:mean]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
+					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1])_improv.pdf");
+				else
+					plot(gdf[i+1].ref[index],map(x -> x/gdf[i].size[1], gdf[i+1][index,:mean]),color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
+					plot!(gdf[i].ref[index],map(x -> x/gdf[i].size[1], gdf[i][index,:mean]),color = [:black],label = "ClassicBP");
+					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1]).pdf");
+				end
 			end
 		end
 	else
