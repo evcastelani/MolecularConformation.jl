@@ -522,7 +522,7 @@ function classicBP(NMRdata :: NMRType,
 		D23 = NMRdata.info[2,3].dist
 		cθ,sθ = bondangle(D12,D13,D23)
 		mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
-		mol.atoms[3].x = -D12+D23*cθ
+		mol.atoms[3].x = D23*cθ-D12
 		mol.atoms[3].y = D23*sθ
 		mol.atoms[3].z = 0.0
 		C = zeros(4,4)
@@ -688,6 +688,9 @@ function quaternionBP(NMRdata :: NMRType,
 		D12 = NMRdata.info[1,2].dist
 		D13 = NMRdata.info[1,3].dist
 		D23 = NMRdata.info[2,3].dist
+		# cθ,sθ = bondangle(D12,D13,D23)
+		# cθ = sqrt(0.5 + 0.5*cθ)
+		# sθ = sqrt(0.5 - 0.5*sθ)
 		cθ,sθ = qbondangle(D12,D13,D23)
 		Q = Quaternion(0.0,-cθ,-sθ,0.0)
 		d = 2.0*D23
@@ -696,7 +699,10 @@ function quaternionBP(NMRdata :: NMRType,
 		mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
 		mol.atoms[3].y = qmol.v2 + mol.atoms[2].y
 		mol.atoms[3].z = qmol.v3 + mol.atoms[2].z
-
+		# cost: 4 + 5c_m
+		# qcos(θ) cost = 3 + 5c_m + c_d + c_√
+		# qsin(θ) cost = 1 + c_√
+		# cost total: 8 + 10c_m + c_d + 2c_√
 		return 4,4,mol,Q
 	end
 	
@@ -739,6 +745,7 @@ function quaternionBP(NMRdata :: NMRType,
 			b = sθ*sω
 			c = -cθ*sω
 			d = cθ*cω
+			# q_i^0 cost: 4c_m
 			if l==virtualPos
 				Q = qprod(Q_before,a,b,c,d)
 				lastpos = pos

@@ -260,7 +260,9 @@ function bondangle(d23,d24,d34)
 	elseif c>1.0
 		return 1.0, 0.0
 	end
-	return c,sqrt(1.0-c^2)
+	return c,sqrt(1.0-(c*c))
+	# cos(θ) cost = 2 + 5c_m + c_d
+	# sin(θ) cost = 1 + c_m + c_√
 end
 
 """
@@ -308,6 +310,8 @@ function torsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
 		return 1.0, 0
 	end
 	return valc,sqrt(1.0-valc*valc)
+	# cos(ω) cost = 9 + 15c_m + c_d + c_√
+	# sin(ω) cost = 1 + c_m + c_√
 end
 
 """
@@ -408,6 +412,7 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[3,4] = d34*B[3,1] 
 	B[4,4] = 1
 	return B
+	# cost: 7c_m
 end
 
 function torsionmatrix(B::Array{Float64,2},cosθ::Float64,sinθ::Float64,cosω::Float64,sinω::Float64,d34::Float64)
@@ -424,6 +429,7 @@ function torsionmatrix(B::Array{Float64,2},cosθ::Float64,sinθ::Float64,cosω::
 	B[3,3] = cosω
 	B[3,4] = d34*B[3,1] 
 	B[4,1:4] = [0,0,0,1]
+	# cost: 7c_m
 end
 
 function torsionmatrix(B)
@@ -601,6 +607,8 @@ function qbondangle(d23,d24,d34)
 		return 1.0, 0.0
 	end
 	return sqrt(0.5 + c),sqrt(0.5 - c)
+	# qcos(θ) cost = 3 + 5c_m + c_d + c_√
+	# qsin(θ) cost = 1 + c_√
 end
 
 function qtorsionangle(d12,d13,d14,d23,d24,d34)
@@ -617,6 +625,8 @@ function qtorsionangle(d12,d13,d14,d23,d24,d34)
 		return 1.0, 0.0
 	end
 	return sqrt(0.5+valc),sqrt(0.5-valc)
+	# cos(ω) cost: 10 + 15c_m + c_d + 2c_√
+	# sin(ω) cost: 1 + c_√
 end
 
 # Quaternion small library
@@ -648,6 +658,7 @@ function qprod(q::Quaternion,w::Quaternion)
 					   q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
 					   q.s * w.v2 - q.v1 * w.v3 + q.v2 * w.s + q.v3 * w.v1,
 					   q.s * w.v3 + q.v1 * w.v2 - q.v2 * w.v1 + q.v3 * w.s)
+	# cost: 12 + 16c_m
 end
 
 function qprod(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
@@ -655,6 +666,7 @@ function qprod(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
 					   q.s * b + q.v1 * a + q.v2 * d - q.v3 * c,
 					   q.s * c - q.v1 * d + q.v2 * a + q.v3 * b,
 					   q.s * d + q.v1 * c - q.v2 * b + q.v3 * a)
+	# cost: 12 + 16c_m
 end
 
 function reflectq(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
@@ -674,6 +686,7 @@ end
 function rotopt(Q::Quaternion,t::Float64)
 	sl = 2.0*t
 	return Quaternion(0.0, sl*(Q.s*Q.s + Q.v1*Q.v1 -0.5) ,sl*(Q.v2*Q.v1 + Q.v3*Q.s), sl*(Q.v3*Q.v1 - Q.v2*Q.s))
+	# cost: 4 + 10c_m
 end
 
 # to be fair with memory acess in comparations
@@ -687,9 +700,9 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
 	end
 	return C 
+	# cost: 24 + 33c_m
 end
-#[24,33,0,0]
-#[48,64,0,0]
+
 function prodmatrix(C::Array{Float64,2},A::Array{Float64,2},B::Array{Float64,2})
 	C[4,1:4] = [0,0,0,1]
 	for i=1:3
@@ -698,6 +711,7 @@ function prodmatrix(C::Array{Float64,2},A::Array{Float64,2},B::Array{Float64,2})
 		C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
 		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
 	end
+	# cost: 24 + 33c_m
 end
 """
 	convert_to_dataframe
