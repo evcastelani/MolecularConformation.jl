@@ -48,7 +48,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
     ioperf = open("results.csv",opwrite)
 	iogen = open("table_general.tex",opwrite)
 		
-	println(ioperf,"problem, \"classicBP processing time\", \"quaternionBP processing time\"")
+	println(ioperf,"problem,timeClassic,timeQuaternion")
 
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
@@ -78,7 +78,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
 			print(" 💥 The problem $(prob) cannot be solved within the timeout.\n")
 			print(" \n")
 			println(io, prob )
-            println(ioperf,"$(prob) , Inf, Inf ")
+            println(ioperf,"$(prob),Inf,Inf")
 			continue
 		end
 		print(" 🔔 The problem $(prob) can be solved within the timeout. \n") 
@@ -99,7 +99,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
 		improv = (-1.0+PTc/PTq)*100
 		rmsd = evalrmsd(solc,solq)[2]
 
-        println(ioperf,"$(prob) , $(PTc), $(PTq) ")
+        println(ioperf,"$(prob),$(PTc),$(PTq)")
 
 		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",MDEc)) &  & $(@sprintf("%.4e",PTc)) & \\\\")
 		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.3f",improv))\\\\ \\cline{2-6} \\addlinespace")
@@ -130,7 +130,7 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median; list_of_
 	iogen = open("table_general.tex",opwrite)
     ioperf = open("resultsRMSD.csv",opwrite)
 
-	println(ioperf,"problem, \"min RMSD in classicBP\", \"index of min RMSD in classicBP\", \"min RMSD in quaternionBP\", \"index of min RMSD in quaternionBP\"")
+	println(ioperf,"problem,minRMSDclassic,argminRMSDclassic,minRMSDquaternion,argminRMSDquaternion")
 
 	println(iogen, "\\begin{xltabular}{\\textwidth}{r|rcS[table-format=1.4e+2]cS[table-format=1.3e+2]S[table-format=1.4e+2]S[table-format=-1.3]}
 	\t\\caption{Results} \\label{tab:genResults}\\\\
@@ -204,7 +204,7 @@ function performRMSD(limit_time,opwrite::String="a",f::Function=median; list_of_
 		println(iogen,"$(prob) & ClassicAll & $(solc.number) & $(@sprintf("%.4e",minimum(rmsdvalc))) & $(argmin(rmsdvalc)) & $(@sprintf("%.3e",MDEc)) & $(@sprintf("%.4e",PTc)) & \\\\")
 		println(iogen,"$(data.dim) & QuaternionAll & $(solq.number) & $(@sprintf("%.4e",minimum(rmsdvalq))) & $(argmin(rmsdvalq)) & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.3f",improv))\\\\ \\cline{2-8} \\addlinespace")
 		
-        println(ioperf,"$(prob) , $(minimum(rmsdvalc)), $(argmin(rmsdvalc)), $(minimum(rmsdvalq)), $(argmin(rmsdvalq)) ")
+        println(ioperf,"$(prob),$(minimum(rmsdvalc)),$(argmin(rmsdvalc)),$(minimum(rmsdvalq)),$(argmin(rmsdvalq))")
 	end
 
 	println(iogen, "\\end{xltabular}")

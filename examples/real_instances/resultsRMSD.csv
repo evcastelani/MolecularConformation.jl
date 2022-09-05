@@ -1,4 +1,4 @@
-problem, "min RMSD in classicBP", "index of min RMSD in classicBP", "min RMSD in quaternionBP", "index of min RMSD in quaternionBP"
+problem,minRMSDclassic,argminRMSDclassic,minRMSDquaternion,argminRMSDquaternion
 pdb1a57 , 3.1805714313642905e-11, 5, 3.355011835539362e-11, 5 
 pdb1b4c , 2.6823563709731513e-12, 5, 3.466246068090878e-12, 5 
 pdb1ba5 , 0.03562122606785058, 6, 0.03562122606839002, 6 
