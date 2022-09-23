@@ -55,7 +55,7 @@ Massive tests were carried out to prove the potential of the implementations. If
 
 
 
-1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
+1. [X] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
 1. [X] Include signs vector (this idea doesn't work);
 1. [X] Include in the data list the information about both atoms not just one 
 1. [X] Include in the data list the symmetry in the information too;
@@ -66,4 +66,7 @@ Massive tests were carried out to prove the potential of the implementations. If
 1. [X] Modify the quaternion version to new input and improvements;
 1. [X] Run all examples and create a table of tests;
 1. [X] Include a decent documentation using `Documenter.jl`.
-
+1. [ ] Merge branch master with COAP
+1. [ ] Revise the Documentation (and the readme in benchmarks folders)
+1. [ ] Add in README informations about the consolidate benchmark files and a brief description about the benchmark folders
+1. [ ] Update the package to last LTS Julia version
