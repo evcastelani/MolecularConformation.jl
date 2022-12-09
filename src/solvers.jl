@@ -672,7 +672,7 @@ function quaternionBP(NMRdata :: NMRType,
 		for i=1:n
 			mol.atoms[i] = AtomType(0.0,0.0,0.0)
 		end
-		Q = Quaternion(0.0,0.0,0.0,0.0)
+		Q = QuaternionM(0.0,0.0,0.0,0.0)
 
 		# first atom
 		mol.atoms[1].element = NMRdata.info[1,:].nzval[1].atom1
@@ -692,13 +692,13 @@ function quaternionBP(NMRdata :: NMRType,
 		# cθ = sqrt(0.5 + 0.5*cθ)
 		# sθ = sqrt(0.5 - 0.5*sθ)
 		cθ,sθ = qbondangle(D12,D13,D23)
-		Q = Quaternion(0.0,-cθ,-sθ,0.0)
+		Q = QuaternionM(0.0,-cθ,-sθ,0.0)
 		d = 2.0*D23
-		qmol = Quaternion(0.0,d*(cθ*cθ-0.5),d*(cθ*sθ),0.0)
+		qmol = QuaternionM(0.0,d*(cθ*cθ-0.5),d*(cθ*sθ),0.0)
 		mol.atoms[3].element = NMRdata.info[3,:].nzval[1].atom1
-		mol.atoms[3].x = qmol.v1 + mol.atoms[2].x
-		mol.atoms[3].y = qmol.v2 + mol.atoms[2].y
-		mol.atoms[3].z = qmol.v3 + mol.atoms[2].z
+		mol.atoms[3].x = qmol.m[2,2] + mol.atoms[2].x
+		mol.atoms[3].y = qmol.m[3,3] + mol.atoms[2].y
+		mol.atoms[3].z = qmol.m[4,4] + mol.atoms[2].z
 		# cost: 4 + 5c_m
 		# qcos(θ) cost = 3 + 5c_m + c_d + c_√
 		# qsin(θ) cost = 1 + c_√
@@ -710,7 +710,7 @@ function quaternionBP(NMRdata :: NMRType,
 	function quaternionBP_closure(l :: Int64,
 									pos::Int64,
 									mol :: MoleculeType,
-									Q :: Quaternion)
+									Q :: QuaternionM)
 
 		if time_limit !== nothing
 			time_elapsed = Dates.now()-start
@@ -754,9 +754,9 @@ function quaternionBP(NMRdata :: NMRType,
 				Q_virtual = qprod(Q_before,a,b,c,d)
 				qmol = rotopt(Q_virtual,D34)
 				# TODO: (Emerson) não conseguimos fazer o calculo abaixo da mesma forma que o classicBP?
-				vx = qmol.v1 + mol.atoms[virtualLastPos].x-mol.atoms[virtualPos].x
-				vy = qmol.v2 + mol.atoms[virtualLastPos].y-mol.atoms[virtualPos].y
-				vz = qmol.v3 + mol.atoms[virtualLastPos].z-mol.atoms[virtualPos].z
+				vx = qmol.m[2,2] + mol.atoms[virtualLastPos].x-mol.atoms[virtualPos].x
+				vy = qmol.m[3,3] + mol.atoms[virtualLastPos].y-mol.atoms[virtualPos].y
+				vz = qmol.m[4,4] + mol.atoms[virtualLastPos].z-mol.atoms[virtualPos].z
 				if vx*vx + vy*vy + vz*vz > virtual_ε²
 					Q_before = qprod(Q_before,a,-b,-c,d)
 				else
@@ -767,9 +767,9 @@ function quaternionBP(NMRdata :: NMRType,
 		end
 		qmol = rotopt(Q,D34)
 		#mol.atoms[l].element = NMRdata.info[l,:].nzval[1].atom1 we not need anymore
-		changeposition(mol.atoms[l], qmol.v1 + mol.atoms[virtualLastPos].x, 
-									 qmol.v2 + mol.atoms[virtualLastPos].y,
-									 qmol.v3 + mol.atoms[virtualLastPos].z)
+		changeposition(mol.atoms[l], qmol.m[2,2] + mol.atoms[virtualLastPos].x, 
+									 qmol.m[3,3] + mol.atoms[virtualLastPos].y,
+									 qmol.m[4,4] + mol.atoms[virtualLastPos].z)
 
 		if pruningtest(mol,l,NMRdata,ϵₛ)
 			if l<n
@@ -785,9 +785,9 @@ function quaternionBP(NMRdata :: NMRType,
 		end
 		Q = qprod(Q_before,a,-b,-c,d)
 		qmol = rotopt(Q,D34)
-		mol.atoms[l].x = qmol.v1 + mol.atoms[virtualLastPos].x
-		mol.atoms[l].y = qmol.v2 + mol.atoms[virtualLastPos].y
-		mol.atoms[l].z = qmol.v3 + mol.atoms[virtualLastPos].z
+		mol.atoms[l].x = qmol.m[2,2] + mol.atoms[virtualLastPos].x
+		mol.atoms[l].y = qmol.m[3,3] + mol.atoms[virtualLastPos].y
+		mol.atoms[l].z = qmol.m[4,4] + mol.atoms[virtualLastPos].z
 
 		if pruningtest(mol,l,NMRdata,ϵₛ)  
 			if !allmol && output_to_symBP

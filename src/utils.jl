@@ -637,8 +637,21 @@ mutable struct Quaternion
 	v3 :: Float64
 end
 
+# write something useful here
+mutable struct QuaternionM
+	m :: Array{Float64,2}
+
+	function QuaternionM(a,b,c,d)
+			new([a 1 2 3; 1 b 3 4; 1 2 c 4; 1 2 3 d])                
+	end
+end
+
 function Base.copy(Q::Quaternion)
 	return Quaternion(Q.s, Q.v1, Q.v2, Q.v3)
+end
+
+function Base.copy(Q::QuaternionM)
+	return QuaternionM(Q.m[1,1], Q.m[2,2], Q.m[3,3], Q.m[4,4])
 end
 
 #function qsign(q::Quaternion)
@@ -669,6 +682,22 @@ function qprod(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
 	# cost: 12 + 16c_m
 end
 
+function qprod(q::QuaternionM,w::QuaternionM)
+	return  QuaternionM(q.m[1,1] * w.m[1,1] - q.m[2,2] * w.m[2,2] - q.m[3,3] * w.m[3,3] - q.m[4,4] * w.m[4,4],
+					   q.m[1,1] * w.m[2,2] + q.m[2,2] * w.m[1,1] + q.m[3,3] * w.m[4,4] - q.m[4,4] * w.m[3,3],
+					   q.m[1,1] * w.m[3,3] - q.m[2,2] * w.m[4,4] + q.m[3,3] * w.m[1,1] + q.m[4,4] * w.m[2,2],
+					   q.m[1,1] * w.m[4,4] + q.m[2,2] * w.m[3,3] - q.m[3,3] * w.m[2,2] + q.m[4,4] * w.m[1,1])
+	# cost: 12 + 16c_m
+end
+
+function qprod(q::QuaternionM,a::Float64,b::Float64,c::Float64,d::Float64)
+	return  QuaternionM(q.m[1,1] * a - q.m[2,2] * b - q.m[3,3] * c - q.m[4,4] * d,
+					   q.m[1,1] * b + q.m[2,2] * a + q.m[3,3] * d - q.m[4,4] * c,
+					   q.m[1,1] * c - q.m[2,2] * d + q.m[3,3] * a + q.m[4,4] * b,
+					   q.m[1,1] * d + q.m[2,2] * c - q.m[3,3] * b + q.m[4,4] * a)
+	# cost: 12 + 16c_m
+end
+
 function reflectq(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
 	Q_before,a,-b,-c,d
 	q.s = q.s * a - q.v1 * b - q.v2 * c - q.v3 * d
@@ -686,6 +715,12 @@ end
 function rotopt(Q::Quaternion,t::Float64)
 	sl = 2.0*t
 	return Quaternion(0.0, sl*(Q.s*Q.s + Q.v1*Q.v1 -0.5) ,sl*(Q.v2*Q.v1 + Q.v3*Q.s), sl*(Q.v3*Q.v1 - Q.v2*Q.s))
+	# cost: 4 + 10c_m
+end
+
+function rotopt(Q::QuaternionM,t::Float64)
+	sl = 2.0*t
+	return QuaternionM(0.0, sl*(Q.m[1,1]*Q.m[1,1] + Q.m[2,2]*Q.m[2,2] -0.5) ,sl*(Q.m[3,3]*Q.m[2,2] + Q.m[4,4]*Q.m[1,1]), sl*(Q.m[4,4]*Q.m[2,2] - Q.m[3,3]*Q.m[1,1]))
 	# cost: 4 + 10c_m
 end
 
