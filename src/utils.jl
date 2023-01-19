@@ -364,39 +364,13 @@ function getangles(d12,d13,d14,d23,d24,d34)#i=4,...,n
 	return valca, valsa, valcw, valsw
 end
 
-"""
-```
-torsionmatrix :: Function
-```
-This is an auxiliary function  used by classicBp solver to compute the torsion array.
-"""
-function torsionmatrix(cosθ,sinθ,cosω,sinω,d34,B,sign::Bool)
-	if sign == true
-		B=zeros(4,4)
-		B[1,1] = -cosθ
-		B[1,2] = -sinθ
-		B[1,4] = -d34*cosθ
-		B[2,1] = sinθ*cosω
-		B[2,2] = -cosθ*cosω
-		B[2,3] = -sinω
-		B[2,4] = d34*B[2,1]
-		B[3,1] = sinθ*sinω
-		B[3,2] = -cosθ*sinω
-		B[3,3] = cosω
-		B[3,4] = d34*B[3,1] 
-		B[4,4] = 1
-	else
-		B[2,3] = -B[2,3]
-		B[3,1] = -B[3,1]
-		#B[1,3] = -B[1,3] # Commented because is zero in torsion matrix (B). Be careful to NOT apply this function to accumulated torsion matrix (C)
-		B[3,2] = -B[3,2]
-		B[3,4] = -B[3,4]	
-	end
-	return B
-end
-
 function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
-	B=zeros(4,4)
+	#B=zeros(4,4)
+	B = Array{Float64,2}(undef,4,4)
+	#B=zeros(4,4)
+	B[4,1] = B[4,2] = B[4,3] = 0.0
+	B[4,4] = 1.0
+	
 	B[1,1] = -cosθ
 	B[1,2] = -sinθ
 	B[1,4] = -d34*cosθ
@@ -408,7 +382,6 @@ function torsionmatrix(cosθ,sinθ,cosω,sinω,d34)
 	B[3,2] = -cosθ*sinω
 	B[3,3] = cosω
 	B[3,4] = d34*B[3,1] 
-	B[4,4] = 1
 	return B
 	# cost: 7c_m
 end
@@ -416,7 +389,7 @@ end
 function torsionmatrix(B::Array{Float64,2},cosθ::Float64,sinθ::Float64,cosω::Float64,sinω::Float64,d34::Float64)
 	B[1,1] = -cosθ
 	B[1,2] = -sinθ
-	B[1,3] = 0
+	B[4,1] = B[4,2] = B[4,3] = B[1,3] = 0.0
 	B[1,4] = -d34*cosθ
 	B[2,1] = sinθ*cosω
 	B[2,2] = -cosθ*cosω
@@ -426,7 +399,8 @@ function torsionmatrix(B::Array{Float64,2},cosθ::Float64,sinθ::Float64,cosω::
 	B[3,2] = -cosθ*sinω
 	B[3,3] = cosω
 	B[3,4] = d34*B[3,1] 
-	B[4,1:4] = [0,0,0,1]
+	B[4,4] = 1.0
+	# B[4,1:4] = [0,0,0,1]
 	# cost: 7c_m
 end
 
@@ -462,12 +436,9 @@ function pruningtest(v::MoleculeType,i::Int64,D::NMRType,ε::Float64) :: Bool
 	for j in additional_distance_index
 		dij =  sqrt((atom.x-atoms[j].x)^2+(atom.y-atoms[j].y)^2 +(atom.z-atoms[j].z)^2)
 		if abs(D.info[i,j].dist - dij) > ε
-			@debug "result of prunning false"
 			return false
 		end
 	end
-
-	@debug "result of prunning true"
 	return true
 end
 
@@ -689,40 +660,44 @@ end
 
 # to be fair with memory acess in comparations
 function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
-	# C=zeros(4,4)
-	# C[4,4] = 1.0
+	C = Array{Float64,2}(undef,4,4)
+	#C=zeros(4,4)
+	C[4,1] = C[4,2] = C[4,3] = 0.0
+	C[4,4] = 1.0
 
-	# for i=1:3
-	# 	C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
-	# 	C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,2] 
-	# 	C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
-	# 	C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
-	# end
-	# return C 
+	for i=1:3
+		C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
+		C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,2] 
+		C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
+		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
+	end
+	return C 
 
 	# improvement of the calc by compare with quaternion formulation
-	return [A[1,1]*B[1,1] + A[1,2]*B[2,1] + A[1,3]*B[3,1] A[1,1]*B[1,2] + A[1,2]*B[2,2] + A[1,3]*B[3,2] A[1,2]*B[2,3] + A[1,3]*B[3,3] A[1,1]*B[1,4] + A[1,2]*B[2,4] + A[1,3]*B[3,4] + A[1,4]; 
-	A[2,1]*B[1,1] + A[2,2]*B[2,1] + A[2,3]*B[3,1] A[2,1]*B[1,2] + A[2,2]*B[2,2] + A[2,3]*B[3,2] A[2,2]*B[2,3] + A[2,3]*B[3,3] A[2,1]*B[1,4] + A[2,2]*B[2,4] + A[2,3]*B[3,4] + A[2,4];
-	A[3,1]*B[1,1] + A[3,2]*B[2,1] + A[3,3]*B[3,1] A[3,1]*B[1,2] + A[3,2]*B[2,2] + A[3,3]*B[3,2] A[3,2]*B[2,3] + A[3,3]*B[3,3] A[3,1]*B[1,4] + A[3,2]*B[2,4] + A[3,3]*B[3,4] + A[3,4];
-	0 0 0 1;
-	]
+	# return [A[1,1]*B[1,1] + A[1,2]*B[2,1] + A[1,3]*B[3,1] A[1,1]*B[1,2] + A[1,2]*B[2,2] + A[1,3]*B[3,2] A[1,2]*B[2,3] + A[1,3]*B[3,3] A[1,1]*B[1,4] + A[1,2]*B[2,4] + A[1,3]*B[3,4] + A[1,4]; 
+	# A[2,1]*B[1,1] + A[2,2]*B[2,1] + A[2,3]*B[3,1] A[2,1]*B[1,2] + A[2,2]*B[2,2] + A[2,3]*B[3,2] A[2,2]*B[2,3] + A[2,3]*B[3,3] A[2,1]*B[1,4] + A[2,2]*B[2,4] + A[2,3]*B[3,4] + A[2,4];
+	# A[3,1]*B[1,1] + A[3,2]*B[2,1] + A[3,3]*B[3,1] A[3,1]*B[1,2] + A[3,2]*B[2,2] + A[3,3]*B[3,2] A[3,2]*B[2,3] + A[3,3]*B[3,3] A[3,1]*B[1,4] + A[3,2]*B[2,4] + A[3,3]*B[3,4] + A[3,4];
+	# 0 0 0 1;
+	# ]
 	# cost: 24 + 33c_m
 end
 
 function prodmatrix(C::Array{Float64,2},A::Array{Float64,2},B::Array{Float64,2})
-	# C[4,1:4] = [0,0,0,1]
-	# for i=1:3
-	# 	C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
-	# 	C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,2] 
-	# 	C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
-	# 	C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
-	# end
+	#C[4,1:4] = [0,0,0,1]
+	C[4,1] = C[4,2] = C[4,3] = 0.0
+	C[4,4] = 1.0
+	for i=1:3
+		C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
+		C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,2] 
+		C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
+		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
+	end
 	# improvement of the calc by compare with quaternion formulation
-	C[:,:] = [A[1,1]*B[1,1] + A[1,2]*B[2,1] + A[1,3]*B[3,1] A[1,1]*B[1,2] + A[1,2]*B[2,2] + A[1,3]*B[3,2] A[1,2]*B[2,3] + A[1,3]*B[3,3] A[1,1]*B[1,4] + A[1,2]*B[2,4] + A[1,3]*B[3,4] + A[1,4]; 
-		A[2,1]*B[1,1] + A[2,2]*B[2,1] + A[2,3]*B[3,1] A[2,1]*B[1,2] + A[2,2]*B[2,2] + A[2,3]*B[3,2] A[2,2]*B[2,3] + A[2,3]*B[3,3] A[2,1]*B[1,4] + A[2,2]*B[2,4] + A[2,3]*B[3,4] + A[2,4];
-		A[3,1]*B[1,1] + A[3,2]*B[2,1] + A[3,3]*B[3,1] A[3,1]*B[1,2] + A[3,2]*B[2,2] + A[3,3]*B[3,2] A[3,2]*B[2,3] + A[3,3]*B[3,3] A[3,1]*B[1,4] + A[3,2]*B[2,4] + A[3,3]*B[3,4] + A[3,4];
-		0 0 0 1;
-	]
+	# C[:,:] = [A[1,1]*B[1,1] + A[1,2]*B[2,1] + A[1,3]*B[3,1] A[1,1]*B[1,2] + A[1,2]*B[2,2] + A[1,3]*B[3,2] A[1,2]*B[2,3] + A[1,3]*B[3,3] A[1,1]*B[1,4] + A[1,2]*B[2,4] + A[1,3]*B[3,4] + A[1,4]; 
+	# 	A[2,1]*B[1,1] + A[2,2]*B[2,1] + A[2,3]*B[3,1] A[2,1]*B[1,2] + A[2,2]*B[2,2] + A[2,3]*B[3,2] A[2,2]*B[2,3] + A[2,3]*B[3,3] A[2,1]*B[1,4] + A[2,2]*B[2,4] + A[2,3]*B[3,4] + A[2,4];
+	# 	A[3,1]*B[1,1] + A[3,2]*B[2,1] + A[3,3]*B[3,1] A[3,1]*B[1,2] + A[3,2]*B[2,2] + A[3,3]*B[3,2] A[3,2]*B[2,3] + A[3,3]*B[3,3] A[3,1]*B[1,4] + A[3,2]*B[2,4] + A[3,3]*B[3,4] + A[3,4];
+	# 	0 0 0 1;
+	# ]
 	# cost: 24 + 33c_m
 end
 """
