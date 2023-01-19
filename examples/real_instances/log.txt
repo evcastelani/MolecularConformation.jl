@@ -6,5 +6,5 @@ benchmark_seconds=5
 benchmark_samples_limit=100000
 all_solutions=False
 list_of_problems=["pdb1ba5", "pdb1d1n", "pdb1dp3", "pdb1du1", "pdb1fcl"]
-start_time=2023-01-19T14:45:37.783
-end_time=2023-01-19T14:46:31.493
+start_time=2023-01-19T15:50:52.939
+end_time=2023-01-19T15:51:46.343

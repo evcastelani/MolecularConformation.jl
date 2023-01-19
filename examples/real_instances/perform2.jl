@@ -30,7 +30,7 @@ julia> perform(Minute(2)) # to timeout of 2 minutes
 ```
 
 """
-function perform(opwrite::String="a",f::Function=median; list_of_problems::Array{String,1}="", ε::Float64=1.0e-3, virtual_ε::Float64=1.0e-8, benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000, time_limit::Union{Period,Nothing}=Second(1))
+function perform(opwrite::String="a",f::Function=median;improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100, list_of_problems::Array{String,1}="", ε::Float64=1.0e-3, virtual_ε::Float64=1.0e-8, benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000, time_limit::Union{Period,Nothing}=Second(1))
         # setup 
         optq = ConformationSetup(ε,quaternionBP,false,true,virtual_ε)
         optc = ConformationSetup(ε,classicBP,false,true,virtual_ε)
@@ -110,13 +110,12 @@ function perform(opwrite::String="a",f::Function=median; list_of_problems::Array
 		MDEc = outputfilter(solc,"mde")
 		PTc = f(bchc).time*c
 		
-		improv = (-1.0+PTc/PTq)*100
 		rmsd = evalrmsd(solc,solq)[2]
 
         println(ioperf,"$(prob),$(length(bchc.times)),$(length(bchq.times)),$(bchc.memory),$(bchq.memory),$(bchc.allocs),$(bchq.allocs),$(mean(bchc).time*c),$(mean(bchq).time*c),$(mean(bchc).gctime*c),$(mean(bchq).gctime*c),$(median(bchc).time*c),$(median(bchq).time*c),$(median(bchc).gctime*c),$(median(bchq).gctime*c),$(minimum(bchc).time*c),$(minimum(bchq).time*c),$(minimum(bchc).gctime*c),$(minimum(bchq).gctime*c),$(maximum(bchc).time*c),$(maximum(bchq).time*c),$(maximum(bchc).gctime*c),$(maximum(bchq).gctime*c)")
 
 		println(iogen,"$(prob) & Classic & $(@sprintf("%.3e",MDEc)) &  & $(@sprintf("%.4e",PTc)) & \\\\")
-		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.3f",improv))\\\\ \\cline{2-6} \\addlinespace")
+		println(iogen,"$(data.dim) & Quaternion & $(@sprintf("%.3e",MDEq)) & $(@sprintf("%.4e",rmsd)) & $(@sprintf("%.4e",PTq)) & $(@sprintf("%1.3f",improv(PTc, PTq)))\\\\ \\cline{2-6} \\addlinespace")
 	end
 
 	println(iogen, "\\end{xltabular}")
