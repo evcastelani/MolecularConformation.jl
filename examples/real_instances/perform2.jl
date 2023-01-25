@@ -1,7 +1,7 @@
 using MolecularConformation, DelimitedFiles,BenchmarkTools, Dates, Printf, DelimitedFiles
 
 include("rmsd.jl")
-#TODO: (Emerson) Update this description
+
 """
 The perform function is used to run tests in order to compare algorithms. 
 There are some dependences to use this functions like BenchmarkTools and
@@ -15,20 +15,44 @@ julia> perform(Second(3.0))
 ```
 Note that now a timeout can be used. Some informations are displayed in 
 order to show how things are going on. 
-When the execution is finished, three files are build: not_solved.csv,
-table_general.tex and table_operations.tex. By default these files are 
+When the execution is finished, four files are build: not_solved.csv,
+table_general.tex, results.csv and log.txt. By default these files are 
 write because the option opwrite is defined as "a", that is, append. 
 If you want redefine the files, a new definition need to be set. 
 
-## More examples
+## Basic usage
 ```julia-repl
 julia> include("perform2.jl")
 
-julia> perform(Second(3.0),"w")
+julia> perform()
 
-julia> perform(Minute(2)) # to timeout of 2 minutes
+```
+By default, the median function is used for compute the median of processing 
+time of the benchmark but others can be used.
+
+## Example
+```julia-repl
+julia> perform("a",mean)
 ```
 
+Others arguments are optional keyword: improv, list_of_problems,ε,virtual_ε,
+benchmarkSeconds,benchmarkSamples and time_limit. Let us describe each one.
+`improv` is a function related to improvement. This function need to be defined 
+anonymously. For example, improv=(PTc/PTq)->PTq/PTc.
+`list_of_problems` is a vector that contains the name of problems to test in 
+benchmarks. These problems are solved at least one time and in case they are solved  
+in the `time_limit` definition, they are sent to benchmark. In order to 
+define an specific time_limit of 3 seconds, you can define `time_limit=Second(3)`.
+`ε` and `virtual_ε` are precisions related to feasible test and virtual position.
+`benchmarkSamples` and `benchmarkSeconds` are integer values related to number
+of samples and time spent in a complete benchmark. For more reability in benchmarks,
+we define the parameter `minSamples` which guarantees a minimum number of runs 
+in both benchmarks. A full example to ilustrate is given below:
+
+## Example
+```julia-repl
+julia> perform("w", list_of_problems = ["pdb1ba5", "pdb1d1n", "pdb1dp3", "pdb1du1", "pdb1fcl"], ε=1.0e-5, time_limit=Second(3), benchmarkSeconds=5,minSamples=16000)
+```
 """
 function perform(opwrite::String="a",f::Function=median;improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100, list_of_problems::Array{String,1}="", ε::Float64=1.0e-5, virtual_ε::Float64=1.0e-8, benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000, time_limit::Union{Period,Nothing}=Second(1), minSamples=1000)
         # setup 
