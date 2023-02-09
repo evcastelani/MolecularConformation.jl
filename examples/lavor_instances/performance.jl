@@ -1,8 +1,6 @@
-using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV, Printf
+using MolecularConformation,BenchmarkTools, Plots, DataFrames, CSV, Printf, Dates
 
 gr()
-
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
 function plot_results(df::DataFrame;kargs...)
 	gdf = groupby(df,:method)
@@ -15,14 +13,13 @@ function plot_results(df::DataFrame;kargs...)
 	end
 end
 
-function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixedsize=false, fixedindex=false, improv=false, kargs...)
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixedsize=false, fixedindex=false, improv=false, sample=true, improvFunction::Function = (PTq,PTc) -> (-1.0+PTc/PTq)*100, kargs...)
 	if fixedsize
 		df = DataFrame()
 		for diag in ndiag
 			df = vcat(df, CSV.read("results/$(diag).csv",DataFrame))
 		end
 		gdf = groupby(df,[:size,:method])
-		
 		for i in 1:2:length(gdf)	
 			for info in [:mean,:median,:minimum,:maximum]
 				if fixedindex 
@@ -31,11 +28,19 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixed
 					index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
 				end
 				if improv
-					plot(gdf[i].ref[index],map((x,y) -> (y/x -1.0)*100, gdf[i+1][index,:mean], gdf[i][index,:mean]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
+					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,:mean], gdf[i][index,:mean]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
+					if sample
+						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:green],label = "Benchmark Samples");
+					end
 					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1])_improv.pdf");
 				else
 					plot(gdf[i+1].ref[index],map(x -> x/gdf[i].size[1], gdf[i+1][index,:mean]),color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
 					plot!(gdf[i].ref[index],map(x -> x/gdf[i].size[1], gdf[i][index,:mean]),color = [:black],label = "ClassicBP");
+					if sample
+						plot!(twinx(),gdf[i+1].ref[index],gdf[i+1][index,:samples],color = [:green],label = "Benchmark Samples Q");
+						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:red],label = "Benchmark Samples C");
+					end
+
 					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1]).pdf");
 				end
 			end
@@ -64,16 +69,17 @@ function stringtovec(s::Union{String,Array{Int64,1}})
 	return vn
 end
 
-function write_results(df::DataFrame)
-	improv(q,c) = (c/q -1.0)*100
+function write_results(df::DataFrame; improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100)
 	gdf = groupby(df,:method)
 	n = length(gdf[1].mean)
 	# average percentual imṕrovement in processing time
-	improv_geometric_mean = improv((prod(gdf[2].mean))^(1/n),(prod(gdf[1].mean))^(1/n))
-	improv_mean = sum(improv.(gdf[2].mean,gdf[1].mean))/n
-	improv_median = sum(improv.(gdf[2].median,gdf[1].median))/n
-	improv_minimum = sum(improv.(gdf[2].minimum,gdf[1].minimum))/n
-	improv_maximum = sum(improv.(gdf[2].maximum,gdf[1].maximum))/n
+	improv_geometric_mean = improv((prod(gdf[1].mean))^(1/n), (prod(gdf[2].mean))^(1/n))
+	improv_mean = sum(improv.(gdf[1].mean, gdf[2].mean))/n
+	improv_median = sum(improv.(gdf[1].median,gdf[2].median))/n
+	improv_minimum = sum(improv.(gdf[1].minimum,gdf[2].minimum))/n
+	improv_maximum = sum(improv.(gdf[1].maximum,gdf[2].maximum))/n
+	samples_c = gdf[1].samples
+	samples_q = gdf[2].samples
 	io = open("results/improvs_$(df.ref[1]).txt", "w");
 	write(io, "Remark: Analysis of improvements from quaternion to classic \n")
 	write(io, "Average of improvements in processing time (%)\n")
@@ -82,6 +88,8 @@ function write_results(df::DataFrame)
 	write(io, "minimum -> $(improv_minimum) \n");
 	write(io, "maximum -> $(improv_maximum) \n");
 	write(io, "geometric mean over means -> $(improv_geometric_mean) \n");
+	write(io, "samples classic -> $(samples_c) \n");
+	write(io, "samples quaternion -> $(samples_q) \n");
 	close(io)
 end
 
@@ -100,9 +108,9 @@ function createtableimprov(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1
 	improv(q,c) = (c/q -1.0)*100
 	comma = ""
 	for diag in ndiag
-		headerText = string(headerText, comma, "\\multicolumn{1}{c|}{$(diag)}")
-		
 		gdf = groupby(CSV.read("results/$(diag).csv",DataFrame),:method)
+				
+		headerText = string(headerText, comma, "\\multicolumn{1}{c|}{$(diag)}")
 		n = length(gdf[1].mean)
 		
 		geometric_mean1 = (prod(gdf[1].mean))^(1/n)
@@ -150,16 +158,16 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 
 """
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
-function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-8)
+function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-8,benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000, improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100)
 	#initialization
 	opt_classic = ConformationSetup(ε,classicBP,allsolutions,MDE,virtual_ε)
 	opt_quaternion = ConformationSetup(ε,quaternionBP,allsolutions,MDE,virtual_ε)
 	data = preprocessing("toyinstance.nmr")
-	solq = conformation(data,opt_quaternion)
-	solc = conformation(data,opt_classic)
+	conformation(data,opt_quaternion)
+	conformation(data,opt_classic)
 	folders = ["10","100","200","300","400","500","600","700","800","900","1000","2000","3000"]
 	c = 10.0^(-9)
-	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[])
+	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[],samples = Int[])
 	print(" 🔔 Starting perform with nd = $(ndiag). Did you set up the stack limit of your OS ? I hope so!\n")
 	for foldername in folders
 		cd(foldername)
@@ -169,13 +177,14 @@ function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-
 		else
 			data = preprocessing(string(foldername,"-$(ndiag).nmr"))
 		end
-		bch  = @benchmark conformation($(data),$(opt_classic))
-		solc =  conformation(data,opt_classic)
-		push!(df,[ndiag,"classicBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c])
+		bcha = @benchmarkable conformation($(data),$(opt_classic)) seconds=benchmarkSeconds samples=benchmarkSamples
+		bch = run(bcha)
+		push!(df,[ndiag,"classicBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,length(bch.times),])
 
-		bch = @benchmark conformation($(data),$(opt_quaternion))
-		solq = conformation(data,opt_quaternion)
-		push!(df,[ndiag,"quaternionBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c])
+
+		bcha = @benchmarkable conformation($(data),$(opt_quaternion)) seconds=benchmarkSeconds samples=benchmarkSamples
+		bch = run(bcha)
+		push!(df,[ndiag,"quaternionBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,length(bch.times)])
 		
 		cd("..")
 		print(" 🎉 Benchmarks using nd = $(ndiag) and the problem with $(psize) atoms were done!\n")
@@ -184,7 +193,7 @@ function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-
 	end
 	CSV.write("results/$(ndiag).csv", df;delim=";")
 	plot_results(df)
-	write_results(df)
+	write_results(df,improv=improv)
 end
 
 """
@@ -200,8 +209,23 @@ julia> runperf()
 ```
 some graphs will be saved in current folder. 
 """
-function runperf(;ε=1.0e-4, virtual_ε=1.0e-8)
-	for ndiag in [3,4,5,10,100,200,300,400,500,600,700,800,900,1000] # [3,10,100,400,800] 
-		perform(ndiag, ε=ε, virtual_ε=virtual_ε)
+function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000],ε=1.0e-4, virtual_ε=1.0e-8,benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000,improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100)
+	
+	iolog = open("log.txt","w")
+	println(iolog,"function_of_improvement=$(improv)")
+	println(iolog,"precision=$(ε)")
+	println(iolog,"precision_virtual=$(virtual_ε)")
+	println(iolog,"benchmark_seconds=$(benchmarkSeconds)")
+	println(iolog,"benchmark_samples_limit=$(benchmarkSamples)")
+	println(iolog,"list_of_diagonals_used=$(ndiags)")
+	println(iolog,"start_time=$(Dates.now())")
+    close(iolog)
+	
+	for ndiag in ndiags # [3,10,100,400,800] 
+		perform(ndiag, ε=ε, virtual_ε=virtual_ε, benchmarkSeconds=benchmarkSeconds,benchmarkSamples=benchmarkSamples,improv=improv)
 	end
+
+	iolog = open("log.txt","a")
+	println(iolog,"end_time=$(Dates.now())")
+    close(iolog)
 end
