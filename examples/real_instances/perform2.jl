@@ -171,6 +171,7 @@ function performRMSD(opwrite::String="a",f::Function=median; improv::Function = 
 	iolog = open("log.txt",opwrite)
 	println(iolog,"time_limit=$(time_limit)")
 	println(iolog,"function_of_central_tendency_meansure=$(f)")
+	println(iolog,"function_of_improvement=$(improv)")
 	println(iolog,"precision=$(ε)")
 	println(iolog,"precision_virtual=$(virtual_ε)")
 	println(iolog,"benchmark_seconds=$(benchmarkSeconds)")
