@@ -1,8 +1,8 @@
 function_of_improvement=#26
-precision=0.0001
-precision_virtual=1.0e-8
-benchmark_seconds=60
-benchmark_samples_limit=1000
-list_of_diagonals_used=[3, 4, 5, 10, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-start_time=2023-01-25T15:29:19.445
-end_time=2023-01-25T15:53:00.137
+precision=9.007199254740992e15
+precision_virtual=9.007199254740992e15
+benchmark_seconds=300
+benchmark_samples_limit=20000
+list_of_diagonals_used=[3, 4, 5, 10, 100, 200, 300, 400, 500, 600, 700]
+start_time=2023-02-24T16:08:10.207
+end_time=2023-02-24T16:38:01.188
