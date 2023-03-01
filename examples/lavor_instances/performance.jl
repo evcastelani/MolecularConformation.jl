@@ -192,7 +192,7 @@ function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-
 		write_results(df)
 	end
 	CSV.write("results/$(ndiag).csv", df;delim=";")
-	plot_results(df)
+	#plot_results(df)
 	write_results(df,improv=improv)
 end
 
