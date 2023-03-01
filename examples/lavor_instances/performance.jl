@@ -28,14 +28,14 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixed
 					index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
 				end
 				if improv
-					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,:mean], gdf[i][index,:mean]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
+					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,info], gdf[i][index,info]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
 					if sample
 						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:green],label = "Benchmark Samples");
 					end
 					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1])_improv.pdf");
 				else
-					plot(gdf[i+1].ref[index],map(x -> x/gdf[i].size[1], gdf[i+1][index,:mean]),color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
-					plot!(gdf[i].ref[index],map(x -> x/gdf[i].size[1], gdf[i][index,:mean]),color = [:black],label = "ClassicBP");
+					plot(gdf[i+1].ref[index],map(x -> x/gdf[i].size[1], gdf[i+1][index,info]),color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
+					plot!(gdf[i].ref[index],map(x -> x/gdf[i].size[1], gdf[i][index,info]),color = [:black],label = "ClassicBP");
 					if sample
 						plot!(twinx(),gdf[i+1].ref[index],gdf[i+1][index,:samples],color = [:green],label = "Benchmark Samples Q");
 						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:red],label = "Benchmark Samples C");
@@ -167,7 +167,7 @@ function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-
 	conformation(data,opt_classic)
 	folders = ["10","100","200","300","400","500","600","700","800","900","1000","2000","3000"]
 	c = 10.0^(-9)
-	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[],samples = Int[])
+	df = DataFrame(ref = Int[],method=String[],size = Int[],mean=Float64[],median=Float64[],minimum=Float64[],maximum=Float64[],samples = Int[],memory = Int[],allocs = Int[],gcmean=Float64[],gcmedian=Float64[],gcminimum=Float64[],gcmaximum=Float64[])
 	print(" 🔔 Starting perform with nd = $(ndiag). Did you set up the stack limit of your OS ? I hope so!\n")
 	for foldername in folders
 		cd(foldername)
@@ -179,12 +179,12 @@ function perform(ndiag,allsolutions=false,MDE=false; ε=1.0e-4, virtual_ε=1.0e-
 		end
 		bcha = @benchmarkable conformation($(data),$(opt_classic)) seconds=benchmarkSeconds samples=benchmarkSamples
 		bch = run(bcha)
-		push!(df,[ndiag,"classicBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,length(bch.times),])
+		push!(df,[ndiag,"classicBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,length(bch.times),bch.memory,bch.allocs,mean(bch).gctime*c,median(bch).gctime*c,minimum(bch).gctime*c, maximum(bch).gctime*c])
 
 
 		bcha = @benchmarkable conformation($(data),$(opt_quaternion)) seconds=benchmarkSeconds samples=benchmarkSamples
 		bch = run(bcha)
-		push!(df,[ndiag,"quaternionBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,length(bch.times)])
+		push!(df,[ndiag,"quaternionBP",psize,mean(bch).time*c,median(bch).time*c,minimum(bch).time*c, maximum(bch).time*c,length(bch.times),bch.memory,bch.allocs,mean(bch).gctime*c,median(bch).gctime*c,minimum(bch).gctime*c, maximum(bch).gctime*c])
 		
 		cd("..")
 		print(" 🎉 Benchmarks using nd = $(ndiag) and the problem with $(psize) atoms were done!\n")
