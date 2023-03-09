@@ -671,7 +671,14 @@ function prodmatrix(A::Array{Float64,2},B::Array{Float64,2})
 end
 
 function prodmatrix(C::Array{Float64,2},A::Array{Float64,2},B::Array{Float64,2})
-	C = A*B
+	C[4,1] = C[4,2] = C[4,3] = 0.0
+	C[4,4] = 1.0
+	for i=1:3
+		C[i,1] = A[i,1]*B[1,1] + A[i,2]*B[2,1] + A[i,3]*B[3,1] 
+		C[i,2] = A[i,1]*B[1,2] + A[i,2]*B[2,2] + A[i,3]*B[3,2] 
+		C[i,3] = A[i,2]*B[2,3] + A[i,3]*B[3,3]
+		C[i,4] = A[i,1]*B[1,4] + A[i,2]*B[2,4] + A[i,3]*B[3,4] + A[i,4]
+	end
 	# improvement of the calc by compare with quaternion formulation
 	# C[:,:] = [A[1,1]*B[1,1] + A[1,2]*B[2,1] + A[1,3]*B[3,1] A[1,1]*B[1,2] + A[1,2]*B[2,2] + A[1,3]*B[3,2] A[1,2]*B[2,3] + A[1,3]*B[3,3] A[1,1]*B[1,4] + A[1,2]*B[2,4] + A[1,3]*B[3,4] + A[1,4]; 
 	# 	A[2,1]*B[1,1] + A[2,2]*B[2,1] + A[2,3]*B[3,1] A[2,1]*B[1,2] + A[2,2]*B[2,2] + A[2,3]*B[3,2] A[2,2]*B[2,3] + A[2,3]*B[3,3] A[2,1]*B[1,4] + A[2,2]*B[2,4] + A[2,3]*B[3,4] + A[2,4];
