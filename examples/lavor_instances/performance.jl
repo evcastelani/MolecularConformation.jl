@@ -13,7 +13,7 @@ function plot_results(df::DataFrame;kargs...)
 	end
 end
 
-function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixedsize=false, fixedindex=false, improv=false, sample=true, improvFunction::Function = (PTq,PTc) -> (-1.0+PTc/PTq)*100, kargs...)
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixedsize=false, fixedindex=false, improv=false, sample=true, improvFunction::Function = (PTq,PTc) -> (-1.0+PTc/PTq)*100, memory::Bool=false, kargs...)
 	if fixedsize
 		df = DataFrame()
 		for diag in ndiag
@@ -26,6 +26,13 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixed
 					index = 1:length(gdf[i].ref)
 				else
 					index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
+				end
+				if memory
+					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,:memory], gdf[i][index,:memory]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Memory utilization ratio"), legend = false; kargs...);
+					if sample
+						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:green],label = "Benchmark Samples");
+					end
+					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1])_memory.pdf");
 				end
 				if improv
 					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,info], gdf[i][index,info]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
