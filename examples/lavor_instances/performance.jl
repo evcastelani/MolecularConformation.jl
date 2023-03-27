@@ -54,8 +54,17 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixed
 		end
 	else
 		for diag in ndiag
-			df = CSV.read("results/$(diag).csv",DataFrame)
-			plot_results(df; kargs...)
+			if improv
+				df = CSV.read("results/$(diag).csv",DataFrame)
+				gdf = groupby(df,:method)
+				for info in [:mean,:median,:minimum,:maximum]
+					plot(gdf[2].size[1:end],map(improvFunction, gdf[2][1:end,info], gdf[1][1:end,info]),color = [:black],xaxis= ("Size of problems"),yaxis =("Improvement percentage"), legend = false; kargs...);
+					savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
+				end
+			else
+				df = CSV.read("results/$(diag).csv",DataFrame)
+				plot_results(df; kargs...)
+			end
 		end	
 	end
 end
@@ -107,12 +116,11 @@ function rewrite(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000])
 	end
 end
 
-function createtableimprov(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000])
+function createtableimprov(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; improv::Function = (PTq,PTc) -> (-1.0+PTc/PTq)*100, ispercent=false)
 	headerText = ""
 	geometric_mean1Text = ""
 	geometric_mean2Text = ""
 	improvText = ""
-	improv(q,c) = (c/q -1.0)*100
 	comma = ""
 	for diag in ndiag
 		gdf = groupby(CSV.read("results/$(diag).csv",DataFrame),:method)
@@ -126,7 +134,7 @@ function createtableimprov(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1
 		geometric_mean2 = (prod(gdf[2].mean))^(1/n)
 		geometric_mean2Text = string(geometric_mean2Text, comma, @sprintf("%.2e", geometric_mean2))
 		
-		improvText = string(improvText,comma, "\\multicolumn{1}{c|}{",@sprintf("%.2f", improv(geometric_mean2,geometric_mean1)),"\\%}")
+		improvText = string(improvText,comma, "\\multicolumn{1}{c|}{",@sprintf("%.2f", improv(geometric_mean2,geometric_mean1)),"$(ispercent ? "\\%" : "")}")
 		
 		comma == "" && (comma = " & ")
 	end
