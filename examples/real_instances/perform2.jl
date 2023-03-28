@@ -54,7 +54,7 @@ in both benchmarks. A full example to ilustrate is given below:
 julia> perform("w", list_of_problems = ["pdb1ba5", "pdb1d1n", "pdb1dp3", "pdb1du1", "pdb1fcl"], ε=1.0e-5, time_limit=Second(3), benchmarkSeconds=5,minSamples=16000)
 ```
 """
-function perform(opwrite::String="a",f::Function=median;improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100, list_of_problems::Array{String,1}="", ε::Float64=1.0e-5, virtual_ε::Float64=1.0e-8, benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000, time_limit::Union{Period,Nothing}=Second(1), minSamples=1000)
+function perform(opwrite::String="a",f::Function=median;improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100, list_of_problems::Array{String,1}=Array{String,1}(), ε::Float64=1.0e-5, virtual_ε::Float64=1.0e-8, benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000, time_limit::Union{Period,Nothing}=Second(1), minSamples=1000)
         # setup 
         optq = ConformationSetup(ε,quaternionBP,false,true,virtual_ε)
         optc = ConformationSetup(ε,classicBP,false,true,virtual_ε)
