@@ -13,7 +13,7 @@ function plot_results(df::DataFrame;kargs...)
 	end
 end
 
-function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixedsize=false, fixedindex=false, improv=false, sample=true, improvFunction::Function = (PTq,PTc) -> (-1.0+PTc/PTq)*100, memory::Bool=false, kargs...)
+function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; infos::Array{Symbol,1}=[:mean,:median,:minimum,:maximum], fixedsize=false, fixedindex=false, improv=false, sample=true, improvFunction::Function = (PTq,PTc) -> (-1.0+PTc/PTq)*100, memory::Bool=false, kargs...)
 	if fixedsize
 		df = DataFrame()
 		for diag in ndiag
@@ -21,7 +21,7 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; fixed
 		end
 		gdf = groupby(df,[:size,:method])
 		for i in 1:2:length(gdf)	
-			for info in [:mean,:median,:minimum,:maximum]
+			for info in infos
 				if fixedindex 
 					index = 1:length(gdf[i].ref)
 				else
@@ -224,7 +224,7 @@ julia> runperf()
 ```
 some graphs will be saved in current folder. 
 """
-function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000],ε=1.0e-4, virtual_ε=1.0e-8,benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000,improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100)
+function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000],ε=1.0e-4, virtual_ε=1.0e-8,benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000,improv::String = "(PTc, PTq) -> (-1.0+PTc/PTq)*100")
 	
 	iolog = open("log.txt","w")
 	println(iolog,"function_of_improvement=$(improv)")
@@ -237,7 +237,7 @@ function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,80
     close(iolog)
 	
 	for ndiag in ndiags # [3,10,100,400,800] 
-		perform(ndiag, ε=ε, virtual_ε=virtual_ε, benchmarkSeconds=benchmarkSeconds,benchmarkSamples=benchmarkSamples,improv=improv)
+		perform(ndiag, ε=ε, virtual_ε=virtual_ε, benchmarkSeconds=benchmarkSeconds,benchmarkSamples=benchmarkSamples,improv=eval(Meta.parse(improv)))
 	end
 
 	iolog = open("log.txt","a")
