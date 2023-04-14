@@ -27,20 +27,28 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; infos
 				else
 					index = [j for j in 1:length(gdf[i].ref) if gdf[i].ref[j]<=gdf[i].size[1]]
 				end
-				if memory
-					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,:memory], gdf[i][index,:memory]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Memory utilization ratio"), legend = false; kargs...);
-					if sample
-						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:green],label = "Benchmark Samples");
-					end
-					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1])_memory.pdf");
-				end
+				
 				if improv
+					if memory
+						plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,:memory], gdf[i][index,:memory]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Memory utilization ratio"), legend = false; kargs...);
+						if sample
+							plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:green],label = "Benchmark Samples");
+						end
+						savefig("results/figures/perf_memory_size$(gdf[i].size[1]).pdf");
+					end
 					plot(gdf[i].ref[index],map(improvFunction, gdf[i+1][index,info], gdf[i][index,info]),color = [:black],xaxis= ("Amount of extra distances to each vertex"),yaxis =("Improvement percentage"), legend = false; kargs...);
 					if sample
 						plot!(twinx(),gdf[i].ref[index],gdf[i][index,:samples],color = [:green],label = "Benchmark Samples");
 					end
 					savefig("results/figures/perf_$(info)_size$(gdf[i].size[1])_improv.pdf");
 				else
+					if memory
+						plot(gdf[i+1].ref[index],map(x -> x*10e-6, gdf[i+1][index,:memory]),color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances to each vertex"),yaxis =("Memory utilization (Megabits)"), label = "QuaternionBP", legend=:topleft; kargs...);
+						plot!(gdf[i].ref[index],map(x -> x*10e-6, gdf[i][index,:memory]),color = [:red],label = "ClassicBP"; kargs...);
+						
+						savefig("results/figures/perf_memory_size$(gdf[i].size[1]).pdf");
+					end
+					
 					plot(gdf[i+1].ref[index],map(x -> x/gdf[i].size[1], gdf[i+1][index,info]),color = [:black],line = (:dot,1),xaxis= ("Amount of extra distances"),yaxis =("Mean processing time (s)"), label = "QuaternionBP", yformatter = :scientific, legend=:topleft; kargs...);
 					plot!(gdf[i].ref[index],map(x -> x/gdf[i].size[1], gdf[i][index,info]),color = [:black],label = "ClassicBP");
 					if sample
@@ -58,8 +66,12 @@ function replot(ndiag=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000]; infos
 				df = CSV.read("results/$(diag).csv",DataFrame)
 				gdf = groupby(df,:method)
 				for info in [:mean,:median,:minimum,:maximum]
-					plot(gdf[2].size[1:end],map(improvFunction, gdf[2][1:end,info], gdf[1][1:end,info]),color = [:black],xaxis= ("Size of problems"),yaxis =("Improvement percentage"), legend = false; kargs...);
+					plot(gdf[2].size[1:end],map(improvFunction, gdf[2][1:end,info], gdf[1][1:end,info]),color = [:black],xaxis= ("Size of problem"),yaxis =("Improvement percentage"), legend = false; kargs...);
 					savefig("results/figures/perf_$(info)_$(df.ref[1]).pdf");
+				end
+				if memory
+					plot(gdf[2].size[1:end],map(improvFunction, gdf[2][1:end,:memory], gdf[1][1:end,:memory]),color = [:black],xaxis= ("Size of problem"),yaxis =("Memory utilization ratio"), legend = false; kargs...);
+					savefig("results/figures/perf_memory_$(df.ref[1]).pdf");
 				end
 			else
 				df = CSV.read("results/$(diag).csv",DataFrame)
@@ -224,10 +236,10 @@ julia> runperf()
 ```
 some graphs will be saved in current folder. 
 """
-function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000],ε=1.0e-4, virtual_ε=1.0e-8,benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000,improv::String = "(PTc, PTq) -> (-1.0+PTc/PTq)*100")
+function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,800,900,1000],ε=1.0e-4, virtual_ε=1.0e-8,benchmarkSeconds::Int64=60, benchmarkSamples::Int64=100000,improv::Function = (PTc, PTq) -> (-1.0+PTc/PTq)*100)
 	
 	iolog = open("log.txt","w")
-	println(iolog,"function_of_improvement=$(improv)")
+	#println(iolog,"function_of_improvement=$(improv)")
 	println(iolog,"precision=$(ε)")
 	println(iolog,"precision_virtual=$(virtual_ε)")
 	println(iolog,"benchmark_seconds=$(benchmarkSeconds)")
@@ -237,7 +249,7 @@ function runperf(;ndiags::Vector{Int64}=[3,4,5,10,100,200,300,400,500,600,700,80
     close(iolog)
 	
 	for ndiag in ndiags # [3,10,100,400,800] 
-		perform(ndiag, ε=ε, virtual_ε=virtual_ε, benchmarkSeconds=benchmarkSeconds,benchmarkSamples=benchmarkSamples,improv=eval(Meta.parse(improv)))
+		perform(ndiag, ε=ε, virtual_ε=virtual_ε, benchmarkSeconds=benchmarkSeconds,benchmarkSamples=benchmarkSamples,improv=improv)#eval(Meta.parse(improv)))
 	end
 
 	iolog = open("log.txt","a")
