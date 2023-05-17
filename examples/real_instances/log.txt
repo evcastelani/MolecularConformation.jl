@@ -1,11 +1,11 @@
 time_limit=120 seconds
 function_of_central_tendency_meansure=median
-function_of_improvement=#16
-precision=1.0e-5
+function_of_improvement=#22
+precision=1.0e-6
 precision_virtual=1.0e-8
-benchmark_seconds=6000
+benchmark_seconds=20000
 benchmark_samples_limit=100000
 all_solutions=False
-list_of_problems=["pdb2k2f", "pdb2kbm", "pdb2j10", "pdb2j11", "pdb2lwa", "pdb2j0z", "pdb2adl", "pdb1pzr", "pdb2lzf", "pdb2g9j", "pdb2le2", "pdb2mvx", "pdb2mz6", "pdb2a2y", "pdb2n9b", "pdb1hf9", "pdb2m4j", "pdb1x9v", "pdb2ko1", "pdb2n3a"]
-start_time=2023-04-25T10:34:45.483
-end_time=2023-04-27T21:52:14.682
+list_of_problems=["pdb2k2f", "pdb2kbm"]
+start_time=2023-05-11T16:50:35.085
+end_time=2023-05-12T15:05:29.799
