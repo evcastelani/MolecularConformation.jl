@@ -52,19 +52,25 @@ Massive tests were carried out to prove the potential of the implementations. If
 
 ## TO DO
 
-
-
-
-1. [ ] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
+1. [X] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
 2. [X] Include signs vector (this idea doesn't work);
 3. [X] Include in the data list the information about both atoms not just one 
 4. [X] Include in the data list the symmetry in the information too;
 5. [X] Discuss preprocessing;
 6. [ ] Optimize redundant plan;
 7. [ ] Implement chirality;
-8. [ ] Optimize torsion angle in the repeating process;
+8. [X] Optimize torsion angle in the repeating process;
 9.  [X] Modify the quaternion version to new input and improvements;
 10. [X] Run all examples and create a table of tests;
 11. [X] Include a decent documentation using `Documenter.jl`
-12. [ ] Including in preprocessament step the diagonal line (i,i) distance (to remove unnecessary if in main loop) 
+12. [X] Including in preprocessament step the diagonal line (i,i) distance (to remove unnecessary if in main loop) 
+13. [ ] Clear useless functions of COAP2 branch
+14. [ ] Check and rewrite if necessary some docstrings
+15. [ ] Merge COAP2 branch to master
+16. [ ] Tag the last version to v1.0
+17. [ ] Check the unitary tests
+18. [ ] Check the tutorial related to last version
+19. [ ] Update compiled results (pdf + images)
+20. [ ] Write some readme files related to example folder and subfolders
+
 
