@@ -227,6 +227,8 @@ function performRMSD(opwrite::String="a",f::Function=median; improv::Function = 
 		end
 		print(" 🔔 The problem $(prob) can be solved within the timeout. \n")
 		print(" 👏 The benchmark will be performed for both methods! \n")
+		bchac = @benchmarkable conformation($(data),$(optc)) seconds=benchmarkSeconds samples=benchmarkSamples
+                bchc = run(bchac)
 		print(" 🕐 Running benchmark using QuaternionBP... \n")
 		bchaq = @benchmarkable conformation($(data),$(optq)) seconds=benchmarkSeconds samples=benchmarkSamples
 		bchq = run(bchaq)
@@ -243,8 +245,8 @@ function performRMSD(opwrite::String="a",f::Function=median; improv::Function = 
 		MDEq = solq.molecules[argmin(rmsdvalq)].mde
 
 		print(" 🕞 Running benchmark using ClassicBP... \n")
-		bchac = @benchmarkable conformation($(data),$(optc)) seconds=benchmarkSeconds samples=benchmarkSamples
-		bchc = run(bchac)
+		#bchac = @benchmarkable conformation($(data),$(optc)) seconds=benchmarkSeconds samples=benchmarkSamples
+		#bchc = run(bchac)
 		print(" 🏁 The benchmark using ClassicBP in $(prob) was done!\n")
 		print(" \n")
 		PTc = f(bchc).time*c
