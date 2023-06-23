@@ -265,30 +265,6 @@ end
 
 """
 ```
-badtorsionangle :: Function
-```
-This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
-"""
-function badtorsionangle(d12,d13,d14,d23,d24,d34)#i=4,...,n
-	d23² = d23*d23
-	d24² = d24*d24
-	d12² = d12*d12
-	b = (d24² + d23² - d34*d34)/(2.0*d24*d23)
-	c = (d12² + d23² - d13*d13)/(2.0*d12*d23)
-	#if (abs(b) > 1.0  || abs(c) > 1.0) 
-	#	error("Let to throw someting useful")
-	#end
-	valc = ((d12² + d24² - d14*d14)/(2.0*d12*d24) - b*c)/(sqrt((1.0 - b*b)*(1.0 - c*c)))
-	if (valc < -1.0)  
-		return -1.0, 0.0
-	elseif (valc >  1.0)  
-		return 1.0, 0
-	end
-	return valc,sqrt(1.0-valc*valc)
-end
-
-"""
-```
 torsionangle :: Function
 ```
 This is an auxiliary function used by classicBP solver in order to compute the torsion angle. As output the cosine and sine of the torsion angle are given.
@@ -610,18 +586,6 @@ function Base.copy(Q::Quaternion)
 	return Quaternion(Q.s, Q.v1, Q.v2, Q.v3)
 end
 
-#function qsign(q::Quaternion)
-#	return Quaternion(-q.s, -q.v1, -q.v2, -q.v3)
-#end
-
-#function qsum(q::Quaternion,w::Quaternion)
-#	return Quaternion(q.s + w.s, q.v1 + w.v1, q.v2 + w.v2, q.v3 + w.v3)
-#end
-
-#function qminus(q::Quaternion,w::Quaternion)
-#	return Quaternion(q.s - w.s, q.v1 - w.v1, q.v2 - w.v2, q.v3 - w.v3)
-#end
-
 function qprod(q::Quaternion,w::Quaternion)
 	return  Quaternion(q.s * w.s - q.v1 * w.v1 - q.v2 * w.v2 - q.v3 * w.v3,
 					   q.s * w.v1 + q.v1 * w.s + q.v2 * w.v3 - q.v3 * w.v2,
@@ -645,12 +609,6 @@ function reflectq(q::Quaternion,a::Float64,b::Float64,c::Float64,d::Float64)
 	q.v2 = q.s * c - q.v1 * d + q.v2 * a + q.v3 * b
 	q.v3 = q.s * d + q.v1 * c - q.v2 * b + q.v3 * a
 end
-
-#function conj(q::Quaternion)
-#	return  Quaternion(q.s, -q.v1, -q.v2, -q.v3)
-#end
-
-
 
 function rotopt(Q::Quaternion,t::Float64)
 	sl = 2.0*t
@@ -701,7 +659,7 @@ function prodmatrix(C::Array{Float64,2},A::Array{Float64,2},B::Array{Float64,2})
 	# cost: 24 + 33c_m
 end
 """
-	convert_to_dataframe
+    convert_to_dataframe (experimental function!)
 
 A function used to convert an array of AtomType elements in a dataframe
 
