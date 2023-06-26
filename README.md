@@ -50,6 +50,26 @@ As return a `ConformationOutput` type is provided with all required information.
 Massive tests were carried out to prove the potential of the implementations. If you are interested in reproducing the tests, it is highly recommended that you use the `performance` branch. In addition, for pre-processing of instances, it was used [HCProtCLI](https://github.com/caomem/HCProtCLI).
 
 
+## Benchmarks
+
+To execute the benchmarks, you need to have the `MolecularConformation` package correctly installed. Follow these steps:
+
+### Real instances
+
+1. Navigate to the `real_instances` folder (type `cd examples/real_instances/`).
+1. Run `julia`.
+1. Load the necessary script using `include("perform2.jl")`.
+1. To run all selected instances, use the command `perform("w", list_of_problems=Array{String,1}(), ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, benchmarkSamples=2, improv = (c,q) -> q/c)`.
+1. Finally, execute `perform("w", list_of_problems=["pdb2k2f","pdb2kbm","pdb2j0z","pdb2adl"], ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, minSamples=20000, improv = (c,q) -> q/c)` to perform the specific `list_of_problems`.
+
+If you want to run `BP-All`, simply execute `performRMSD("w", list_of_problems = ["pdb2k2f", "pdb2kbm"], ε=1.0e-6, time_limit=Second(120), benchmarkSeconds=20000, minSamples=10000, improv= (m,q) -> q/m)`.
+
+### Artificial instances
+
+1. Go to `examples/lavor_instances/`
+1. Load `include("performance.jl")`
+1. runperf(benchmarkSamples=100000,benchmarkSeconds=300,ε=maxintfloat(),virtual_ε=maxintfloat())
+
 ## TO DO
 
 1. [X] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
@@ -63,7 +83,7 @@ Massive tests were carried out to prove the potential of the implementations. If
 1. [X] Modify the quaternion version to new input and improvements;
 1. [X] Run all examples and create a table of tests;
 1. [X] Include a decent documentation using `Documenter.jl`.
-1. [ ] Merge branch master with COAP
+1. [X] Merge branch master with COAP
 1. [ ] Revise the Documentation (and the readme in benchmarks folders)
 1. [ ] Add in README informations about the consolidate benchmark files and a brief description about the benchmark folders
 1. [ ] Update the package to last LTS Julia version
