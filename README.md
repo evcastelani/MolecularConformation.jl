@@ -57,13 +57,13 @@ To execute the benchmarks, you need to have the `MolecularConformation` package 
 ### Real instances
 
 1. Navigate to the `real_instances` folder (type `cd examples/real_instances/`).
-1. Run `julia`.
-1. Load the necessary script using `include("perform2.jl")`.
-1. To run all selected instances, use the command 
+2. Run `julia`.
+3. Load the necessary script using `include("perform2.jl")`.
+4. To run all selected instances, use the command 
 ```julia
 julia> perform("w", list_of_problems=Array{String,1}(), ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, benchmarkSamples=2, improv = (c,q) -> q/c)
 ```
-1. Finally, execute
+5. Finally, execute
 ```julia
 julia> perform("w", list_of_problems=["pdb2k2f","pdb2kbm","pdb2j0z","pdb2adl"], ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, minSamples=20000, improv = (c,q) -> q/c)
 ```
@@ -77,8 +77,8 @@ julia> `performRMSD("w", list_of_problems = ["pdb2k2f", "pdb2kbm"], ε=1.0e-6, t
 ### Artificial instances
 
 1. Go to `examples/lavor_instances/`
-1. Load `include("performance.jl")`
-1. 
+2. Load `include("performance.jl")`
+3. Finally 
 ```julia
 julia> runperf(benchmarkSamples=100000,benchmarkSeconds=300,ε=maxintfloat(),virtual_ε=maxintfloat())
 ``` 
