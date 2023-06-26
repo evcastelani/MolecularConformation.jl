@@ -1,0 +1,49 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{geometry}
+\geometry{top=2.5cm,bottom=2.0cm,left=1cm,right=1cm}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{makecell}
+\usepackage{xltabular}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{booktabs}
+
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{fancyvrb}
+
+% redefine \VerbatimInput
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}%
+{fontsize=\footnotesize,
+ %
+ frame=lines,  % top and bottom rule only
+ framesep=2em, % separation between frame and text
+ rulecolor=\color{Gray},
+ %
+ label=\fbox{\color{Black}log.txt},
+ labelposition=topline,
+ %
+ commandchars=\|\(\), % escape character and argument delimiters for
+                      % commands within the verbatim
+ commentchar=*        % comment character
+}
+
+
+\begin{document}
+	
+	\begin{scriptsize}
+		\input{../table_general.tex}
+		\newpage
+		
+		%\input{../table_operations.tex}
+		%\newpage
+	\end{scriptsize}
+	
+	\newpage
+
+\VerbatimInput{../log.txt}
+
+\end{document}	

@@ -1,0 +1,81 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{geometry}
+\geometry{top=2.5cm,bottom=2.0cm,left=1cm,right=1cm}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{makecell}
+\usepackage{xltabular}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage{float}
+\title{Consolidated Performance Tests}
+
+
+
+\author[1]{Felipe Fidalgo\thanks{felipe.fidalgo@ufsc.br}}
+\author[2]{Emerson Castelani\thanks{evcastelani@uem.br}}
+\author[1]{Guilherme Philippi\thanks{g.philippi@grad.ufsc.br}}
+\affil[1]{Department of Mathematics, Universidade Federal de Santa Catarina,
+2514 João Pessoa street, Velha,
+Blumenau, Santa Catarina,
+Brazil,
+89036-004}
+\affil[2]{Department of Mathematics, Universidade Estadual de Maringá, 5790 Colombo Avenue, \\ Jardim Universitário, Maringá, Paraná, Brazil, 87020-900}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	
+
+	\newpage
+	\section{Benchmark's tables}
+	\subsection{Using BP-One versions}
+	\begin{scriptsize}
+		\input{../table_general.tex}
+		\newpage
+	\end{scriptsize}
+
+	\newpage
+	\subsection{Using BP-All versions}
+	\begin{scriptsize}
+		\input{../table_generalRMSD.tex}
+		\newpage
+	\end{scriptsize}
+
+	\newpage
+	\section{Visual analysis}
+
+	\subsection{BP-One}
+	\begin{figure}[H]
+		\begin{tabular}{cc}
+			\includegraphics[scale=0.55]{figures/timeMatrix.pdf} & 
+			\includegraphics[scale=0.55]{figures/timeQuaternion.pdf} \\
+			\includegraphics[scale=0.55]{figures/MDEMatrix.pdf} &
+			\includegraphics[scale=0.55]{figures/MDEQuaternion.pdf} \\
+			\includegraphics[scale=0.55]{figures/RMSD.pdf} &
+			\includegraphics[scale=0.55]{figures/improv.pdf} \\
+			\multicolumn{2}{c}{\includegraphics[scale=0.55]{figures/perfomance_profile.pdf}}\\
+		\end{tabular}
+		\label{fig:mean}
+	\end{figure}
+	
+	\newpage
+	\subsection{BP-All}
+	\begin{figure}[H]
+		\begin{tabular}{cc}
+			\includegraphics[scale=0.55]{figures/timeMatrixAll.pdf} & 
+			\includegraphics[scale=0.55]{figures/timeQuaternionAll.pdf} \\
+			\includegraphics[scale=0.55]{figures/MDEMatrixAll.pdf} &
+			\includegraphics[scale=0.55]{figures/MDEQuaternionAll.pdf} \\
+			\includegraphics[scale=0.55]{figures/RMSDMatrixAll.pdf} &
+			\includegraphics[scale=0.55]{figures/RMSDQuaternionAll.pdf} \\
+			\includegraphics[scale=0.55]{figures/improvAll.pdf}& 
+			\includegraphics[scale=0.55]{figures/histogramRMSDAll.pdf} \\
+		\end{tabular}
+		\label{fig:mean}
+	\end{figure}
+
+\end{document}	

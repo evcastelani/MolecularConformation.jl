@@ -52,9 +52,6 @@ Massive tests were carried out to prove the potential of the implementations. If
 
 ## TO DO
 
-
-
-
 1. [X] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
 1. [X] Include signs vector (this idea doesn't work);
 1. [X] Include in the data list the information about both atoms not just one 

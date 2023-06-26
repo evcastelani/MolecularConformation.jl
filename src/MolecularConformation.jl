@@ -2,12 +2,12 @@ module MolecularConformation
 
 export  preprocessing,NMRInfo,NMRType,conformation,ConformationSetup,ConformationOutput,
 AtomType,MoleculeType,classicBP, classicBP_closure,
-quaternionBP,≈,generate_virtual_path, bondangle,torsionmatrix,badtorsionangle,
-pruningtest,LDE,build_distance_matrix,outputfilter,writefile,convert_to_dataframe
+quaternionBP,symBP,≈,generate_virtual_path, bondangle,torsionmatrix,badtorsionangle,
+pruningtest,MDE,build_distance_matrix,outputfilter,writefile,convert_to_dataframe
 
 
 # loading basic packages
-using LinearAlgebra,DelimitedFiles,SparseArrays,DataFrames
+using LinearAlgebra,DelimitedFiles,SparseArrays,DataFrames,Dates
 #using Quaternions
 import Base.show
 
@@ -36,13 +36,14 @@ as return a ConformationOutput type is provided.
 There are others parameters to setup, for example, need to complete.
 """
 function conformation(NMRdata::NMRType,
-		     cs::ConformationSetup)
+		cs::ConformationSetup, 
+		args...; 
+		kargs...)
 
 
-	solutions = cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions)
-	s = ConformationOutput(cs.solver,solutions[1],solutions[2],solutions[3])
-	if cs.evalLDE == true
-		map(i->MolecularConformation.LDE(s.molecules[i],NMRdata),[1:1:s.number;])
+	s = cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions, args...; kargs...)
+	if cs.evalMDE == true
+		map(i->MolecularConformation.MDE((typeof(s) == ConformationOutput ? s : s[1]).molecules[i],NMRdata),[1:1:(typeof(s) == ConformationOutput ? s : s[1]).number;])
 	end
 	return s
 end				

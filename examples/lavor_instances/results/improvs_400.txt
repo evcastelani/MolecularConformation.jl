@@ -1,0 +1,9 @@
+Remark: Analysis of improvements from quaternion to classic 
+Average of improvements in processing time (%)
+mean -> 3.806837157385544 
+median -> 4.258810136343891 
+minimum -> 4.283855912688522 
+maximum -> -9.136049726088688 
+geometric mean over means -> 3.6921066825544413 
+samples classic -> [100000, 100000, 100000, 100000, 100000, 99175, 60657, 38773, 28170, 23030, 19585, 8246, 5246] 
+samples quaternion -> [100000, 100000, 100000, 100000, 100000, 100000, 61614, 39278, 28441, 23236, 19779, 8347, 5313] 

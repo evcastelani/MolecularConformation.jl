@@ -1,4 +1,6 @@
-using MolecularConformation,PyPlot,BenchmarkTools
+using MolecularConformation,BenchmarkTools, Plots
+
+gr()
 
 BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
 
@@ -13,10 +15,10 @@ where d is an integer value defined by the vector [3,4,5,10,50,100,200,300,400,5
 
 """
 # ndiag is defined by [3,4,5,10,50,100,200,300,400,500,600,700,800,900,1000,2000,3000]
-function perform(ndiag,allsolutions=false,LDE=false)
+function perform(ndiag,allsolutions=false,MDE=false)
 	#initialization
-	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,LDE)
-	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,LDE)
+	opt_classic = ConformationSetup(0.000001,classicBP,allsolutions,MDE)
+	opt_quaternion = ConformationSetup(0.000001,quaternionBP,allsolutions,MDE)
 	data = preprocessing("toyinstance.nmr")
 	sol = conformation(data,opt_quaternion)
 	sol = conformation(data,opt_classic)
@@ -26,6 +28,7 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	prob = parse.(Int,folders)
 	tquat = zeros(length(folders),4)
 	tclass = zeros(length(folders),4)
+	nop  = Vector{String}(undef,length(folders))
 #	tclassopt = zeros(length(folders),4)
 	k = 1
 	c = 10.0^(-9)
@@ -39,11 +42,12 @@ function perform(ndiag,allsolutions=false,LDE=false)
 			data = preprocessing(string(foldername,"-$(ndiag).nmr"))
 		end
 		bch  = @benchmark conformation($(data),$(opt_classic))
+		solc =  conformation(data,opt_classic)
 		tclass[k,1] = minimum(bch).time*c
 		tclass[k,2] = median(bch).time*c
 		tclass[k,3] = mean(bch).time*c
 		tclass[k,4] = maximum(bch).time*c
-		
+	
 #		bch  = @benchmark conformation($(data),$(opt_classicOpt))
 #		tclassopt[k,1] = minimum(bch).time*c
 #		tclassopt[k,2] = median(bch).time*c
@@ -52,6 +56,8 @@ function perform(ndiag,allsolutions=false,LDE=false)
 
 
 		bch = @benchmark conformation($(data),$(opt_quaternion))
+		solq = conformation(data,opt_quaternion)
+		nop[k] = "In $(foldername) gain was $((-1.0+sum(solc.nop.node)/sum(solq.nop.node))*100) %"
 		tquat[k,1] = minimum(bch).time*c
 		tquat[k,2] = median(bch).time*c
 		tquat[k,3] = mean(bch).time*c
@@ -75,22 +81,16 @@ function perform(ndiag,allsolutions=false,LDE=false)
 	write(io, "median -> $(improv_med) \n");
 	write(io, "mean -> $(improv_mean) \n");
 	write(io, "maximum -> $(improv_max) \n");
+	for k = 1: length(folders)
+		write(io," $(nop[k]) \n")
+	end
 	close(io);
 	#####
 	j=1
 	for information in ["minimum","median","mean","maximum"]
-		ioff()
-		fig = figure()
-	    	xlabel("size of problems")
-		ylabel("Average of $(information) processing time (s)")
-    	#grid("on")
-    	#title("")
-		plot(prob,tquat[:,j],"--k",label="QuaternionBP");
-#		plot(prob,tclassopt[:,j],"-.k",label="ClassicBPOpt");
-		plot(prob,tclass[:,j],"-k",label="ClassicBP");
-	    	legend(loc="upper right",fancybox="false");
-		savefig("perf_$(information)_$(ndiag).png");
-		close(fig)
+		plot(prob,tquat[:,j],color = [:black],line = (:dot,2),xaxis = ("Size of problems"),yaxis =("Average of $(information) processing time (s)"), label = "QuaternionBP")
+		plot!(prob,tclass[:,j],color = [:black],label =  "ClassicBP")
+		png("perf_$(information)_$(ndiag)");
 		j+=1
 	end	 
 end
@@ -108,7 +108,7 @@ julia> runperf()
 some graphs will be saved in current folder. 
 """
 function runperf()
-	for ndiag in [3,10,100,200,400,800,1000] 
+	for ndiag in [3,4,5,10,100,200,300,400,500,600,700,800,900,1000] # [3,10,100,200,400,800,1000] 
 		perform(ndiag)
 	end
 end
