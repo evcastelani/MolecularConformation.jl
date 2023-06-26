@@ -59,17 +59,29 @@ To execute the benchmarks, you need to have the `MolecularConformation` package 
 1. Navigate to the `real_instances` folder (type `cd examples/real_instances/`).
 1. Run `julia`.
 1. Load the necessary script using `include("perform2.jl")`.
-1. To run all selected instances, use the command `perform("w", list_of_problems=Array{String,1}(), ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, benchmarkSamples=2, improv = (c,q) -> q/c)`.
-1. Finally, execute `perform("w", list_of_problems=["pdb2k2f","pdb2kbm","pdb2j0z","pdb2adl"], ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, minSamples=20000, improv = (c,q) -> q/c)` to perform the specific `list_of_problems`.
+1. To run all selected instances, use the command 
+```julia
+julia> perform("w", list_of_problems=Array{String,1}(), ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, benchmarkSamples=2, improv = (c,q) -> q/c)
+```
+1. Finally, execute
+```julia
+julia> perform("w", list_of_problems=["pdb2k2f","pdb2kbm","pdb2j0z","pdb2adl"], ε=1.0e-5, time_limit=Second(60), benchmarkSeconds=4500, minSamples=20000, improv = (c,q) -> q/c)
+```
+to performe a specific list of problems.
 
-If you want to run `BP-All`, simply execute `performRMSD("w", list_of_problems = ["pdb2k2f", "pdb2kbm"], ε=1.0e-6, time_limit=Second(120), benchmarkSeconds=20000, minSamples=10000, improv= (m,q) -> q/m)`.
+If you want to run `BP-All`, simply execute 
+```julia
+julia> `performRMSD("w", list_of_problems = ["pdb2k2f", "pdb2kbm"], ε=1.0e-6, time_limit=Second(120), benchmarkSeconds=20000, minSamples=10000, improv= (m,q) -> q/m)`.
+```
 
 ### Artificial instances
 
 1. Go to `examples/lavor_instances/`
 1. Load `include("performance.jl")`
-1. runperf(benchmarkSamples=100000,benchmarkSeconds=300,ε=maxintfloat(),virtual_ε=maxintfloat())
-
+1. 
+```julia
+julia> runperf(benchmarkSamples=100000,benchmarkSeconds=300,ε=maxintfloat(),virtual_ε=maxintfloat())
+``` 
 ## TO DO
 
 1. [X] Discuss about the standard extension `.pdb` or `.mdjeep` or another; 
