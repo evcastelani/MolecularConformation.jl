@@ -1,0 +1,580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /home/gphilippi/working/artigoCOAP/MolecularConformation.jl/src/MolecularConformation.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on Tue 31 May 2022 03:17:20 PM -03</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">module MolecularConformation
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">export  preprocessing,NMRInfo,NMRType,conformation,ConformationSetup,ConformationOutput,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">AtomType,MoleculeType,classicBP, classicBP_closure,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">quaternionBP,≈,generate_virtual_path, bondangle,torsionmatrix,badtorsionangle,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">pruningtest,LDE,build_distance_matrix,outputfilter,writefile,convert_to_dataframe
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># loading basic packages
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">using LinearAlgebra,DelimitedFiles,SparseArrays,DataFrames,Dates
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">#using Quaternions
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">import Base.show
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">include(&quot;utils.jl&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">include(&quot;solvers.jl&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">include(&quot;show.jl&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># main function to run the solver and related problem
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">``` 
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">conformation(NMRdata,cs::ConformationSetup)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">This is the main function in order to get the conformation of a molecule. To run this function, we need to setup a NMR file and then define some options using the ConformationSetup type. 
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## Example 
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```julia-repl
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; options = ConformationSetup(0.001,classicBP,true)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; conformation(NMRdata,options)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">as return a ConformationOutput type is provided.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">There are others parameters to setup, for example, need to complete.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function conformation(NMRdata::NMRType,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">		cs::ConformationSetup,time_limit=Second(5))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-40"></a>40</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-MolecularConformation-jl-conformation-41"></a>
+              24880 (98.29%) samples spent in conformation<br />
+              1 (100.00%) (ex.),
+              24 (0.10%) (incl.)
+              when called from
+              conformation
+              <a href="MolecularConformation-jl-19e8d31f2403098562f6-line.html#LMolecularConformation-jl-19e8d31f2403098562f6-line.html-42">line 42</a><br />
+            </div>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-42"></a>42</td>
+          <td></td>
+          <td>49736 (196.49%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-MolecularConformation-jl-conformation-42"></a>
+              24880 (98.29%) samples spent in conformation<br />
+              0 (ex.),
+              10216 (41.06%) (incl.)
+              when called from
+              macro expansion
+              <a href="nothing-0feca720e2c29dafb2c9-line.html#Lnothing-0feca720e2c29dafb2c9-line.html-3">line 3</a><br />
+              0 (ex.),
+              14664 (58.94%) (incl.)
+              when called from
+              macro expansion
+              <a href="nothing-0feca720e2c29dafb2c9-line.html#Lnothing-0feca720e2c29dafb2c9-line.html-2">line 2</a><br />
+            </div>
+            <div class="callees">
+              10206 (20.52%)
+              samples spent calling
+              <a href="solvers-jl-a4084d59c88e6a674840-line.html#S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-solvers-jl-quaternionBP-661">quaternionBP</a><br />
+              14650 (29.46%)
+              samples spent calling
+              <a href="solvers-jl-a4084d59c88e6a674840-line.html#S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-solvers-jl-classicBP-483">classicBP</a><br />
+              24880 (50.02%)
+              samples spent calling
+              <a href="MolecularConformation-jl-19e8d31f2403098562f6-line.html#S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-MolecularConformation-jl-conformation-41">conformation</a><br />
+            </div>
+            <span class="code">	solutions = cs.solver(NMRdata,cs.precision,cs.virtual_precision,cs.allsolutions,time_limit)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-43"></a>43</td>
+          <td>1 (0.0040%)</td>
+          <td>1 (0.0040%)</td>
+          <td>
+            <span class="code">	s = ConformationOutput(cs.solver,solutions[1],solutions[2],Counter([0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0],0.0,0.0))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-44"></a>44</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">	if cs.evalLDE == true
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-45"></a>45</td>
+          <td></td>
+          <td>46 (0.18%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-MolecularConformation-jl-12-45"></a>
+              23 (0.09%) samples spent in #12<br />
+              0 (ex.),
+              23 (100.00%) (incl.)
+              when called from
+              iterate
+              <a href="generator-jl-11c50b176995221f5176-line.html#Lgenerator-jl-11c50b176995221f5176-line.html-47">line 47</a><br />
+            </div>
+            <div class="callees">
+              23 (50.00%)
+              samples spent calling
+              <a href="utils-jl-3018df7978f04baa7aa4-line.html#S-home-gphilippi-working-artigoCOAP-MolecularConformation-jl-src-utils-jl-LDE-368">LDE</a><br />
+              23 (50.00%)
+              samples spent calling
+              <a href="array-jl-273e557ab8bc00b90747-line.html#S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-array-jl-map-561">map</a><br />
+            </div>
+            <span class="code">		map(i-&gt;MolecularConformation.LDE(s.molecules[i],NMRdata),[1:1:s.number;])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">	end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">	return s
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end				
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="LMolecularConformation-jl-19e8d31f2403098562f6-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

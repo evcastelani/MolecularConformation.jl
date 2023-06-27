@@ -1,0 +1,4474 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /home/gphilippi/Desktop/idiotice/build/julia-1.0.5/bin/../share/julia/base/./promotion.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on Tue 31 May 2022 03:17:20 PM -03</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## type join (closest common ancestor, or least upper bound) ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    typejoin(T, S)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Return the closest common ancestor of `T` and `S`, i.e. the narrowest type from which
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">they both inherit.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">typejoin() = (@_pure_meta; Bottom)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">typejoin(@nospecialize(t)) = (@_pure_meta; t)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">typejoin(@nospecialize(t), ts...) = (@_pure_meta; typejoin(t, typejoin(ts...)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function typejoin(@nospecialize(a), @nospecialize(b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_pure_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if isa(a, TypeVar)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return typejoin(a.ub, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif isa(b, TypeVar)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return typejoin(a, b.ub)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif a &lt;: b
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return b
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif b &lt;: a
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return a
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif isa(a, UnionAll)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return UnionAll(a.var, typejoin(a.body, b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif isa(b, UnionAll)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return UnionAll(b.var, typejoin(a, b.body))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif isa(a, Union)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return typejoin(typejoin(a.a, a.b), b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif isa(b, Union)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return typejoin(a, typejoin(b.a, b.b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif a &lt;: Tuple
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if !(b &lt;: Tuple)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ap, bp = a.parameters, b.parameters
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        lar = length(ap)::Int
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        lbr = length(bp)::Int
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-40"></a>40</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if lar == 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return Tuple{Vararg{tailjoin(bp, 1)}}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-42"></a>42</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-43"></a>43</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if lbr == 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-44"></a>44</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return Tuple{Vararg{tailjoin(ap, 1)}}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-45"></a>45</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        laf, afixed = full_va_len(ap)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        lbf, bfixed = full_va_len(bp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if laf &lt; lbf
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if isvarargtype(ap[lar]) &amp;&amp; !afixed
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c = Vector{Any}(undef, laf)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-51"></a>51</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c[laf] = Vararg{typejoin(unwrapva(ap[lar]), tailjoin(bp, laf))}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-52"></a>52</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                n = laf-1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-53"></a>53</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-54"></a>54</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c = Vector{Any}(undef, laf+1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-55"></a>55</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c[laf+1] = Vararg{tailjoin(bp, laf+1)}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-56"></a>56</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                n = laf
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-57"></a>57</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-58"></a>58</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        elseif lbf &lt; laf
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-59"></a>59</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if isvarargtype(bp[lbr]) &amp;&amp; !bfixed
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-60"></a>60</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c = Vector{Any}(undef, lbf)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-61"></a>61</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c[lbf] = Vararg{typejoin(unwrapva(bp[lbr]), tailjoin(ap, lbf))}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-62"></a>62</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                n = lbf-1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-63"></a>63</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-64"></a>64</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c = Vector{Any}(undef, lbf+1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-65"></a>65</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                c[lbf+1] = Vararg{tailjoin(ap, lbf+1)}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-66"></a>66</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                n = lbf
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-67"></a>67</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-68"></a>68</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-69"></a>69</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            c = Vector{Any}(undef, laf)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-70"></a>70</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            n = laf
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-71"></a>71</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-72"></a>72</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for i = 1:n
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-73"></a>73</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            ai = ap[min(i,lar)]; bi = bp[min(i,lbr)]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-74"></a>74</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            ci = typejoin(unwrapva(ai), unwrapva(bi))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-75"></a>75</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            c[i] = i == length(c) &amp;&amp; (isvarargtype(ai) || isvarargtype(bi)) ? Vararg{ci} : ci
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-76"></a>76</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-77"></a>77</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return Tuple{c...}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-78"></a>78</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif b &lt;: Tuple
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-79"></a>79</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-80"></a>80</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-81"></a>81</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    while b !== Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-82"></a>82</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if a &lt;: b.name.wrapper
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-83"></a>83</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            while a.name !== b.name
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-84"></a>84</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                a = supertype(a)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-85"></a>85</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-86"></a>86</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if a.name === Type.body.name
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-87"></a>87</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                ap = a.parameters[1]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-88"></a>88</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                bp = b.parameters[1]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-89"></a>89</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                if ((isa(ap,TypeVar) &amp;&amp; ap.lb === Bottom &amp;&amp; ap.ub === Any) ||
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-90"></a>90</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    (isa(bp,TypeVar) &amp;&amp; bp.lb === Bottom &amp;&amp; bp.ub === Any))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-91"></a>91</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    # handle special Type{T} supertype
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-92"></a>92</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    return Type
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-93"></a>93</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-94"></a>94</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-95"></a>95</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            aprimary = a.name.wrapper
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-96"></a>96</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            # join on parameters
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-97"></a>97</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            n = length(a.parameters)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-98"></a>98</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if n == 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-99"></a>99</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                return aprimary
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-100"></a>100</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-101"></a>101</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            vars = []
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-102"></a>102</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            for i = 1:n
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-103"></a>103</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                ai, bi = a.parameters[i], b.parameters[i]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-104"></a>104</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                if ai === bi || (isa(ai,Type) &amp;&amp; isa(bi,Type) &amp;&amp; ai &lt;: bi &amp;&amp; bi &lt;: ai)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-105"></a>105</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    aprimary = aprimary{ai}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-106"></a>106</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-107"></a>107</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    pushfirst!(vars, aprimary.var)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-108"></a>108</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    aprimary = aprimary.body
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-109"></a>109</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-110"></a>110</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-111"></a>111</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            for v in vars
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-112"></a>112</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                aprimary = UnionAll(v, aprimary)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-113"></a>113</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-114"></a>114</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return aprimary
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-115"></a>115</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-116"></a>116</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        b = supertype(b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-117"></a>117</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-118"></a>118</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-119"></a>119</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-120"></a>120</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-121"></a>121</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-122"></a>122</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    promote_typejoin(T, S)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-123"></a>123</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-124"></a>124</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Compute a type that contains both `T` and `S`, which could be
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-125"></a>125</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">either a parent of both types, or a `Union` if appropriate.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-126"></a>126</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Falls back to [`typejoin`](@ref).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-127"></a>127</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-128"></a>128</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_typejoin(@nospecialize(a), @nospecialize(b)) = _promote_typejoin(a, b)::Type
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-129"></a>129</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(@nospecialize(a), @nospecialize(b)) = typejoin(a, b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-130"></a>130</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{Nothing}, ::Type{T}) where {T} =
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-131"></a>131</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isconcretetype(T) || T === Union{} ? Union{T, Nothing} : Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-132"></a>132</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{T}, ::Type{Nothing}) where {T} =
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-133"></a>133</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isconcretetype(T) || T === Union{} ? Union{T, Nothing} : Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-134"></a>134</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{Missing}, ::Type{T}) where {T} =
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-135"></a>135</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isconcretetype(T) || T === Union{} ? Union{T, Missing} : Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-136"></a>136</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{T}, ::Type{Missing}) where {T} =
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-137"></a>137</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isconcretetype(T) || T === Union{} ? Union{T, Missing} : Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-138"></a>138</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{Nothing}, ::Type{Missing}) = Union{Nothing, Missing}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-139"></a>139</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{Missing}, ::Type{Nothing}) = Union{Nothing, Missing}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-140"></a>140</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{Nothing}, ::Type{Nothing}) = Nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-141"></a>141</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_promote_typejoin(::Type{Missing}, ::Type{Missing}) = Missing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-142"></a>142</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-143"></a>143</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Returns length, isfixed
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-144"></a>144</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function full_va_len(p)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-145"></a>145</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isempty(p) &amp;&amp; return 0, true
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-146"></a>146</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    last = p[end]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-147"></a>147</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if isvarargtype(last)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-148"></a>148</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        N = unwrap_unionall(last).parameters[2]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-149"></a>149</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if isa(N, Integer)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-150"></a>150</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return (length(p) + N - 1)::Int, true
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-151"></a>151</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-152"></a>152</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return length(p)::Int, false
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-153"></a>153</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-154"></a>154</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return length(p)::Int, true
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-155"></a>155</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-156"></a>156</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-157"></a>157</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># reduce typejoin over A[i:end]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-158"></a>158</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function tailjoin(A, i)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-159"></a>159</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if i &gt; length(A)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-160"></a>160</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return unwrapva(A[end])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-161"></a>161</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-162"></a>162</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    t = Bottom
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-163"></a>163</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    for j = i:length(A)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-164"></a>164</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        t = typejoin(t, unwrapva(A[j]))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-165"></a>165</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-166"></a>166</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return t
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-167"></a>167</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-168"></a>168</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-169"></a>169</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## promotion mechanism ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-170"></a>170</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-171"></a>171</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-172"></a>172</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    promote_type(type1, type2)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-173"></a>173</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-174"></a>174</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Promotion refers to converting values of mixed types to a single common type.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-175"></a>175</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`promote_type` represents the default promotion behavior in Julia when
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-176"></a>176</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">operators (usually mathematical) are given arguments of differing types.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-177"></a>177</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`promote_type` generally tries to return a type which can at least approximate
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-178"></a>178</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">most values of either input type without excessively widening.  Some loss is
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-179"></a>179</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">tolerated; for example, `promote_type(Int64, Float64)` returns
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-180"></a>180</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">[`Float64`](@ref) even though strictly, not all [`Int64`](@ref) values can be
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-181"></a>181</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">represented exactly as `Float64` values.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-182"></a>182</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-183"></a>183</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-184"></a>184</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote_type(Int64, Float64)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-185"></a>185</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Float64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-186"></a>186</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-187"></a>187</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote_type(Int32, Int64)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-188"></a>188</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-189"></a>189</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-190"></a>190</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote_type(Float32, BigInt)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-191"></a>191</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">BigFloat
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-192"></a>192</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-193"></a>193</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote_type(Int16, Float16)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-194"></a>194</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Float16
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-195"></a>195</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-196"></a>196</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote_type(Int64, Float16)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-197"></a>197</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Float16
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-198"></a>198</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-199"></a>199</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote_type(Int8, UInt16)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-200"></a>200</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">UInt16
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-201"></a>201</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-202"></a>202</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-203"></a>203</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote_type end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-204"></a>204</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-205"></a>205</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type()  = Bottom
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-206"></a>206</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type(T) = T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-207"></a>207</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type(T, S, U, V...) = (@_inline_meta; promote_type(T, promote_type(S, U, V...)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-208"></a>208</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-209"></a>209</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type(::Type{Bottom}, ::Type{Bottom}) = Bottom
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-210"></a>210</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type(::Type{T}, ::Type{T}) where {T} = T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-211"></a>211</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type(::Type{T}, ::Type{Bottom}) where {T} = T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-212"></a>212</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_type(::Type{Bottom}, ::Type{T}) where {T} = T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-213"></a>213</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-214"></a>214</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote_type(::Type{T}, ::Type{S}) where {T,S}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-215"></a>215</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_inline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-216"></a>216</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # Try promote_rule in both orders. Typically only one is defined,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-217"></a>217</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # and there is a fallback returning Bottom below, so the common case is
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-218"></a>218</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    #   promote_type(T, S) =&gt;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-219"></a>219</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    #   promote_result(T, S, result, Bottom) =&gt;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-220"></a>220</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    #   typejoin(result, Bottom) =&gt; result
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-221"></a>221</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    promote_result(T, S, promote_rule(T,S), promote_rule(S,T))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-222"></a>222</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-223"></a>223</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-224"></a>224</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-225"></a>225</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    promote_rule(type1, type2)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-226"></a>226</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-227"></a>227</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Specifies what type should be used by [`promote`](@ref) when given values of types `type1` and
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-228"></a>228</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`type2`. This function should not be called directly, but should have definitions added to
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-229"></a>229</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">it for new types as appropriate.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-230"></a>230</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-231"></a>231</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote_rule end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-232"></a>232</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-233"></a>233</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_rule(::Type{&lt;:Any}, ::Type{&lt;:Any}) = Bottom
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-234"></a>234</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># To fix ambiguities
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-235"></a>235</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_rule(::Type{Any}, ::Type{&lt;:Any}) = Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-236"></a>236</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_rule(::Type{&lt;:Any}, ::Type{Any}) = Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-237"></a>237</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_rule(::Type{Any}, ::Type{Any}) = Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-238"></a>238</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-239"></a>239</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_result(::Type{&lt;:Any},::Type{&lt;:Any},::Type{T},::Type{S}) where {T,S} = (@_inline_meta; promote_type(T,S))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-240"></a>240</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># If no promote_rule is defined, both directions give Bottom. In that
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-241"></a>241</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># case use typejoin on the original types instead.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-242"></a>242</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_result(::Type{T},::Type{S},::Type{Bottom},::Type{Bottom}) where {T,S} = (@_inline_meta; typejoin(T, S))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-243"></a>243</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-244"></a>244</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-245"></a>245</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    promote(xs...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-246"></a>246</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-247"></a>247</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Convert all arguments to a common type, and return them all (as a tuple).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-248"></a>248</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">If no arguments can be converted, an error is raised.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-249"></a>249</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-250"></a>250</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Examples
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-251"></a>251</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-252"></a>252</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; promote(Int8(1), Float16(4.5), Float32(4.1))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-253"></a>253</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(1.0f0, 4.5f0, 4.1f0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-254"></a>254</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-255"></a>255</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-256"></a>256</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-257"></a>257</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-258"></a>258</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function _promote(x::T, y::S) where {T,S}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-259"></a>259</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_inline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-260"></a>260</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    R = promote_type(T, S)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-261"></a>261</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return (convert(R, x), convert(R, y))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-262"></a>262</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-263"></a>263</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_typeof(x) = typeof(x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-264"></a>264</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_typeof(x, xs...) = (@_inline_meta; promote_type(typeof(x), promote_typeof(xs...)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-265"></a>265</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function _promote(x, y, z)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-266"></a>266</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_inline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-267"></a>267</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    R = promote_typeof(x, y, z)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-268"></a>268</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return (convert(R, x), convert(R, y), convert(R, z))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-269"></a>269</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-270"></a>270</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function _promote(x, y, zs...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-271"></a>271</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_inline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-272"></a>272</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    R = promote_typeof(x, y, zs...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-273"></a>273</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return (convert(R, x), convert(R, y), convert(Tuple{Vararg{R}}, zs)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-274"></a>274</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-275"></a>275</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># TODO: promote(x::T, ys::T...) where {T} here to catch all circularities?
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-276"></a>276</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-277"></a>277</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## promotions in arithmetic, etc. ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-278"></a>278</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-279"></a>279</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote() = ()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-280"></a>280</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote(x) = (x,)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-281"></a>281</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-282"></a>282</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-283"></a>283</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_inline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-284"></a>284</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    px, py = _promote(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-285"></a>285</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    not_sametype((x,y), (px,py))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-286"></a>286</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    px, py
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-287"></a>287</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-288"></a>288</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote(x, y, z)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-289"></a>289</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_inline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-290"></a>290</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    px, py, pz = _promote(x, y, z)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-291"></a>291</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    not_sametype((x,y,z), (px,py,pz))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-292"></a>292</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    px, py, pz
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-293"></a>293</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-294"></a>294</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote(x, y, z, a...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-295"></a>295</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    p = _promote(x, y, z, a...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-296"></a>296</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    not_sametype((x, y, z, a...), p)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-297"></a>297</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    p
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-298"></a>298</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-299"></a>299</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-300"></a>300</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote(x::T, y::T, zs::T...) where {T} = (x, y, zs...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-301"></a>301</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-302"></a>302</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">not_sametype(x::T, y::T) where {T} = sametype_error(x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-303"></a>303</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-304"></a>304</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">not_sametype(x, y) = nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-305"></a>305</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-306"></a>306</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function sametype_error(input)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-307"></a>307</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @_noinline_meta
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-308"></a>308</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    error(&quot;promotion of types &quot;,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-309"></a>309</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">          join(map(x-&gt;string(typeof(x)), input), &quot;, &quot;, &quot; and &quot;),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-310"></a>310</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">          &quot; failed to change any arguments&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-311"></a>311</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-312"></a>312</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-313"></a>313</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">+(x::Number, y::Number) = +(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-314"></a>314</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">*(x::Number, y::Number) = *(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-315"></a>315</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">-(x::Number, y::Number) = -(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-316"></a>316</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">/(x::Number, y::Number) = /(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-317"></a>317</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-318"></a>318</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-319"></a>319</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    ^(x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-320"></a>320</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-321"></a>321</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Exponentiation operator. If `x` is a matrix, computes matrix exponentiation.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-322"></a>322</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-323"></a>323</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">If `y` is an `Int` literal (e.g. `2` in `x^2` or `-3` in `x^-3`), the Julia code
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-324"></a>324</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`x^y` is transformed by the compiler to `Base.literal_pow(^, x, Val(y))`, to
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-325"></a>325</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">enable compile-time specialization on the value of the exponent.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-326"></a>326</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(As a default fallback we have `Base.literal_pow(^, x, Val(y)) = ^(x,y)`,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-327"></a>327</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">where usually `^ == Base.^` unless `^` has been defined in the calling
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-328"></a>328</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">namespace.)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-329"></a>329</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-330"></a>330</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```jldoctest
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-331"></a>331</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; 3^5
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-332"></a>332</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">243
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-333"></a>333</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-334"></a>334</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; A = [1 2; 3 4]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-335"></a>335</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">2×2 Array{Int64,2}:
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-336"></a>336</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"> 1  2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-337"></a>337</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"> 3  4
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-338"></a>338</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-339"></a>339</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">julia&gt; A^3
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-340"></a>340</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">2×2 Array{Int64,2}:
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-341"></a>341</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"> 37   54
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-342"></a>342</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"> 81  118
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-343"></a>343</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">```
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-344"></a>344</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-345"></a>345</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">^(x::Number, y::Number) = ^(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-346"></a>346</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-347"></a>347</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fma(x::Number, y::Number, z::Number) = fma(promote(x,y,z)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-348"></a>348</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">muladd(x::Number, y::Number, z::Number) = muladd(promote(x,y,z)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-349"></a>349</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-350"></a>350</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">==(x::Number, y::Number) = (==)(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-351"></a>351</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&lt;( x::Real, y::Real)     = (&lt; )(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-352"></a>352</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&lt;=(x::Real, y::Real)     = (&lt;=)(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-353"></a>353</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-354"></a>354</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">div(x::Real, y::Real) = div(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-355"></a>355</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld(x::Real, y::Real) = fld(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-356"></a>356</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">cld(x::Real, y::Real) = cld(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-357"></a>357</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x::Real, y::Real) = rem(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-358"></a>358</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">mod(x::Real, y::Real) = mod(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-359"></a>359</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-360"></a>360</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">mod1(x::Real, y::Real) = mod1(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-361"></a>361</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fld1(x::Real, y::Real) = fld1(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-362"></a>362</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-363"></a>363</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">max(x::Real, y::Real) = max(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-364"></a>364</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">min(x::Real, y::Real) = min(promote(x,y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-365"></a>365</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">minmax(x::Real, y::Real) = minmax(promote(x, y)...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-366"></a>366</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-367"></a>367</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># &quot;Promotion&quot; that takes a function into account and tries to preserve
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-368"></a>368</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># non-concrete types. These are meant to be used mainly by elementwise
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-369"></a>369</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># operations, so it is advised against overriding them
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-370"></a>370</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">_default_type(T::Type) = T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-371"></a>371</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-372"></a>372</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if isdefined(Core, :Compiler)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-373"></a>373</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    const _return_type = Core.Compiler.return_type
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-374"></a>374</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-375"></a>375</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _return_type(@nospecialize(f), @nospecialize(t)) = Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-376"></a>376</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-377"></a>377</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-378"></a>378</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-379"></a>379</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    promote_op(f, argtypes...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-380"></a>380</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-381"></a>381</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Guess what an appropriate container eltype would be for storing results of
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-382"></a>382</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`f(::argtypes...)`. The guess is in part based on type inference, so can change any time.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-383"></a>383</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-384"></a>384</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">!!! warning
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-385"></a>385</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    In pathological cases, the type returned by `promote_op(f, argtypes...)` may not even
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-386"></a>386</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    be a supertype of the return value of `f(::argtypes...)`. Therefore, `promote_op`
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-387"></a>387</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    should _not_ be used e.g. in the preallocation of an output array.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-388"></a>388</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-389"></a>389</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">!!! warning
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-390"></a>390</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    Due to its fragility, use of `promote_op` should be avoided. It is preferable to base
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-391"></a>391</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    the container eltype on the type of the actual elements. Only in the absence of any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-392"></a>392</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elements (for an empty result container), it may be unavoidable to call `promote_op`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-393"></a>393</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-394"></a>394</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">promote_op(::Any...) = Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-395"></a>395</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote_op(f, ::Type{S}) where S
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-396"></a>396</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    TT = Tuple{_default_type(S)}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-397"></a>397</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    T = _return_type(f, TT)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-398"></a>398</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isdispatchtuple(Tuple{S}) &amp;&amp; return isdispatchtuple(Tuple{T}) ? T : Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-399"></a>399</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return typejoin(S, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-400"></a>400</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-401"></a>401</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function promote_op(f, ::Type{R}, ::Type{S}) where {R,S}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-402"></a>402</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    TT = Tuple{_default_type(R), _default_type(S)}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-403"></a>403</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    T = _return_type(f, TT)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-404"></a>404</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isdispatchtuple(Tuple{R}) &amp;&amp; isdispatchtuple(Tuple{S}) &amp;&amp; return isdispatchtuple(Tuple{T}) ? T : Any
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-405"></a>405</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return typejoin(R, S, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-406"></a>406</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-407"></a>407</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-408"></a>408</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## catch-alls to prevent infinite recursion when definitions are missing ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-409"></a>409</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-410"></a>410</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">no_op_err(name, T) = error(name,&quot; not defined for &quot;,T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-411"></a>411</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(+)(x::T, y::T) where {T&lt;:Number} = no_op_err(&quot;+&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-412"></a>412</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(*)(x::T, y::T) where {T&lt;:Number} = no_op_err(&quot;*&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-413"></a>413</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(-)(x::T, y::T) where {T&lt;:Number} = no_op_err(&quot;-&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-414"></a>414</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(/)(x::T, y::T) where {T&lt;:Number} = no_op_err(&quot;/&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-415"></a>415</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(^)(x::T, y::T) where {T&lt;:Number} = no_op_err(&quot;^&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-416"></a>416</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-417"></a>417</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fma(x::T, y::T, z::T) where {T&lt;:Number} = no_op_err(&quot;fma&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-418"></a>418</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">fma(x::Integer, y::Integer, z::Integer) = x*y+z
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-419"></a>419</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">muladd(x::T, y::T, z::T) where {T&lt;:Number} = x*y+z
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-420"></a>420</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-421"></a>421</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(&amp;)(x::T, y::T) where {T&lt;:Integer} = no_op_err(&quot;&amp;&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-422"></a>422</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(|)(x::T, y::T) where {T&lt;:Integer} = no_op_err(&quot;|&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-423"></a>423</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">xor(x::T, y::T) where {T&lt;:Integer} = no_op_err(&quot;xor&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-424"></a>424</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-425"></a>425</td>
+          <td>108 (0.43%)</td>
+          <td>108 (0.43%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-promotion-jl-425"></a>
+              108 (0.43%) samples spent in ==<br />
+              1 (0.93%) (ex.),
+              1 (0.93%) (incl.)
+              when called from
+              classicBP_closure
+              <a href="solvers-jl-a4084d59c88e6a674840-line.html#Lsolvers-jl-a4084d59c88e6a674840-line.html-549">line 549</a><br />
+              1 (0.93%) (ex.),
+              1 (0.93%) (incl.)
+              when called from
+              quaternionBP_closure
+              <a href="solvers-jl-a4084d59c88e6a674840-line.html#Lsolvers-jl-a4084d59c88e6a674840-line.html-751">line 751</a><br />
+              1 (0.93%) (ex.),
+              1 (0.93%) (incl.)
+              when called from
+              quaternionBP_closure
+              <a href="solvers-jl-a4084d59c88e6a674840-line.html#Lsolvers-jl-a4084d59c88e6a674840-line.html-729">line 729</a><br />
+              12 (11.11%) (ex.),
+              12 (11.11%) (incl.)
+              when called from
+              isempty
+              <a href="abstractarray-jl-3bd2d512fec6d567edca-line.html#Labstractarray-jl-3bd2d512fec6d567edca-line.html-841">line 841</a><br />
+              93 (86.11%) (ex.),
+              93 (86.11%) (incl.)
+              when called from
+              iterate
+              <a href="range-jl-ce0ea6b1bb98ffa7dc72-line.html#Lrange-jl-ce0ea6b1bb98ffa7dc72-line.html-575">line 575</a><br />
+            </div>
+            <span class="code">(==)(x::T, y::T) where {T&lt;:Number} = x === y
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-426"></a>426</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(&lt; )(x::T, y::T) where {T&lt;:Real} = no_op_err(&quot;&lt;&quot; , T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-427"></a>427</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">(&lt;=)(x::T, y::T) where {T&lt;:Real} = no_op_err(&quot;&lt;=&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-428"></a>428</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-429"></a>429</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rem(x::T, y::T) where {T&lt;:Real} = no_op_err(&quot;rem&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-430"></a>430</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">mod(x::T, y::T) where {T&lt;:Real} = no_op_err(&quot;mod&quot;, T)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-431"></a>431</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-432"></a>432</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">min(x::Real) = x
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-433"></a>433</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">max(x::Real) = x
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-434"></a>434</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">minmax(x::Real) = (x, x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-435"></a>435</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-436"></a>436</td>
+          <td>9 (0.04%)</td>
+          <td>9 (0.04%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-promotion-jl-axes-436"></a>
+              8 (0.03%) samples spent in axes<br />
+              8 (100.00%) (ex.),
+              8 (100.00%) (incl.)
+              when called from
+              axes1
+              <a href="abstractarray-jl-3bd2d512fec6d567edca-line.html#Labstractarray-jl-3bd2d512fec6d567edca-line.html-93">line 93</a><br />
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-promotion-jl-max-436"></a>
+              1 (0.0040%) samples spent in max<br />
+              1 (100.00%) (ex.),
+              1 (100.00%) (incl.)
+              when called from
+              Type
+              <a href="range-jl-ce0ea6b1bb98ffa7dc72-line.html#Lrange-jl-ce0ea6b1bb98ffa7dc72-line.html-289">line 289</a><br />
+            </div>
+            <span class="code">max(x::T, y::T) where {T&lt;:Real} = ifelse(y &lt; x, x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-437"></a>437</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">min(x::T, y::T) where {T&lt;:Real} = ifelse(y &lt; x, y, x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-438"></a>438</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">minmax(x::T, y::T) where {T&lt;:Real} = y &lt; x ? (y, x) : (x, y)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-439"></a>439</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lpromotion-jl-3e68b4b64be99f5d0409-line.html-440"></a>440</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">flipsign(x::T, y::T) where {T&lt;:Signed} = no_op_err(&quot;flipsign&quot;, T)
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

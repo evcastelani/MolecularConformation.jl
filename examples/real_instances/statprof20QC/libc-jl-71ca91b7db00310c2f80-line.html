@@ -1,0 +1,3930 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /home/gphilippi/Desktop/idiotice/build/julia-1.0.5/bin/../share/julia/base/./libc.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on Tue 31 May 2022 12:04:37 PM -03</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">module Libc
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">@doc &quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Interface to libc, the C standard library.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot; Libc
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">import Base: transcode
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">import Core.Intrinsics: bitcast
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">export FILE, TmStruct, strftime, strptime, getpid, gethostname, free, malloc, calloc, realloc,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    errno, strerror, flush_cstdio, systemsleep, time, transcode
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    export GetLastError, FormatMessage
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">include(string(length(Core.ARGS) &gt;= 2 ? Core.ARGS[2] : &quot;&quot;, &quot;errno_h.jl&quot;))  # include($BUILDROOT/base/errno_h.jl)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## RawFD ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Wrapper for an OS file descriptor (on both Unix and Windows)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    RawFD
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Primitive type which wraps the native OS file descriptor.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`RawFD`s can be passed to methods like [`stat`](@ref) to
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">discover information about the underlying file, and can
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">also be used to open streams, with the `RawFD` describing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">the OS file backing the stream.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">primitive type RawFD 32 end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">RawFD(fd::Integer) = bitcast(RawFD, Cint(fd))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">RawFD(fd::RawFD) = fd
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Base.cconvert(::Type{Cint}, fd::RawFD) = bitcast(Cint, fd)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">dup(x::RawFD) = ccall((@static Sys.iswindows() ? :_dup : :dup), RawFD, (RawFD,), x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">dup(src::RawFD, target::RawFD) = systemerror(&quot;dup&quot;, -1 ==
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    ccall((@static Sys.iswindows() ? :_dup2 : :dup2), Int32,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                (RawFD, RawFD), src, target))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-40"></a>40</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Wrapper for an OS file descriptor (for Windows)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-42"></a>42</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-43"></a>43</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    primitive type WindowsRawSocket sizeof(Ptr) * 8 end # On Windows file descriptors are HANDLE&#39;s and 64-bit on 64-bit Windows
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-44"></a>44</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    WindowsRawSocket(handle::Ptr{Cvoid}) = bitcast(WindowsRawSocket, handle)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-45"></a>45</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    WindowsRawSocket(handle::WindowsRawSocket) = handle
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    Base.cconvert(::Type{Ptr{Cvoid}}, fd::WindowsRawSocket) = bitcast(Ptr{Cvoid}, fd)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _get_osfhandle(fd::RawFD) = ccall(:_get_osfhandle, WindowsRawSocket, (RawFD,), fd)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _get_osfhandle(fd::WindowsRawSocket) = fd
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function dup(src::WindowsRawSocket)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-51"></a>51</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        new_handle = Ref(WindowsRawSocket(Ptr{Cvoid}(-1)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-52"></a>52</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        my_process = ccall(:GetCurrentProcess, stdcall, Ptr{Cvoid}, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-53"></a>53</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        DUPLICATE_SAME_ACCESS = 0x2
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-54"></a>54</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        status = ccall(:DuplicateHandle, stdcall, Int32,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-55"></a>55</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            (Ptr{Cvoid}, WindowsRawSocket, Ptr{Cvoid}, Ptr{WindowsRawSocket}, UInt32, Int32, UInt32),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-56"></a>56</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            my_process, src, my_process, new_handle, 0, false, DUPLICATE_SAME_ACCESS)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-57"></a>57</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        status == 0 &amp;&amp; error(&quot;dup failed: $(FormatMessage())&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-58"></a>58</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return new_handle[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-59"></a>59</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-60"></a>60</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function dup(src::WindowsRawSocket, target::RawFD)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-61"></a>61</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        fd = ccall(:_open_osfhandle, RawFD, (WindowsRawSocket, Int32), dup(src), 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-62"></a>62</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        dup(fd, target)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-63"></a>63</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ccall(:_close, Int32, (RawFD,), fd)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-64"></a>64</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-65"></a>65</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-66"></a>66</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-67"></a>67</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-68"></a>68</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _get_osfhandle(fd::RawFD) = fd
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-69"></a>69</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-70"></a>70</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-71"></a>71</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## FILE (not auto-finalized) ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-72"></a>72</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-73"></a>73</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">struct FILE
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-74"></a>74</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    ptr::Ptr{Cvoid}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-75"></a>75</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-76"></a>76</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-77"></a>77</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">modestr(s::IO) = modestr(isreadable(s), iswritable(s))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-78"></a>78</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">modestr(r::Bool, w::Bool) = r ? (w ? &quot;r+&quot; : &quot;r&quot;) : (w ? &quot;w&quot; : throw(ArgumentError(&quot;neither readable nor writable&quot;)))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-79"></a>79</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-80"></a>80</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function FILE(fd::RawFD, mode)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-81"></a>81</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    FILEp = ccall((@static Sys.iswindows() ? :_fdopen : :fdopen), Ptr{Cvoid}, (Cint, Cstring), fd, mode)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-82"></a>82</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    systemerror(&quot;fdopen&quot;, FILEp == C_NULL)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-83"></a>83</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    FILE(FILEp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-84"></a>84</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-85"></a>85</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-86"></a>86</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function FILE(s::IO)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-87"></a>87</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    f = FILE(dup(RawFD(fd(s))),modestr(s))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-88"></a>88</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    seek(f, position(s))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-89"></a>89</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    f
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-90"></a>90</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-91"></a>91</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-92"></a>92</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Base.unsafe_convert(T::Union{Type{Ptr{Cvoid}},Type{Ptr{FILE}}}, f::FILE) = convert(T, f.ptr)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-93"></a>93</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Base.close(f::FILE) = systemerror(&quot;fclose&quot;, ccall(:fclose, Cint, (Ptr{Cvoid},), f.ptr) != 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-94"></a>94</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-95"></a>95</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function Base.seek(h::FILE, offset::Integer)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-96"></a>96</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    systemerror(&quot;fseek&quot;, ccall(:fseek, Cint, (Ptr{Cvoid}, Clong, Cint),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-97"></a>97</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                               h.ptr, offset, 0) != 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-98"></a>98</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    h
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-99"></a>99</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-100"></a>100</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-101"></a>101</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Base.position(h::FILE) = ccall(:ftell, Clong, (Ptr{Cvoid},), h.ptr)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-102"></a>102</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-103"></a>103</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># flush C stdio output from external libraries
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-104"></a>104</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-105"></a>105</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-106"></a>106</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    flush_cstdio()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-107"></a>107</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-108"></a>108</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Flushes the C `stdout` and `stderr` streams (which may have been written to by external C code).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-109"></a>109</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-110"></a>110</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">flush_cstdio() = ccall(:jl_flush_cstdio, Cvoid, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-111"></a>111</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-112"></a>112</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## time-related functions ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-113"></a>113</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-114"></a>114</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># TODO: check for usleep errors?
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-115"></a>115</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if Sys.isunix()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-116"></a>116</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    systemsleep(s::Real) = ccall(:usleep, Int32, (UInt32,), round(UInt32, s*1e6))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-117"></a>117</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">elseif Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-118"></a>118</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function systemsleep(s::Real)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-119"></a>119</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ccall(:Sleep, stdcall, Cvoid, (UInt32,), round(UInt32, s * 1e3))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-120"></a>120</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return Int32(0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-121"></a>121</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-122"></a>122</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-123"></a>123</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    error(&quot;systemsleep undefined for this OS&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-124"></a>124</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-125"></a>125</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-126"></a>126</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">struct TimeVal
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-127"></a>127</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">   sec::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-128"></a>128</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">   usec::Int64
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-129"></a>129</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-130"></a>130</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-131"></a>131</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function TimeVal()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-132"></a>132</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    tv = Ref{TimeVal}()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-133"></a>133</td>
+          <td>16 (0.24%)</td>
+          <td>16 (0.24%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-libc-jl-Type-133"></a>
+              16 (0.24%) samples spent in Type<br />
+              16 (100.00%) (ex.),
+              16 (100.00%) (incl.)
+              when called from
+              now
+              <a href="conversions-jl-800c82f9e9c6b61df28d-line.html#Lconversions-jl-800c82f9e9c6b61df28d-line.html-67">line 67</a><br />
+            </div>
+            <span class="code">    status = ccall(:jl_gettimeofday, Cint, (Ref{TimeVal},), tv)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-134"></a>134</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    status != 0 &amp;&amp; error(&quot;unable to determine current time: &quot;, status)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-135"></a>135</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return tv[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-136"></a>136</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-137"></a>137</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-138"></a>138</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-139"></a>139</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    TmStruct([seconds])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-140"></a>140</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-141"></a>141</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Convert a number of seconds since the epoch to broken-down format, with fields `sec`, `min`,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-142"></a>142</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`hour`, `mday`, `month`, `year`, `wday`, `yday`, and `isdst`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-143"></a>143</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-144"></a>144</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">mutable struct TmStruct
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-145"></a>145</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    sec::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-146"></a>146</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    min::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-147"></a>147</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    hour::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-148"></a>148</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    mday::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-149"></a>149</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    month::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-150"></a>150</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    year::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-151"></a>151</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    wday::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-152"></a>152</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    yday::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-153"></a>153</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    isdst::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-154"></a>154</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # on some platforms the struct is 14 words, even though 9 are specified
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-155"></a>155</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _10::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-156"></a>156</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _11::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-157"></a>157</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _12::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-158"></a>158</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _13::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-159"></a>159</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _14::Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-160"></a>160</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-161"></a>161</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    TmStruct(sec, min, hour, mday, month, year, wday, yday, isdst) =
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-162"></a>162</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        new(sec, min, hour, mday, month, year, wday, yday, isdst, 0,0,0,0,0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-163"></a>163</td>
+          <td>8 (0.12%)</td>
+          <td>8 (0.12%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-libc-jl-Type-163"></a>
+              8 (0.12%) samples spent in Type<br />
+              8 (100.00%) (ex.),
+              8 (100.00%) (incl.)
+              when called from
+              Type
+              <a href="libc-jl-71ca91b7db00310c2f80-line.html#Llibc-jl-71ca91b7db00310c2f80-line.html-166">line 166</a><br />
+            </div>
+            <span class="code">    TmStruct() = new(0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-164"></a>164</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function TmStruct(t::Real)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-165"></a>165</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        t = floor(t)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-166"></a>166</td>
+          <td></td>
+          <td>8 (0.12%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-libc-jl-Type-166"></a>
+              8 (0.12%) samples spent in Type<br />
+              0 (ex.),
+              8 (100.00%) (incl.)
+              when called from
+              now
+              <a href="conversions-jl-800c82f9e9c6b61df28d-line.html#Lconversions-jl-800c82f9e9c6b61df28d-line.html-68">line 68</a><br />
+            </div>
+            <div class="callees">
+              8 (100.00%)
+              samples spent calling
+              <a href="libc-jl-71ca91b7db00310c2f80-line.html#S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-libc-jl-Type-163">Type</a><br />
+            </div>
+            <span class="code">        tm = TmStruct()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-167"></a>167</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # TODO: add support for UTC via gmtime_r()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-168"></a>168</td>
+          <td>257 (3.80%)</td>
+          <td>257 (3.80%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-libc-jl-Type-168"></a>
+              257 (3.80%) samples spent in Type<br />
+              257 (100.00%) (ex.),
+              257 (100.00%) (incl.)
+              when called from
+              now
+              <a href="conversions-jl-800c82f9e9c6b61df28d-line.html#Lconversions-jl-800c82f9e9c6b61df28d-line.html-68">line 68</a><br />
+            </div>
+            <span class="code">        ccall(:localtime_r, Ptr{TmStruct}, (Ref{Int}, Ref{TmStruct}), t, tm)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-169"></a>169</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return tm
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-170"></a>170</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-171"></a>171</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-172"></a>172</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-173"></a>173</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-174"></a>174</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    strftime([format], time)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-175"></a>175</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-176"></a>176</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Convert time, given as a number of seconds since the epoch or a `TmStruct`, to a formatted
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-177"></a>177</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">string using the given format. Supported formats are the same as those in the standard C
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-178"></a>178</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">library.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-179"></a>179</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-180"></a>180</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">strftime(t) = strftime(&quot;%c&quot;, t)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-181"></a>181</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">strftime(fmt::AbstractString, t::Real) = strftime(fmt, TmStruct(t))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-182"></a>182</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Use wcsftime instead of strftime to support different locales
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-183"></a>183</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function strftime(fmt::AbstractString, tm::TmStruct)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-184"></a>184</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    wctimestr = Vector{Cwchar_t}(undef, 128)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-185"></a>185</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    n = ccall(:wcsftime, Csize_t, (Ptr{Cwchar_t}, Csize_t, Cwstring, Ref{TmStruct}),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-186"></a>186</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">              wctimestr, length(wctimestr), fmt, tm)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-187"></a>187</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    n == 0 &amp;&amp; return &quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-188"></a>188</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return transcode(String, resize!(wctimestr, n))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-189"></a>189</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-190"></a>190</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-191"></a>191</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-192"></a>192</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    strptime([format], timestr)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-193"></a>193</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-194"></a>194</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Parse a formatted time string into a `TmStruct` giving the seconds, minute, hour, date, etc.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-195"></a>195</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Supported formats are the same as those in the standard C library. On some platforms,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-196"></a>196</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">timezones will not be parsed correctly. If the result of this function will be passed to
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-197"></a>197</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`time` to convert it to seconds since the epoch, the `isdst` field should be filled in
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-198"></a>198</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">manually. Setting it to `-1` will tell the C library to use the current system settings to
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-199"></a>199</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">determine the timezone.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-200"></a>200</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-201"></a>201</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">strptime(timestr::AbstractString) = strptime(&quot;%c&quot;, timestr)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-202"></a>202</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function strptime(fmt::AbstractString, timestr::AbstractString)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-203"></a>203</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    tm = TmStruct()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-204"></a>204</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    r = ccall(:strptime, Cstring, (Cstring, Cstring, Ref{TmStruct}), timestr, fmt, tm)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-205"></a>205</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # the following would tell mktime() that this is a local time, and that
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-206"></a>206</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # it should try to guess the timezone. not sure if/how this should be
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-207"></a>207</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # exposed in the API.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-208"></a>208</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # tm.isdst = -1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-209"></a>209</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if r == C_NULL
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-210"></a>210</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # TODO: better error message
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-211"></a>211</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        throw(ArgumentError(&quot;invalid arguments&quot;))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-212"></a>212</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-213"></a>213</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @static if Sys.isapple()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-214"></a>214</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # if we didn&#39;t explicitly parse the weekday or year day, use mktime
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-215"></a>215</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # to fill them in automatically.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-216"></a>216</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if !occursin(r&quot;([^%]|^)%(a|A|j|w|Ow)&quot;, fmt)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-217"></a>217</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            ccall(:mktime, Int, (Ref{TmStruct},), tm)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-218"></a>218</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-219"></a>219</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-220"></a>220</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return tm
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-221"></a>221</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-222"></a>222</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-223"></a>223</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># system date in seconds
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-224"></a>224</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-225"></a>225</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-226"></a>226</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    time(t::TmStruct)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-227"></a>227</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-228"></a>228</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Converts a `TmStruct` struct to a number of seconds since the epoch.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-229"></a>229</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-230"></a>230</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">time(tm::TmStruct) = Float64(ccall(:mktime, Int, (Ref{TmStruct},), tm))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-231"></a>231</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-232"></a>232</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-233"></a>233</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    time()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-234"></a>234</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-235"></a>235</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Get the system time in seconds since the epoch, with fairly high (typically, microsecond) resolution.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-236"></a>236</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-237"></a>237</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">time() = ccall(:jl_clock_now, Float64, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-238"></a>238</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-239"></a>239</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## process-related functions ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-240"></a>240</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-241"></a>241</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-242"></a>242</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    getpid() -&gt; Int32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-243"></a>243</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-244"></a>244</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Get Julia&#39;s process ID.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-245"></a>245</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-246"></a>246</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">getpid() = ccall(:jl_getpid, Int32, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-247"></a>247</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-248"></a>248</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## network functions ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-249"></a>249</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-250"></a>250</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-251"></a>251</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    gethostname() -&gt; AbstractString
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-252"></a>252</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-253"></a>253</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Get the local machine&#39;s host name.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-254"></a>254</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-255"></a>255</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function gethostname()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-256"></a>256</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    hn = Vector{UInt8}(undef, 256)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-257"></a>257</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    err = @static if Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-258"></a>258</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ccall(:gethostname, stdcall, Int32, (Ptr{UInt8}, UInt32), hn, length(hn))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-259"></a>259</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-260"></a>260</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ccall(:gethostname, Int32, (Ptr{UInt8}, UInt), hn, length(hn))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-261"></a>261</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-262"></a>262</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    systemerror(&quot;gethostname&quot;, err != 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-263"></a>263</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return GC.@preserve hn unsafe_string(pointer(hn))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-264"></a>264</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-265"></a>265</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-266"></a>266</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## system error handling ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-267"></a>267</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-268"></a>268</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-269"></a>269</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    errno([code])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-270"></a>270</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-271"></a>271</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Get the value of the C library&#39;s `errno`. If an argument is specified, it is used to set the
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-272"></a>272</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">value of `errno`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-273"></a>273</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-274"></a>274</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">The value of `errno` is only valid immediately after a `ccall` to a C library routine that
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-275"></a>275</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">sets it. Specifically, you cannot call `errno` at the next prompt in a REPL, because lots of
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-276"></a>276</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">code is executed between prompts.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-277"></a>277</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-278"></a>278</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">errno() = ccall(:jl_errno, Cint, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-279"></a>279</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">errno(e::Integer) = ccall(:jl_set_errno, Cvoid, (Cint,), e)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-280"></a>280</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-281"></a>281</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-282"></a>282</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    strerror(n=errno())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-283"></a>283</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-284"></a>284</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Convert a system call error code to a descriptive string
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-285"></a>285</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-286"></a>286</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">strerror(e::Integer) = unsafe_string(ccall(:strerror, Cstring, (Int32,), e))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-287"></a>287</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">strerror() = strerror(errno())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-288"></a>288</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-289"></a>289</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-290"></a>290</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    GetLastError()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-291"></a>291</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-292"></a>292</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Call the Win32 `GetLastError` function [only available on Windows].
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-293"></a>293</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-294"></a>294</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function GetLastError end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-295"></a>295</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-296"></a>296</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-297"></a>297</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    FormatMessage(n=GetLastError())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-298"></a>298</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-299"></a>299</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Convert a Win32 system call error code to a descriptive string [only available on Windows].
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-300"></a>300</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-301"></a>301</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function FormatMessage end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-302"></a>302</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-303"></a>303</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-304"></a>304</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    GetLastError() = ccall(:GetLastError, stdcall, UInt32, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-305"></a>305</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-306"></a>306</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function FormatMessage(e=GetLastError())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-307"></a>307</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        FORMAT_MESSAGE_ALLOCATE_BUFFER = UInt32(0x100)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-308"></a>308</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        FORMAT_MESSAGE_FROM_SYSTEM = UInt32(0x1000)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-309"></a>309</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        FORMAT_MESSAGE_IGNORE_INSERTS = UInt32(0x200)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-310"></a>310</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        FORMAT_MESSAGE_MAX_WIDTH_MASK = UInt32(0xFF)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-311"></a>311</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        lpMsgBuf = Ref{Ptr{UInt16}}()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-312"></a>312</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        lpMsgBuf[] = 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-313"></a>313</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        len = ccall(:FormatMessageW, stdcall, UInt32, (Cint, Ptr{Cvoid}, Cint, Cint, Ptr{Ptr{UInt16}}, Cint, Ptr{Cvoid}),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-314"></a>314</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_MAX_WIDTH_MASK,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-315"></a>315</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    C_NULL, e, 0, lpMsgBuf, 0, C_NULL)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-316"></a>316</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        p = lpMsgBuf[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-317"></a>317</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        len == 0 &amp;&amp; return &quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-318"></a>318</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        buf = Vector{UInt16}(undef, len)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-319"></a>319</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        GC.@preserve buf unsafe_copyto!(pointer(buf), p, len)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-320"></a>320</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ccall(:LocalFree, stdcall, Ptr{Cvoid}, (Ptr{Cvoid},), p)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-321"></a>321</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return transcode(String, buf)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-322"></a>322</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-323"></a>323</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-324"></a>324</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-325"></a>325</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## Memory related ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-326"></a>326</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-327"></a>327</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-328"></a>328</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    free(addr::Ptr)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-329"></a>329</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-330"></a>330</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Call `free` from the C standard library. Only use this on memory obtained from `malloc`, not
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-331"></a>331</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">on pointers retrieved from other C libraries. `Ptr` objects obtained from C libraries should
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-332"></a>332</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">be freed by the free functions defined in that library, to avoid assertion failures if
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-333"></a>333</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">multiple `libc` libraries exist on the system.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-334"></a>334</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-335"></a>335</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">free(p::Ptr) = ccall(:free, Cvoid, (Ptr{Cvoid},), p)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-336"></a>336</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-337"></a>337</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-338"></a>338</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    malloc(size::Integer) -&gt; Ptr{Cvoid}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-339"></a>339</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-340"></a>340</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Call `malloc` from the C standard library.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-341"></a>341</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-342"></a>342</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">malloc(size::Integer) = ccall(:malloc, Ptr{Cvoid}, (Csize_t,), size)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-343"></a>343</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-344"></a>344</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-345"></a>345</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    realloc(addr::Ptr, size::Integer) -&gt; Ptr{Cvoid}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-346"></a>346</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-347"></a>347</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Call `realloc` from the C standard library.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-348"></a>348</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-349"></a>349</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">See warning in the documentation for `free` regarding only using this on memory originally
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-350"></a>350</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">obtained from `malloc`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-351"></a>351</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-352"></a>352</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">realloc(p::Ptr, size::Integer) = ccall(:realloc, Ptr{Cvoid}, (Ptr{Cvoid}, Csize_t), p, size)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-353"></a>353</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-354"></a>354</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-355"></a>355</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    calloc(num::Integer, size::Integer) -&gt; Ptr{Cvoid}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-356"></a>356</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-357"></a>357</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Call `calloc` from the C standard library.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-358"></a>358</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-359"></a>359</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">calloc(num::Integer, size::Integer) = ccall(:calloc, Ptr{Cvoid}, (Csize_t, Csize_t), num, size)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-360"></a>360</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-361"></a>361</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">free(p::Cstring) = free(convert(Ptr{UInt8}, p))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-362"></a>362</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">free(p::Cwstring) = free(convert(Ptr{Cwchar_t}, p))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-363"></a>363</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-364"></a>364</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## Random numbers ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-365"></a>365</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-366"></a>366</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># To limit dependency on rand functionality implemented in the Random module,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-367"></a>367</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># Libc.rand is used in file.jl, and could be used in error.jl (but it breaks a test)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-368"></a>368</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-369"></a>369</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    rand([T::Type])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-370"></a>370</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-371"></a>371</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Interface to the C `rand()` function. If `T` is provided, generate a value of type `T`
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-372"></a>372</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">by composing two calls to `rand()`. `T` can be `UInt32` or `Float64`.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-373"></a>373</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-374"></a>374</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rand() = ccall(:rand, Cint, ())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-375"></a>375</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># RAND_MAX at least 2^15-1 in theory, but we assume 2^16-1 (in practice, it&#39;s 2^31-1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-376"></a>376</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rand(::Type{UInt32}) = ((rand() % UInt32) &lt;&lt; 16) ⊻ (rand() % UInt32)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-377"></a>377</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">rand(::Type{Float64}) = rand(UInt32) / 2^32
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-378"></a>378</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-379"></a>379</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-380"></a>380</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    srand([seed])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-381"></a>381</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-382"></a>382</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Interface to the C `srand(seed)` function.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-383"></a>383</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-384"></a>384</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">srand(seed=floor(time())) = ccall(:srand, Cvoid, (Cuint,), seed)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-385"></a>385</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Llibc-jl-71ca91b7db00310c2f80-line.html-386"></a>386</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end # module
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

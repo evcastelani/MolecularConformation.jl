@@ -1,0 +1,1626 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /home/gphilippi/Desktop/idiotice/build/julia-1.0.5/bin/../share/julia/base/./env.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on Tue 31 May 2022 03:17:20 PM -03</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    const ERROR_ENVVAR_NOT_FOUND = UInt32(203)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _getenvlen(var::Vector{UInt16}) = ccall(:GetEnvironmentVariableW,stdcall,UInt32,(Ptr{UInt16},Ptr{UInt16},UInt32),var,C_NULL,0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _hasenv(s::Vector{UInt16}) = _getenvlen(s) != 0 || Libc.GetLastError() != ERROR_ENVVAR_NOT_FOUND
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _hasenv(s::AbstractString) = _hasenv(cwstring(s))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function access_env(onError::Function, str::AbstractString)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        var = cwstring(str)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        len = _getenvlen(var)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if len == 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return Libc.GetLastError() != ERROR_ENVVAR_NOT_FOUND ? &quot;&quot; : onError(str)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        val = zeros(UInt16,len)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ret = ccall(:GetEnvironmentVariableW,stdcall,UInt32,(Ptr{UInt16},Ptr{UInt16},UInt32),var,val,len)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if (ret == 0 &amp;&amp; len != 1) || ret != len-1 || val[end] != 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            error(string(&quot;getenv: &quot;, str, &#39; &#39;, len, &quot;-1 != &quot;, ret, &quot;: &quot;, Libc.FormatMessage()))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        pop!(val) # NUL
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return transcode(String, val)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function _setenv(svar::AbstractString, sval::AbstractString, overwrite::Bool=true)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        var = cwstring(svar)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        val = cwstring(sval)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if overwrite || !_hasenv(var)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            ret = ccall(:SetEnvironmentVariableW,stdcall,Int32,(Ptr{UInt16},Ptr{UInt16}),var,val)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            systemerror(:setenv, ret == 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function _unsetenv(svar::AbstractString)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        var = cwstring(svar)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ret = ccall(:SetEnvironmentVariableW,stdcall,Int32,(Ptr{UInt16},Ptr{UInt16}),var,C_NULL)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        systemerror(:setenv, ret == 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-env-jl-_getenv-39"></a>
+              902 (3.56%) samples spent in _getenv<br />
+              37 (4.69%) (ex.),
+              37 (4.10%) (incl.)
+              when called from
+              current_logger_for_env
+              <a href="logging-jl-c1d1f1507c3b95a73490-line.html#Llogging-jl-c1d1f1507c3b95a73490-line.html-384">line 384</a><br />
+              752 (95.31%) (ex.),
+              865 (95.90%) (incl.)
+              when called from
+              access_env
+              <a href="env-jl-c2bf9d12c0bdb0b29916-line.html#Lenv-jl-c2bf9d12c0bdb0b29916-line.html-44">line 44</a><br />
+            </div>
+            <span class="code">else # !windows
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-40"></a>40</td>
+          <td>789 (3.12%)</td>
+          <td>902 (3.56%)</td>
+          <td>
+            <div class="callees">
+              113 (12.53%)
+              samples spent calling
+              <a href="c-jl-f10bf26baa4a325da084-line.html#S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-c-jl-unsafe_convert-216">unsafe_convert</a><br />
+            </div>
+            <span class="code">    _getenv(var::AbstractString) = ccall(:getenv, Cstring, (Cstring,), var)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    _hasenv(s::AbstractString) = _getenv(s) != C_NULL
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-42"></a>42</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-43"></a>43</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function access_env(onError::Function, var::AbstractString)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-44"></a>44</td>
+          <td>17 (0.07%)</td>
+          <td>882 (3.48%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-env-jl-access_env-44"></a>
+              882 (3.48%) samples spent in access_env<br />
+              17 (100.00%) (ex.),
+              882 (100.00%) (incl.)
+              when called from
+              get
+              <a href="env-jl-c2bf9d12c0bdb0b29916-line.html#Lenv-jl-c2bf9d12c0bdb0b29916-line.html-77">line 77</a><br />
+            </div>
+            <div class="callees">
+              865 (98.07%)
+              samples spent calling
+              <a href="env-jl-c2bf9d12c0bdb0b29916-line.html#S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-env-jl-_getenv-39">_getenv</a><br />
+            </div>
+            <span class="code">        val = _getenv(var)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-45"></a>45</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        val == C_NULL ? onError(var) : unsafe_string(val)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function _setenv(var::AbstractString, val::AbstractString, overwrite::Bool=true)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ret = ccall(:setenv, Int32, (Cstring,Cstring,Int32), var, val, overwrite)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        systemerror(:setenv, ret != 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-51"></a>51</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-52"></a>52</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-53"></a>53</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function _unsetenv(var::AbstractString)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-54"></a>54</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        ret = ccall(:unsetenv, Int32, (Cstring,), var)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-55"></a>55</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        systemerror(:unsetenv, ret != 0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-56"></a>56</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-57"></a>57</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end # os test
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-58"></a>58</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-59"></a>59</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">## ENV: hash interface ##
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-60"></a>60</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-61"></a>61</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-62"></a>62</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    EnvDict() -&gt; EnvDict
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-63"></a>63</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-64"></a>64</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">A singleton of this type provides a hash table interface to environment variables.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-65"></a>65</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-66"></a>66</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">struct EnvDict &lt;: AbstractDict{String,String}; end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-67"></a>67</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-68"></a>68</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-69"></a>69</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    ENV
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-70"></a>70</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-71"></a>71</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Reference to the singleton `EnvDict`, providing a dictionary interface to system environment
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-72"></a>72</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">variables.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-73"></a>73</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-74"></a>74</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">const ENV = EnvDict()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-75"></a>75</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-76"></a>76</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">getindex(::EnvDict, k::AbstractString) = access_env(k-&gt;throw(KeyError(k)), k)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-77"></a>77</td>
+          <td></td>
+          <td>882 (3.48%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-env-jl-get-77"></a>
+              882 (3.48%) samples spent in get<br />
+              0 (ex.),
+              882 (100.00%) (incl.)
+              when called from
+              env_override_minlevel
+              <a href="logging-jl-c1d1f1507c3b95a73490-line.html#Llogging-jl-c1d1f1507c3b95a73490-line.html-419">line 419</a><br />
+            </div>
+            <div class="callees">
+              882 (100.00%)
+              samples spent calling
+              <a href="env-jl-c2bf9d12c0bdb0b29916-line.html#S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-env-jl-access_env-44">access_env</a><br />
+            </div>
+            <span class="code">get(::EnvDict, k::AbstractString, def) = access_env(k-&gt;def, k)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-78"></a>78</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">get(f::Callable, ::EnvDict, k::AbstractString) = access_env(k-&gt;f(), k)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-79"></a>79</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">in(k::AbstractString, ::KeySet{String, EnvDict}) = _hasenv(k)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-80"></a>80</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">pop!(::EnvDict, k::AbstractString) = (v = ENV[k]; _unsetenv(k); v)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-81"></a>81</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">pop!(::EnvDict, k::AbstractString, def) = haskey(ENV,k) ? pop!(ENV,k) : def
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-82"></a>82</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">delete!(::EnvDict, k::AbstractString) = (_unsetenv(k); ENV)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-83"></a>83</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">setindex!(::EnvDict, v, k::AbstractString) = _setenv(k,string(v))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-84"></a>84</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">push!(::EnvDict, kv::Pair{&lt;:AbstractString}) = setindex!(ENV, kv.second, kv.first)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-85"></a>85</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-86"></a>86</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">if Sys.iswindows()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-87"></a>87</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    GESW() = (pos = ccall(:GetEnvironmentStringsW,stdcall,Ptr{UInt16},()); (pos,pos))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-88"></a>88</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function iterate(hash::EnvDict, block::Tuple{Ptr{UInt16},Ptr{UInt16}} = GESW())
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-89"></a>89</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if unsafe_load(block[1]) == 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-90"></a>90</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            ccall(:FreeEnvironmentStringsW, stdcall, Int32, (Ptr{UInt16},), block[2])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-91"></a>91</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            return nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-92"></a>92</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-93"></a>93</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        pos = block[1]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-94"></a>94</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        blk = block[2]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-95"></a>95</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        len = ccall(:wcslen, UInt, (Ptr{UInt16},), pos)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-96"></a>96</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        buf = Vector{UInt16}(undef, len)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-97"></a>97</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        GC.@preserve buf unsafe_copyto!(pointer(buf), pos, len)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-98"></a>98</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        env = transcode(String, buf)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-99"></a>99</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        m = match(r&quot;^(=?[^=]+)=(.*)$&quot;s, env)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-100"></a>100</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if m === nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-101"></a>101</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            error(&quot;malformed environment entry: $env&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-102"></a>102</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-103"></a>103</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return (Pair{String,String}(m.captures[1], m.captures[2]), (pos+(len+1)*2, blk))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-104"></a>104</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-105"></a>105</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">else # !windows
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-106"></a>106</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function iterate(::EnvDict, i=0)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-107"></a>107</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        env = ccall(:jl_environ, Any, (Int32,), i)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-108"></a>108</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        env === nothing &amp;&amp; return nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-109"></a>109</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        env = env::String
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-110"></a>110</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        m = match(r&quot;^(.*?)=(.*)$&quot;s, env)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-111"></a>111</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if m === nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-112"></a>112</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            error(&quot;malformed environment entry: $env&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-113"></a>113</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-114"></a>114</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return (Pair{String,String}(m.captures[1], m.captures[2]), i+1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-115"></a>115</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-116"></a>116</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end # os-test
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-117"></a>117</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-118"></a>118</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">#TODO: Make these more efficient
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-119"></a>119</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function length(::EnvDict)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-120"></a>120</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    i = 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-121"></a>121</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    for (k,v) in ENV
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-122"></a>122</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        i += 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-123"></a>123</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-124"></a>124</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return i
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-125"></a>125</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-126"></a>126</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-127"></a>127</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function show(io::IO, ::EnvDict)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-128"></a>128</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    for (k,v) = ENV
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-129"></a>129</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        println(io, &quot;$k=$v&quot;)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-130"></a>130</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-131"></a>131</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-132"></a>132</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-133"></a>133</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-134"></a>134</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    withenv(f::Function, kv::Pair...)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-135"></a>135</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-136"></a>136</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">Execute `f` in an environment that is temporarily modified (not replaced as in `setenv`)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-137"></a>137</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">by zero or more `&quot;var&quot;=&gt;val` arguments `kv`. `withenv` is generally used via the
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-138"></a>138</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">`withenv(kv...) do ... end` syntax. A value of `nothing` can be used to temporarily unset an
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-139"></a>139</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">environment variable (if it is set). When `withenv` returns, the original environment has
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-140"></a>140</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">been restored.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-141"></a>141</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">&quot;&quot;&quot;
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-142"></a>142</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function withenv(f::Function, keyvals::Pair{T}...) where T&lt;:AbstractString
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-143"></a>143</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    old = Dict{T,Any}()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-144"></a>144</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    for (key,val) in keyvals
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-145"></a>145</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        old[key] = get(ENV,key,nothing)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-146"></a>146</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        val !== nothing ? (ENV[key]=val) : delete!(ENV, key)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-147"></a>147</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-148"></a>148</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    try f()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-149"></a>149</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    finally
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-150"></a>150</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for (key,val) in old
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-151"></a>151</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            val !== nothing ? (ENV[key]=val) : delete!(ENV, key)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-152"></a>152</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-153"></a>153</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-154"></a>154</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lenv-jl-c2bf9d12c0bdb0b29916-line.html-155"></a>155</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">withenv(f::Function) = f() # handle empty keyvals case; see #10853
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

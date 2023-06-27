@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /home/gphilippi/Desktop/idiotice/build/julia-1.0.5/bin/../share/julia/base/./refvalue.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on Tue 31 May 2022 12:14:42 PM -03</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">### Methods for a Ref object that can store a single value of any type
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">mutable struct RefValue{T} &lt;: Ref{T}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    x::T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    RefValue{T}() where {T} = new()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    RefValue{T}(x) where {T} = new(x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">RefValue(x::T) where {T} = RefValue{T}(x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">isassigned(x::RefValue) = isdefined(x, :x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-12"></a>12</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function unsafe_convert(P::Type{Ptr{T}}, b::RefValue{T}) where T
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if datatype_pointerfree(RefValue{T})
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        p = pointer_from_objref(b)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    elseif isconcretetype(T) &amp;&amp; T.mutable
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        p = pointer_from_objref(b.x)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # If the slot is not leaf type, it could be either immutable or not.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # If it is actually an immutable, then we can&#39;t take it&#39;s pointer directly
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # Instead, explicitly load the pointer from the `RefValue`,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        # which also ensures this returns same pointer as the one rooted in the `RefValue` object.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        p = pointerref(Ptr{Ptr{Cvoid}}(pointer_from_objref(b)), 1, Core.sizeof(Ptr{Cvoid}))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return convert(P, p)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function unsafe_convert(P::Type{Ptr{Any}}, b::RefValue{Any})
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return convert(P, pointer_from_objref(b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">unsafe_convert(::Type{Ptr{Cvoid}}, b::RefValue{T}) where {T} = convert(Ptr{Cvoid}, unsafe_convert(Ptr{T}, b))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-32"></a>32</td>
+          <td></td>
+          <td>18 (0.06%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-refvalue-jl-getindex-32"></a>
+              18 (0.06%) samples spent in getindex<br />
+              0 (ex.),
+              18 (100.00%) (incl.)
+              when called from
+              macro expansion
+              <a href="logging-jl-c1d1f1507c3b95a73490-line.html#Llogging-jl-c1d1f1507c3b95a73490-line.html-307">line 307</a><br />
+            </div>
+            <div class="callees">
+              18 (100.00%)
+              samples spent calling
+              <a href="sysimg-jl-e9977ef2b6413d95f038-line.html#S-home-gphilippi-Desktop-idiotice-build-julia-1-0-5-bin-share-julia-base-sysimg-jl-getproperty-18">getproperty</a><br />
+            </div>
+            <span class="code">getindex(b::RefValue) = b.x
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Lrefvalue-jl-b56c5b275f85179cf5de-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">setindex!(b::RefValue, x) = (b.x = x; b)
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
