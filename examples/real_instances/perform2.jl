@@ -1,6 +1,6 @@
 using MolecularConformation, DelimitedFiles,BenchmarkTools, Dates, Printf, DelimitedFiles
 
-BenchmarkTools.DEFAULT_PARAMETERS.samples = 1000
+BenchmarkTools.DEFAULT_PARAMETERS.samples = 100
 
 include("rmsd.jl")
 """
@@ -35,7 +35,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
         # setup 
         optq = ConformationSetup(ε,quaternionBP,false,true,virtual_ε)
         optc = ConformationSetup(ε,classicBP,false,true,virtual_ε)
-	data = preprocessing("toyinstance.nmr")
+	data = preprocessing("HCProtInsctances/pdb1a57.nmr")
 	# first run (to optimize)
 	solq = conformation(data,optq,limit_time)
 	solc = conformation(data,optc,limit_time)
@@ -96,7 +96,7 @@ function perform(limit_time,opwrite::String="a",f::Function=median; list_of_prob
 		MDEc = outputfilter(solc,"mde")
 		PTc = f(bchc).time*c
 		
-		improv = (-1.0+PTc/PTq)*100
+		improv = PTq/PTc
 		rmsd = evalrmsd(solc,solq)[2]
 
         println(ioperf,"$(prob),$(PTc),$(PTq)")
