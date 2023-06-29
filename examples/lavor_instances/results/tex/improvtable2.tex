@@ -5,13 +5,13 @@
         
         \begin{tabular}{||r |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] |S[table-format=1.2e+2] | S[table-format=1.2e+2]||}
                 \hline
-				        $n_d$ & \multicolumn{1}{c|}{400} & \multicolumn{1}{c|}{500} & \multicolumn{1}{c|}{600} & \multicolumn{1}{c|}{700} & \multicolumn{1}{c|}{800} & \multicolumn{1}{c|}{900} & \multicolumn{1}{c|}{1000} \\
+				        $n_d$ & \multicolumn{1}{c|}{400} & \multicolumn{1}{c|}{500} & \multicolumn{1}{c|}{600} & \multicolumn{1}{c|}{700} & \multicolumn{1}{c|}{800} & \multicolumn{1}{c|}{900} & \multicolumn{1}{c||}{1000} \\
         \hline
-        Classic & 2.43e-03 & 2.54e-03 & 2.63e-03 & 2.70e-03 & 2.80e-03 & 2.82e-03 & 2.79e-03 \\
         Quater. & 2.34e-03 & 2.45e-03 & 2.54e-03 & 2.61e-03 & 2.69e-03 & 2.72e-03 & 2.69e-03 \\
-        Improv & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.97} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} \\
+        Matrix & 2.43e-03 & 2.54e-03 & 2.63e-03 & 2.70e-03 & 2.80e-03 & 2.82e-03 & 2.79e-03 \\
+        $t_q\slash t_m$ & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.97} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c|}{0.96} & \multicolumn{1}{c||}{0.96} \\
         \hline
 	\end{tabular}}
-	\caption{Improvement percentage in geometric means of \texttt{QuaternionBP} in relation to \texttt{ClassicBP} considering results of the benchmark.}
+	\caption{Pratical improvement ratio of QuaternionBP in relation to MatrixBP considering the geometric means of benchmark times over all instances with fixed $n_d$.}
 	\label{table:improvlavor}
 \end{table}
