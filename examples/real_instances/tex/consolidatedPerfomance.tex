@@ -11,6 +11,28 @@
 \usepackage{authblk}
 \usepackage{graphicx}
 \usepackage{float}
+
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{fancyvrb}
+
+% redefine \VerbatimInput
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}%
+{fontsize=\footnotesize,
+ %
+ frame=lines,  % top and bottom rule only
+ framesep=2em, % separation between frame and text
+ rulecolor=\color{Gray},
+ %
+ label=\fbox{\color{Black}log.txt},
+ labelposition=topline,
+ %
+ commandchars=\|\(\), % escape character and argument delimiters for
+                      % commands within the verbatim
+ commentchar=*        % comment character
+}
+
 \title{Consolidated Performance Tests}
 
 
@@ -35,6 +57,8 @@ Brazil,
 	\subsection{Using BP-One versions}
 	\begin{scriptsize}
 		\input{../table_general.tex}
+
+		\VerbatimInput{../log.txt}
 		\newpage
 	\end{scriptsize}
 
@@ -42,6 +66,8 @@ Brazil,
 	\subsection{Using BP-All versions}
 	\begin{scriptsize}
 		\input{../table_generalRMSD.tex}
+
+		\VerbatimInput{../logRMSD.txt}
 		\newpage
 	\end{scriptsize}
 
@@ -73,7 +99,7 @@ Brazil,
 			\includegraphics[scale=0.55]{figures/RMSDMatrixAll.pdf} &
 			\includegraphics[scale=0.55]{figures/RMSDQuaternionAll.pdf} \\
 			\includegraphics[scale=0.55]{figures/improvAll.pdf}& 
-			\includegraphics[scale=0.55]{figures/histogramRMSDAll.pdf} \\
+			\includegraphics[scale=0.55]{figures/histogramRMSD.pdf} \\
 		\end{tabular}
 		\label{fig:mean}
 	\end{figure}
